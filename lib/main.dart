@@ -15,16 +15,16 @@ class AmbroApp extends StatelessWidget {
       title: 'Ambro',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: const Color(0xFF2196F3),
+        primaryColor: const Color(0xFF003366),
         scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF2196F3),
-          primary: const Color(0xFF2196F3),
+          seedColor: const Color(0xFF003366),
+          primary: const Color(0xFF003366),
         ),
         textTheme: GoogleFonts.notoSansKrTextTheme(),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF2196F3),
+            backgroundColor: const Color(0xFF003366),
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
             shape: RoundedRectangleBorder(

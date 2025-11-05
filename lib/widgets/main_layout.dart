@@ -27,13 +27,20 @@ class MainLayout extends StatelessWidget {
       elevation: 1,
       title: Row(
         children: [
-          Text(
-            'Ambro',
-            style: TextStyle(
-              color: Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
+          Image.asset(
+            'assets/images/ambro_CI.png',
+            height: 40,
+            fit: BoxFit.contain,
+            errorBuilder: (context, error, stackTrace) {
+              return Text(
+                'Ambro',
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              );
+            },
           ),
         ],
       ),

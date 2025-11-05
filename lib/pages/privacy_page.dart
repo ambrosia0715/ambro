@@ -28,7 +28,7 @@ class PrivacyPage extends StatelessWidget {
                 child: Column(
                   children: [
                     _PrivacyLinkItem(
-                      appName: '눈치게임',
+                      appName: '개인정보처리방침',
                       onTap: () => context.go('/privacy/nunchi-game'),
                     ),
                   ],

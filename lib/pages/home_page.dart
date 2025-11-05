@@ -9,41 +9,31 @@ class HomePage extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 600),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(32.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 64.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo
-              Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.apps,
-                  size: 80,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              const SizedBox(height: 32),
-              
-              // Brand Name
-              Text(
-                'Ambro',
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              const SizedBox(height: 16),
-              
-              Text(
-                '엠브로',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.grey.shade700,
+              // Ambro CI Logo
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: Image.asset(
+                  'assets/images/ambro_CI.png',
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.apps,
+                        size: 80,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 48),
