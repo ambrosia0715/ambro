@@ -76,14 +76,26 @@ class HomePage extends StatelessWidget {
                         const SizedBox(height: 16),
                         _InfoRow(
                           icon: Icons.email,
-                          label: '이메일',
+                          label: '대표 이메일',
                           value: 'ambrosia0715.ambro@gmail.com',
+                        ),
+                        const SizedBox(height: 16),
+                        _InfoRow(
+                          icon: Icons.phone,
+                          label: '연락처',
+                          value: '010-8724-7087',
+                        ),
+                        const SizedBox(height: 16),
+                        _InfoRow(
+                          icon: Icons.location_on,
+                          label: '주소',
+                          value: '서울시 동작구 상도로387',
                         ),
                         const SizedBox(height: 16),
                         _InfoRow(
                           icon: Icons.language,
                           label: '웹사이트',
-                          value: 'ambro-home.vercel.app',
+                          value: 'https://ambro-home.vercel.app/',
                         ),
                       ],
                     ),

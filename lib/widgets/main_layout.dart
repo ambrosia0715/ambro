@@ -57,17 +57,48 @@ class MainLayout extends StatelessWidget {
   Widget _buildFooter() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 32),
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 32),
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5),
         border: Border(
           top: BorderSide(color: Colors.grey.shade300),
         ),
       ),
-      child: const Text(
-        '© 2025 Ambro. All rights reserved.',
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.grey),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '회사 정보',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF003366),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _FooterInfoText('회사명: Ambro (엠브로)'),
+              const SizedBox(height: 8),
+              _FooterInfoText('대표 이메일: ambrosia0715.ambro@gmail.com'),
+              const SizedBox(height: 8),
+              _FooterInfoText('연락처: 010-8724-7087'),
+              const SizedBox(height: 8),
+              _FooterInfoText('주소: 서울시 동작구 상도로387'),
+              const SizedBox(height: 8),
+              _FooterInfoText('웹사이트: https://ambro-home.vercel.app/'),
+              const SizedBox(height: 24),
+              const Text(
+                '© 2025 Ambro. All rights reserved.',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -91,6 +122,24 @@ class _NavButton extends StatelessWidget {
           color: isActive ? Theme.of(context).primaryColor : Colors.black87,
           fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
         ),
+      ),
+    );
+  }
+}
+
+class _FooterInfoText extends StatelessWidget {
+  final String text;
+
+  const _FooterInfoText(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 14,
+        color: Color(0xFF555555),
+        height: 1.5,
       ),
     );
   }
