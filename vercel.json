@@ -1,6 +1,5 @@
 {
-  "buildCommand": "flutter build web --release",
+  "buildCommand": "echo 'Using pre-built files'",
   "outputDirectory": "build/web",
-  "framework": null,
-  "installCommand": "flutter pub get"
+  "installCommand": "echo 'No install needed'"
 }
