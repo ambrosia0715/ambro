@@ -1,3 +1,0 @@
-이미지 파일을 수동으로 저장해야 합니다.
-첨부된 이미지를 다음 경로에 저장해주세요:
-/Users/ambrosia0715/Desktop/project/ambro/assets/images/water_buddy_logo.png

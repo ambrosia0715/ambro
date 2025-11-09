@@ -6,6 +6,7 @@
 .pub/
 *.iml
 *.lock
+build/
 
 # Web related
 
