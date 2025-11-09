@@ -23,7 +23,6 @@ class PrivacyPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 32),
-              
               Card(
                 child: Column(
                   children: [

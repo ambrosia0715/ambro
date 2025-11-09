@@ -23,7 +23,7 @@ class AppsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 48),
-              
+
               // AIcent Category
               _CategorySection(
                 title: 'AIcent',
@@ -31,7 +31,7 @@ class AppsPage extends StatelessWidget {
                 apps: const [],
               ),
               const SizedBox(height: 48),
-              
+
               // Play Category
               _CategorySection(
                 title: 'Play',
@@ -42,16 +42,26 @@ class AppsPage extends StatelessWidget {
                     description: '친구들과 함께 즐기는 숫자 맞추기 게임',
                     onTap: () => context.go('/apps/play/nunchi-game'),
                     hasIcon: true,
+                    imagePath: 'assets/images/game_guessing_logo.png',
                   ),
                 ],
               ),
               const SizedBox(height: 48),
-              
+
               // Mate Category
               _CategorySection(
                 title: 'Mate',
                 description: '생활 보조 앱 모음',
-                apps: const [],
+                apps: [
+                  _AppCard(
+                    name: '물주기 알림_lite',
+                    description: '식물마다 주기를 설정하면 날짜에 맞춰 알려드려요',
+                    onTap: () => context.go('/apps/mate/water-buddy'),
+                    hasIcon: true,
+                    iconColor: const Color(0xFF2E7D32),
+                    imagePath: 'assets/images/water_buddy_logo.png',
+                  ),
+                ],
               ),
             ],
           ),
@@ -94,7 +104,6 @@ class _CategorySection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
-        
         if (apps.isEmpty)
           Card(
             child: Padding(
@@ -126,12 +135,16 @@ class _AppCard extends StatelessWidget {
   final String description;
   final VoidCallback onTap;
   final bool hasIcon;
+  final Color? iconColor;
+  final String? imagePath;
 
   const _AppCard({
     required this.name,
     required this.description,
     required this.onTap,
     this.hasIcon = false,
+    this.iconColor,
+    this.imagePath,
   });
 
   @override
@@ -152,26 +165,26 @@ class _AppCard extends StatelessWidget {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.1),
+                      color: (iconColor ?? Theme.of(context).primaryColor)
+                          .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.asset(
-                        'assets/images/game_guessing_logo.png',
+                        imagePath ?? 'assets/images/game_guessing_logo.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Icon(
-                            Icons.gamepad,
+                            Icons.apps,
                             size: 32,
-                            color: Theme.of(context).primaryColor,
+                            color: iconColor ?? Theme.of(context).primaryColor,
                           );
                         },
                       ),
                     ),
                   ),
                 const SizedBox(height: 16),
-                
                 Text(
                   name,
                   style: const TextStyle(
@@ -180,7 +193,6 @@ class _AppCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                
                 Text(
                   description,
                   style: TextStyle(
@@ -189,7 +201,6 @@ class _AppCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                
                 ElevatedButton(
                   onPressed: onTap,
                   child: const Text('자세히 보기'),

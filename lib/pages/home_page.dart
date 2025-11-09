@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 48),
-              
+
               // Message
               Text(
                 '앱 관련 문의는 이메일로 연락해주세요.',
@@ -47,115 +47,11 @@ class HomePage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 64),
-              
-              // Company Info Card
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Card(
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '회사 정보',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        _InfoRow(
-                          icon: Icons.business,
-                          label: '회사명',
-                          value: 'Ambro (엠브로)',
-                        ),
-                        const SizedBox(height: 16),
-                        _InfoRow(
-                          icon: Icons.email,
-                          label: '대표 이메일',
-                          value: 'ambrosia0715.ambro@gmail.com',
-                        ),
-                        const SizedBox(height: 16),
-                        _InfoRow(
-                          icon: Icons.phone,
-                          label: '연락처',
-                          value: '010-8724-7087',
-                        ),
-                        const SizedBox(height: 16),
-                        _InfoRow(
-                          icon: Icons.location_on,
-                          label: '주소',
-                          value: '서울시 동작구 상도로387',
-                        ),
-                        const SizedBox(height: 16),
-                        _InfoRow(
-                          icon: Icons.language,
-                          label: '웹사이트',
-                          value: 'https://ambro-home.vercel.app/',
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 32),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
-
-  const _InfoRow({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(
-          icon,
-          size: 20,
-          color: Theme.of(context).primaryColor,
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

@@ -24,7 +24,7 @@ class ContactPage extends StatelessWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                   const SizedBox(height: 24),
-                  
+
                   const Text(
                     '문의',
                     style: TextStyle(
@@ -33,7 +33,7 @@ class ContactPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
+
                   Text(
                     '앱 관련 문의는 이메일로 연락해주세요.',
                     style: TextStyle(
@@ -43,7 +43,7 @@ class ContactPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Email Display
                   Container(
                     padding: const EdgeInsets.all(16),
@@ -60,7 +60,7 @@ class ContactPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  
+
                   // Copy Button
                   ElevatedButton.icon(
                     onPressed: () => _copyEmail(context),
@@ -77,7 +77,8 @@ class ContactPage extends StatelessWidget {
   }
 
   void _copyEmail(BuildContext context) {
-    Clipboard.setData(const ClipboardData(text: 'ambrosia0715.ambro@gmail.com'));
+    Clipboard.setData(
+        const ClipboardData(text: 'ambrosia0715.ambro@gmail.com'));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('이메일 주소가 복사되었습니다.'),

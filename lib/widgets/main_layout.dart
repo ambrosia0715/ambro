@@ -10,13 +10,17 @@ class MainLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            child,
-            _buildFooter(),
-          ],
-        ),
+      body: Column(
+        children: [
+          // Scrollable content area
+          Expanded(
+            child: SingleChildScrollView(
+              child: child,
+            ),
+          ),
+          // Footer pinned to bottom
+          _buildFooter(),
+        ],
       ),
     );
   }
@@ -57,7 +61,7 @@ class MainLayout extends StatelessWidget {
   Widget _buildFooter() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 32),
+      padding: const EdgeInsets.fromLTRB(32, 24, 32, 16),
       decoration: BoxDecoration(
         color: const Color(0xFFF5F5F5),
         border: Border(
@@ -69,31 +73,30 @@ class MainLayout extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 1200),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
                 '회사 정보',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF003366),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               _FooterInfoText('회사명: Ambro (엠브로)'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               _FooterInfoText('대표 이메일: ambrosia0715.ambro@gmail.com'),
-              const SizedBox(height: 8),
-              _FooterInfoText('연락처: 010-8724-7087'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               _FooterInfoText('주소: 서울시 동작구 상도로387'),
-              const SizedBox(height: 8),
-              _FooterInfoText('웹사이트: https://ambro-home.vercel.app/'),
-              const SizedBox(height: 24),
+              const SizedBox(height: 4),
+              _FooterInfoText('웹사이트: https://ambro.space/'),
+              const SizedBox(height: 16),
               const Text(
                 '© 2025 Ambro. All rights reserved.',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 14,
+                  fontSize: 13,
                 ),
               ),
             ],
@@ -113,7 +116,7 @@ class _NavButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isActive = GoRouterState.of(context).uri.path == path;
-    
+
     return TextButton(
       onPressed: () => context.go(path),
       child: Text(

@@ -2,8 +2,10 @@ import 'package:go_router/go_router.dart';
 import '../pages/home_page.dart';
 import '../pages/apps_page.dart';
 import '../pages/nunchi_game_page.dart';
+import '../pages/water_buddy_page.dart';
 import '../pages/privacy_page.dart';
 import '../pages/nunchi_privacy_page.dart';
+import '../pages/water_buddy_privacy_page.dart';
 import '../pages/contact_page.dart';
 import '../widgets/main_layout.dart';
 
@@ -27,12 +29,20 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) => const NunchiGamePage(),
         ),
         GoRoute(
+          path: '/apps/mate/water-buddy',
+          builder: (context, state) => const WaterBuddyPage(),
+        ),
+        GoRoute(
           path: '/privacy',
           builder: (context, state) => const PrivacyPage(),
         ),
         GoRoute(
           path: '/privacy/nunchi-game',
           builder: (context, state) => const NunchiPrivacyPage(),
+        ),
+        GoRoute(
+          path: '/privacy/water-buddy',
+          builder: (context, state) => const WaterBuddyPrivacyPage(),
         ),
         GoRoute(
           path: '/contact',
