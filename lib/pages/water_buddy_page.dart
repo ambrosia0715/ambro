@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WaterBuddyPage extends StatelessWidget {
   const WaterBuddyPage({super.key});
@@ -301,9 +302,9 @@ class WaterBuddyPage extends StatelessWidget {
                             _DownloadButton(
                               label: 'App Store',
                               icon: Icons.apple,
-                              onPressed: () {
-                                // TODO: Add App Store link
-                              },
+                              onPressed: () => _launchURL(
+                                'https://apps.apple.com/us/app/%EB%AC%BC%EC%A3%BC%EA%B8%B0-%EC%95%8C%EB%A6%BC-lite/id6755084030',
+                              ),
                             ),
                           ],
                         ),
@@ -317,6 +318,13 @@ class WaterBuddyPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String urlString) async {
+    final url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
   }
 }
 

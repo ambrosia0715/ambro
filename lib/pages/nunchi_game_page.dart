@@ -266,7 +266,7 @@ class NunchiGamePage extends StatelessWidget {
                               label: 'App Store',
                               icon: Icons.apple,
                               onPressed: () => _launchURL(
-                                'https://apps.apple.com/app/id[YOUR_APP_ID]',
+                                'https://apps.apple.com/us/app/%EB%88%88%EC%B9%98%EA%B2%8C%EC%9E%84/id6755019137',
                               ),
                             ),
                           ],
