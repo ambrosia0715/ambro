@@ -27,8 +27,17 @@ class AppsPage extends StatelessWidget {
               // AIcent Category
               _CategorySection(
                 title: 'AIcent',
-                description: 'AI를 활용한 대화 기반 교육/개념 앱 모음',
-                apps: const [],
+                description: 'AI를 사용하는 앱 모음',
+                apps: [
+                  _AppCard(
+                    name: '온기',
+                    description: '따뜻한 일기 앱 - AI가 전해주는 위로의 한마디',
+                    onTap: () => context.go('/apps/aicent/ongi'),
+                    hasIcon: true,
+                    iconColor: const Color(0xFF8B4513), // 따뜻한 갈색 계열
+                    imagePath: 'assets/images/ongi_logo.png', // 나중에 추가 예정
+                  ),
+                ],
               ),
               const SizedBox(height: 48),
 

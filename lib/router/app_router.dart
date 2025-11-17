@@ -3,9 +3,11 @@ import '../pages/home_page.dart';
 import '../pages/apps_page.dart';
 import '../pages/nunchi_game_page.dart';
 import '../pages/water_buddy_page.dart';
+import '../pages/ongi_page.dart';
 import '../pages/privacy_page.dart';
 import '../pages/nunchi_privacy_page.dart';
 import '../pages/water_buddy_privacy_page.dart';
+import '../pages/ongi_privacy_page.dart';
 import '../pages/contact_page.dart';
 import '../widgets/main_layout.dart';
 
@@ -33,6 +35,10 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) => const WaterBuddyPage(),
         ),
         GoRoute(
+          path: '/apps/aicent/ongi',
+          builder: (context, state) => const OngiPage(),
+        ),
+        GoRoute(
           path: '/privacy',
           builder: (context, state) => const PrivacyPage(),
         ),
@@ -43,6 +49,10 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/privacy/water-buddy',
           builder: (context, state) => const WaterBuddyPrivacyPage(),
+        ),
+        GoRoute(
+          path: '/privacy/ongi',
+          builder: (context, state) => const OngiPrivacyPage(),
         ),
         GoRoute(
           path: '/contact',
