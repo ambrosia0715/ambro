@@ -70,6 +70,14 @@ class AppsPage extends StatelessWidget {
                     iconColor: const Color(0xFF2E7D32),
                     imagePath: 'assets/images/water_buddy_logo.png',
                   ),
+                  _AppCard(
+                    name: 'PILL PING lite',
+                    description: '약 복용 시간을 놓치지 않도록 도와주는 알림 앱',
+                    onTap: () => context.go('/apps/mate/pill-ping'),
+                    hasIcon: true,
+                    iconColor: const Color(0xFF2196F3), // 파란색 계열
+                    imagePath: 'assets/images/pill_ping_logo.png',
+                  ),
                 ],
               ),
             ],
@@ -205,9 +213,11 @@ class _AppCard extends StatelessWidget {
                 Text(
                   description,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     color: Colors.grey.shade600,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(

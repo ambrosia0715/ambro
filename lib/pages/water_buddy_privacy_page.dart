@@ -14,7 +14,7 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 900),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Back Button
                 TextButton.icon(

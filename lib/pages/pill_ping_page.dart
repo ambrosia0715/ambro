@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class NunchiGamePage extends StatelessWidget {
-  const NunchiGamePage({super.key});
+/// Pill Ping Lite 앱 상세 페이지
+/// 약 복용 알림 앱의 기능과 특징을 소개하는 페이지입니다.
+class PillPingPage extends StatelessWidget {
+  const PillPingPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class NunchiGamePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Back Button
+                // 뒤로가기 버튼
                 TextButton.icon(
                   onPressed: () => context.go('/apps'),
                   icon: const Icon(Icons.arrow_back),
@@ -25,7 +26,7 @@ class NunchiGamePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // App Header
+                // 앱 헤더
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -40,16 +41,16 @@ class NunchiGamePage extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(24),
                             child: Image.asset(
-                              'assets/images/game_guessing_logo.png',
+                              'assets/images/pill_ping_logo.png',
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
+                                    color: const Color(0xFF2196F3),
                                     borderRadius: BorderRadius.circular(24),
                                   ),
                                   child: const Icon(
-                                    Icons.gamepad,
+                                    Icons.medication,
                                     size: 64,
                                     color: Colors.white,
                                   ),
@@ -64,7 +65,7 @@ class NunchiGamePage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                '눈치게임',
+                                'PILL PING lite',
                                 style: TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class NunchiGamePage extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               Text(
-                                '친구들과 함께 즐기는 숫자 맞추기 게임',
+                                '약 복용 시간을 놓치지 않도록 도와주는 간편한 알림 앱',
                                 style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey.shade700,
@@ -82,9 +83,9 @@ class NunchiGamePage extends StatelessWidget {
                               Wrap(
                                 spacing: 8,
                                 runSpacing: 8,
-                                children: const [
-                                  _CategoryChip(label: '게임'),
-                                  _CategoryChip(label: '파티게임'),
+                                children: [
+                                  _CategoryChip(label: '라이프스타일'),
+                                  _CategoryChip(label: '건강'),
                                   _CategoryChip(label: '무료'),
                                 ],
                               ),
@@ -97,7 +98,7 @@ class NunchiGamePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
 
-                // Description
+                // 앱 소개
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -105,7 +106,7 @@ class NunchiGamePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          '🎮 눈치게임 - 친구들과 함께 즐기는 재미!',
+                          '💊 PILL PING lite - 약 복용 시간을 놓치지 않도록 도와드립니다!',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -113,8 +114,7 @@ class NunchiGamePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          '상대의 눈치를 보며 1부터 차례대로 숫자를 외쳐보세요!\n'
-                          '중복되지 않고 마지막 숫자를 외치는 사람이 승리합니다.',
+                          '복잡한 설정 없이 약 이름과 복용 시간만 입력하면, 설정한 시간에 알림으로 복용을 알려드립니다.',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey.shade700,
@@ -127,7 +127,7 @@ class NunchiGamePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Features
+                // 주요 기능
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -143,31 +143,35 @@ class NunchiGamePage extends StatelessWidget {
                         ),
                         SizedBox(height: 24),
                         _FeatureItem(
-                          icon: Icons.people,
-                          iconColor: Colors.blue,
-                          title: '멀티플레이어',
-                          description: '친구들과 함께 즐기는 실시간 멀티플레이어 게임',
+                          icon: Icons.notifications_active,
+                          iconColor: Color(0xFF2196F3),
+                          title: '약 복용 알림',
+                          description:
+                              '약 이름별로 아침, 점심, 저녁 복용 시간을 개별 설정할 수 있습니다. 설정한 시간에 정확한 로컬 알림을 발송하며, 알림에서 바로 "복용" 또는 "미루기" 처리가 가능합니다.',
                         ),
                         SizedBox(height: 20),
                         _FeatureItem(
-                          icon: Icons.psychology,
-                          iconColor: Colors.purple,
-                          title: '심리전',
-                          description: '상대의 눈치를 살피며 최적의 타이밍을 찾아보세요',
+                          icon: Icons.calendar_today,
+                          iconColor: Color(0xFF42A5F5),
+                          title: '복용 기록 관리',
+                          description:
+                              '오늘의 복용 스케줄을 한눈에 확인할 수 있습니다. 복용 완료, 미루기, 누락 상태를 실시간으로 표시하며, 시간표 형태로 전체 약 스케줄을 확인할 수 있습니다.',
                         ),
                         SizedBox(height: 20),
                         _FeatureItem(
-                          icon: Icons.celebration,
-                          iconColor: Colors.orange,
-                          title: '파티게임',
-                          description: '모임에서 간단하게 즐길 수 있는 재미있는 게임',
+                          icon: Icons.accessibility_new,
+                          iconColor: Color(0xFF64B5F6),
+                          title: '간편한 사용',
+                          description:
+                              '직관적인 UI로 누구나 쉽게 사용할 수 있습니다. 복잡한 설정 없이 약 이름과 시간만 입력하면 되며, 12시간 형식(AM/PM)으로 시간을 표시합니다.',
                         ),
                         SizedBox(height: 20),
                         _FeatureItem(
-                          icon: Icons.fast_forward,
-                          iconColor: Colors.green,
-                          title: '빠른 게임',
-                          description: '짧은 시간에 끝나는 빠른 게임 진행',
+                          icon: Icons.touch_app,
+                          iconColor: Color(0xFF90CAF9),
+                          title: '알림 액션',
+                          description:
+                              '알림에서 바로 "복용" 버튼으로 복용 완료 처리가 가능합니다. "10분 미루기", "30분 미루기", "60분 미루기" 옵션을 제공하여 앱을 열지 않고도 복용 상태를 관리할 수 있습니다.',
                         ),
                       ],
                     ),
@@ -175,7 +179,7 @@ class NunchiGamePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // How to Play
+                // 추천 대상
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -183,24 +187,87 @@ class NunchiGamePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text(
-                          '게임 방법',
+                          '이런 분들께 추천해요',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SizedBox(height: 16),
-                        _BulletPoint(text: '참가자 수만큼의 숫자가 주어집니다'),
-                        _BulletPoint(text: '각자 차례 없이 1부터 순서대로 숫자를 외칩니다'),
-                        _BulletPoint(text: '동시에 같은 숫자를 외치면 탈락합니다'),
-                        _BulletPoint(text: '마지막 숫자를 혼자 외치는 사람이 승리합니다'),
+                        _BulletPoint(text: '약을 복용해야 하지만 시간을 자주 잊는 분'),
+                        _BulletPoint(text: '여러 종류의 약을 복용하는 분'),
+                        _BulletPoint(text: '간단하고 직관적인 앱을 선호하는 분'),
+                        _BulletPoint(text: '복잡한 설정 없이 바로 사용하고 싶은 분'),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 24),
 
-                // App Info
+                // 특징
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '특징',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Wrap(
+                          spacing: 12,
+                          runSpacing: 12,
+                          children: [
+                            _HighlightChip(
+                                icon: Icons.money_off, label: '완전 무료'),
+                            _HighlightChip(
+                                icon: Icons.offline_bolt, label: '오프라인 작동'),
+                            _HighlightChip(
+                                icon: Icons.security, label: '개인정보 수집 없음'),
+                            _HighlightChip(
+                                icon: Icons.language, label: '한국어 지원'),
+                            _HighlightChip(
+                                icon: Icons.flash_on, label: '가볍고 빠름'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // 시스템 요구사항
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '시스템 요구사항',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _InfoRow(label: 'Android', value: 'Android 8.0 (API 26) 이상'),
+                        _InfoRow(label: 'iOS', value: 'iOS 14.0 이상'),
+                        _InfoRow(
+                            label: '인터넷 연결',
+                            value: '광고 표시를 위해 필요 (앱 기본 기능은 오프라인에서도 작동)'),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // 앱 정보
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
@@ -215,14 +282,15 @@ class NunchiGamePage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const _InfoRow(label: '개발자', value: 'Ambrosia'),
-                        const _InfoRow(label: '버전', value: '1.0.0'),
-                        const _InfoRow(label: '카테고리', value: '게임, 파티게임'),
+                        const _InfoRow(label: '개발자', value: 'MinSeok Kang'),
+                        const _InfoRow(label: '버전', value: '1.0.0 (Build 1)'),
+                        const _InfoRow(
+                            label: '카테고리', value: '라이프스타일, 건강'),
                         const _InfoRow(label: '연령 등급', value: '전체 이용가'),
-                        const _InfoRow(label: '가격', value: '무료'),
+                        const _InfoRow(label: '가격', value: '무료 (광고 포함)'),
                         const SizedBox(height: 16),
                         TextButton.icon(
-                          onPressed: () => context.go('/privacy/nunchi-game'),
+                          onPressed: () => context.go('/privacy/pill-ping'),
                           icon: const Icon(Icons.privacy_tip),
                           label: const Text('개인정보 처리방침 보기'),
                         ),
@@ -232,15 +300,15 @@ class NunchiGamePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
 
-                // Download Section
+                // 다운로드 섹션
                 Card(
-                  color: Theme.of(context).primaryColor,
+                  color: const Color(0xFF2196F3),
                   child: Padding(
                     padding: const EdgeInsets.all(32.0),
                     child: Column(
                       children: [
                         const Text(
-                          '지금 다운로드하고\n친구들과 함께 즐거운 시간을 보내세요! 🎮',
+                          '지금 다운로드하고\n약 복용 시간을 놓치지 마세요! 💊',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -258,16 +326,16 @@ class NunchiGamePage extends StatelessWidget {
                             _DownloadButton(
                               label: 'Google Play',
                               icon: Icons.android,
-                              onPressed: () => _launchURL(
-                                'https://play.google.com/store/apps/details?id=com.ambro.nunchi_game',
-                              ),
+                              onPressed: () {
+                                // TODO: Add Google Play Store link
+                              },
                             ),
                             _DownloadButton(
                               label: 'App Store',
                               icon: Icons.apple,
-                              onPressed: () => _launchURL(
-                                'https://apps.apple.com/us/app/%EB%88%88%EC%B9%98%EA%B2%8C%EC%9E%84/id6755019137',
-                              ),
+                              onPressed: () {
+                                // TODO: Add App Store link
+                              },
                             ),
                           ],
                         ),
@@ -282,15 +350,9 @@ class NunchiGamePage extends StatelessWidget {
       ),
     );
   }
-
-  Future<void> _launchURL(String urlString) async {
-    final url = Uri.parse(urlString);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    }
-  }
 }
 
+/// 카테고리 칩 위젯
 class _CategoryChip extends StatelessWidget {
   final String label;
 
@@ -309,6 +371,7 @@ class _CategoryChip extends StatelessWidget {
   }
 }
 
+/// 기능 아이템 위젯
 class _FeatureItem extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
@@ -364,6 +427,7 @@ class _FeatureItem extends StatelessWidget {
   }
 }
 
+/// 불릿 포인트 위젯
 class _BulletPoint extends StatelessWidget {
   final String text;
 
@@ -393,6 +457,31 @@ class _BulletPoint extends StatelessWidget {
   }
 }
 
+/// 하이라이트 칩 위젯
+class _HighlightChip extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _HighlightChip({
+    required this.icon,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      avatar: Icon(icon, size: 18, color: const Color(0xFF2196F3)),
+      label: Text(label),
+      backgroundColor: const Color(0xFF2196F3).withOpacity(0.1),
+      labelStyle: const TextStyle(
+        color: Color(0xFF2196F3),
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+}
+
+/// 정보 행 위젯
 class _InfoRow extends StatelessWidget {
   final String label;
   final String value;
@@ -433,6 +522,7 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
+/// 다운로드 버튼 위젯
 class _DownloadButton extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -452,7 +542,7 @@ class _DownloadButton extends StatelessWidget {
       label: Text(label),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: Theme.of(context).primaryColor,
+        foregroundColor: const Color(0xFF2196F3),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         textStyle: const TextStyle(
           fontSize: 16,
@@ -462,3 +552,4 @@ class _DownloadButton extends StatelessWidget {
     );
   }
 }
+

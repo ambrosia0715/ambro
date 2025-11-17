@@ -16,7 +16,7 @@ class OngiPrivacyPage extends StatelessWidget {
           constraints: const BoxConstraints(maxWidth: 900),
           child: SingleChildScrollView(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // 뒤로가기 버튼
                 TextButton.icon(

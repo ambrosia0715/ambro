@@ -3,10 +3,12 @@ import '../pages/home_page.dart';
 import '../pages/apps_page.dart';
 import '../pages/nunchi_game_page.dart';
 import '../pages/water_buddy_page.dart';
+import '../pages/pill_ping_page.dart';
 import '../pages/ongi_page.dart';
 import '../pages/privacy_page.dart';
 import '../pages/nunchi_privacy_page.dart';
 import '../pages/water_buddy_privacy_page.dart';
+import '../pages/pill_ping_privacy_page.dart';
 import '../pages/ongi_privacy_page.dart';
 import '../pages/contact_page.dart';
 import '../widgets/main_layout.dart';
@@ -35,6 +37,10 @@ final GoRouter appRouter = GoRouter(
           builder: (context, state) => const WaterBuddyPage(),
         ),
         GoRoute(
+          path: '/apps/mate/pill-ping',
+          builder: (context, state) => const PillPingPage(),
+        ),
+        GoRoute(
           path: '/apps/aicent/ongi',
           builder: (context, state) => const OngiPage(),
         ),
@@ -49,6 +55,10 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/privacy/water-buddy',
           builder: (context, state) => const WaterBuddyPrivacyPage(),
+        ),
+        GoRoute(
+          path: '/privacy/pill-ping',
+          builder: (context, state) => const PillPingPrivacyPage(),
         ),
         GoRoute(
           path: '/privacy/ongi',
