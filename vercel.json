@@ -1,5 +1,11 @@
 {
-  "buildCommand": "echo 'Using pre-built files'",
+  "buildCommand": "echo 'Using pre-built files from GitHub'",
   "outputDirectory": "build/web",
-  "installCommand": "echo 'No install needed'"
+  "installCommand": "echo 'No install needed'",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }
