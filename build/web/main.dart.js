@@ -38353,7 +38353,7 @@ A.a5E.prototype={
 $0(){return A.dL(this.a).dA("/privacy/nunchi-game",null)},
 $S:0}
 A.a5F.prototype={
-$0(){return this.a.nG("https://play.google.com/store/apps/details?id=com.ambro.nunchi_game")},
+$0(){return this.a.nG("https://play.google.com/store/apps/details?id=com.ambro.nunchigame&pcampaignid=web_share")},
 $S:0}
 A.a5G.prototype={
 $0(){return this.a.nG("https://apps.apple.com/us/app/%EB%88%88%EC%B9%98%EA%B2%8C%EC%9E%84/id6755019137")},

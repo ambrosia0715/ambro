@@ -259,7 +259,7 @@ class NunchiGamePage extends StatelessWidget {
                               label: 'Google Play',
                               icon: Icons.android,
                               onPressed: () => _launchURL(
-                                'https://play.google.com/store/apps/details?id=com.ambro.nunchi_game',
+                                'https://play.google.com/store/apps/details?id=com.ambro.nunchigame&pcampaignid=web_share',
                               ),
                             ),
                             _DownloadButton(
