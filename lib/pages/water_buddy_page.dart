@@ -295,9 +295,9 @@ class WaterBuddyPage extends StatelessWidget {
                             _DownloadButton(
                               label: 'Google Play',
                               icon: Icons.android,
-                              onPressed: () {
-                                // TODO: Add Google Play Store link
-                              },
+                              onPressed: () => _launchURL(
+                                'https://play.google.com/store/apps/details?id=com.ambrosia.plantwaterbuddy',
+                              ),
                             ),
                             _DownloadButton(
                               label: 'App Store',

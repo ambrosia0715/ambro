@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Pill Ping Lite 앱 상세 페이지
 /// 약 복용 알림 앱의 기능과 특징을 소개하는 페이지입니다.
@@ -333,9 +334,9 @@ class PillPingPage extends StatelessWidget {
                             _DownloadButton(
                               label: 'App Store',
                               icon: Icons.apple,
-                              onPressed: () {
-                                // TODO: Add App Store link
-                              },
+                              onPressed: () => _launchURL(
+                                'https://apps.apple.com/us/app/pill-ping-lite/id6755383377',
+                              ),
                             ),
                           ],
                         ),
@@ -349,6 +350,13 @@ class PillPingPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String urlString) async {
+    final url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
   }
 }
 
