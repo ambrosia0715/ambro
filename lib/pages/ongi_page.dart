@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// 온기(Ongi) 앱 상세 페이지
 /// 따뜻한 일기 앱의 기능과 특징을 소개하는 페이지입니다.
@@ -297,9 +298,9 @@ class OngiPage extends StatelessWidget {
                             _DownloadButton(
                               label: 'App Store',
                               icon: Icons.apple,
-                              onPressed: () {
-                                // TODO: App Store 링크 추가
-                              },
+                              onPressed: () => _launchURL(
+                                'https://apps.apple.com/us/app/%EC%98%A8%EA%B8%B0-%EB%94%B0%EB%9C%BB%ED%95%9C-%EC%9D%BC%EA%B8%B0/id6755369005',
+                              ),
                             ),
                           ],
                         ),
@@ -313,6 +314,13 @@ class OngiPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String urlString) async {
+    final url = Uri.parse(urlString);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
   }
 }
 
