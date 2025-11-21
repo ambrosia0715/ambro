@@ -4,8 +4,19 @@
   "installCommand": "echo 'No install needed'",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!app-ads\\.txt|assets|canvaskit|manifest\\.json|flutter.*\\.js|flutter.*\\.wasm|version\\.json).*)",
       "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/app-ads.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        }
+      ]
     }
   ]
 }
