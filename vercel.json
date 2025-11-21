@@ -4,7 +4,11 @@
   "installCommand": "echo 'No install needed'",
   "rewrites": [
     {
-      "source": "/((?!app-ads\\.txt|assets|canvaskit|manifest\\.json|flutter.*\\.js|flutter.*\\.wasm|version\\.json).*)",
+      "source": "/app-ads.txt",
+      "destination": "/app-ads.txt"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
