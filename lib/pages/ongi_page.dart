@@ -291,9 +291,9 @@ class OngiPage extends StatelessWidget {
                             _DownloadButton(
                               label: 'Google Play',
                               icon: Icons.android,
-                              onPressed: () {
-                                // TODO: Google Play Store 링크 추가
-                              },
+                              onPressed: () => _launchURL(
+                                'https://play.google.com/store/apps/details?id=com.ambro.ongi&pcampaignid=web_share',
+                              ),
                             ),
                             _DownloadButton(
                               label: 'App Store',
