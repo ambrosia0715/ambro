@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class AppsPage extends StatelessWidget {
-  const AppsPage({super.key});
+class AboutAppsPage extends StatelessWidget {
+  const AboutAppsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

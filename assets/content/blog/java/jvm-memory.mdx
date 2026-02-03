@@ -1,0 +1,69 @@
+
+# JVM 메모리 구조 완벽 가이드: Heap, Stack, Method Area 심층 분석
+
+Java 개발자라면 누구나 한 번쯤 `OutOfMemoryError`나 `StackOverflowError`를 마주하게 됩니다. 이러한 에러의 원인을 정확히 파악하고 애플리케이션의 성능을 최적화하기 위해서는 JVM(Java Virtual Machine)의 메모리 구조를 깊이 있게 이해하는 것이 필수적입니다.
+
+이 글에서는 JVM의 런타임 데이터 영역(Runtime Data Area)을 구성하는 주요 요소들을 상세히 살펴보고, 각 영역이 어떻게 동작하는지, 그리고 실무에서 주의해야 할 점은 무엇인지 알아보겠습니다.
+
+## 1. JVM 런타임 데이터 영역 (Runtime Data Area)
+
+JVM이 OS로부터 할당받은 메모리 영역을 런타임 데이터 영역이라고 합니다. 이 영역은 크게 **스레드 간 공유되는 영역**과 **스레드별로 독립적인 영역**으로 나뉩니다.
+
+![JVM Memory Architecture Diagram](https://placehold.co/800x400/png?text=JVM+Memory+Structure)
+*(이미지 설명: Method Area와 Heap은 모든 스레드가 공유하며, Stack, PC Register, Native Method Stack은 스레드마다 생성됩니다.)*
+
+### 1.1 스레드 공유 영역 (Thread-Shared)
+- **Method Area (메서드 영역):** 클래스 정보, 정적 변수(static variables), 상수 풀(run-time constant pool) 등이 저장됩니다. JVM 시작 시 생성되며 종료 시까지 유지됩니다.
+- **Heap Area (힙 영역):** `new` 키워드로 생성된 객체와 배열이 저장되는 곳입니다. GC(Garbage Collector)의 주요 대상이 되는 영역입니다.
+
+### 1.2 스레드 독립 영역 (Thread-Private)
+- **JVM Stack (스택 영역):** 메서드 호출 시마다 프레임(Frame)이 생성되며, 지역 변수, 매개 변수, 리턴 값 등이 저장됩니다.
+- **PC Register:** 현재 실행 중인 JVM 명령의 주소를 가리킵니다.
+- **Native Method Stack:** 자바 외의 언어(C/C++ 등)로 작성된 네이티브 코드를 실행하기 위한 스택입니다.
+
+## 2. Heap Area와 Garbage Collection
+
+Heap 영역은 성능 튜닝의 핵심입니다. 효율적인 메모리 관리를 위해 Heap은 세대별로 구분되어 관리됩니다 (HotSpot JVM 기준).
+
+```java
+// 객체 생성 예시
+public class MemoryExample {
+    public static void main(String[] args) {
+        // 'obj' 참조 변수는 Stack에, 실제 Object 인스턴스는 Heap에 저장됨
+        Object obj = new Object(); 
+    }
+}
+```
+
+### Young Generation (Young 영역)
+- **Eden:** 새로 생성된 객체가 할당되는 곳입니다.
+- **Survivor 0 / 1:** Eden 영역에서 GC(Minor GC) 후 살아남은 객체들이 이동하는 곳입니다.
+
+### Old Generation (Old 영역)
+- Young 영역에서 오랫동안 살아남은 객체들이 이동(Promotion)되는 곳입니다. 이곳이 가득 차면 Major GC(Full GC)가 발생하며, 이는 애플리케이션 멈춤(Stop-the-world) 현상을 유발할 수 있습니다.
+
+## 3. Stack Area와 Frame
+
+스택 영역은 LIFO(Last In First Out) 구조로 동작합니다. 메서드가 호출될 때마다 프레임이 스택에 push되고, 메서드가 종료되면 pop됩니다.
+
+### StackOverflowError의 원인
+재귀 호출이 너무 깊어지거나 지역 변수가 너무 많아 스택 메모리 한도를 초과하면 발생합니다.
+
+```java
+// 스택 오버플로우를 유발하는 잘못된 재귀 호출
+public void recursiveCall() {
+    recursiveCall(); // 종료 조건이 없음
+}
+```
+
+## 4. 실무 인사이트: 메모리 누수 방지
+
+Java는 GC가 메모리를 관리해주지만, 개발자의 부주의로 메모리 누수가 발생할 수 있습니다.
+
+1.  **Static 변수 주의:** Static 변수에 객체를 담아두고 해제하지 않으면 GC 대상이 되지 않아 메모리를 계속 점유하게 됩니다. (Method Area 또는 Heap의 Perm/Metaspace 이슈)
+2.  **Unclosed Resources:** DB 연결, I/O 스트림 등을 `try-with-resources` 구문으로 확실하게 닫아야 합니다.
+3.  **Caching:** 캐시를 직접 구현할 때 오래된 항목을 제거하는 로직이 없으면 OOM의 주범이 됩니다. `WeakHashMap` 등을 고려해보세요.
+
+## 결론
+
+JVM 메모리 구조를 이해하는 것은 안정적인 서버 운영의 첫걸음입니다. 특히 트래픽이 많은 대규모 시스템에서는 Heap 덤프 분석이나 GC 튜닝이 필수적입니다. 오늘 다룬 내용을 바탕으로 작성한 코드의 메모리 흐름을 머릿속으로 그려보는 연습을 해보시길 권장합니다.

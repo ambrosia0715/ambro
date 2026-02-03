@@ -1,57 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../models/blog_data.dart';
+import '../widgets/blog_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 600),
+    return SingleChildScrollView(
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 64.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Ambro CI Logo
-              ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600),
-                child: Image.asset(
-                  'assets/images/ambro_CI.png',
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.apps,
-                        size: 80,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 48),
-
-              // Message
-              Text(
-                '앱 관련 문의는 이메일로 연락해주세요.',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey.shade600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-            ],
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildSection(context, 'java', 'Latest in Java', 'Java'),
+                const SizedBox(height: 32),
+                _buildSection(context, 'python', 'Latest in Python', 'Python'),
+                const SizedBox(height: 32),
+                _buildSection(
+                    context, 'ai-basic', 'Latest in AI Dev', 'AI Dev'),
+                const SizedBox(height: 32),
+                _buildSection(context, 'ai-insight', 'Latest in AI Insight',
+                    'AI Insight'),
+                const SizedBox(height: 48),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildSection(BuildContext context, String categoryKey, String title,
+      String displayCategory) {
+    // Get latest 3 posts for the category
+    final posts = BlogData.getPostsByCategory(categoryKey).take(3).toList();
+
+    if (posts.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Header
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1A1A1A),
+              ),
+            ),
+            TextButton(
+              onPressed: () => context.go('/blog/$categoryKey'),
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xFF1976D2),
+                textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              child: Row(
+                children: const [
+                  Text('View All'),
+                  SizedBox(width: 4),
+                  Icon(Icons.arrow_forward, size: 16),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+
+        // Grid
+        LayoutBuilder(
+          builder: (context, constraints) {
+            // Responsive: 3 columns on desktop, 1 on mobile
+            int crossAxisCount = 3;
+            if (constraints.maxWidth < 600) {
+              crossAxisCount = 1;
+            } else if (constraints.maxWidth < 900) {
+              crossAxisCount = 2;
+            }
+
+            return GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                mainAxisSpacing: 24,
+                crossAxisSpacing: 24,
+                childAspectRatio: 0.65, // Adjust based on card content
+              ),
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                return BlogCard(post: posts[index]);
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }
