@@ -1,0 +1,83 @@
+# LLM API 연동 가이드: OpenAI, Anthropic 활용하기
+
+바야흐로 생성형 AI(Generative AI)의 시대입니다. 기업이나 개인 프로젝트에서 나만의 AI 서비스를 만들고 싶다면, 거대 언어 모델(LLM)을 내 애플리케이션에 연동하는 것이 필수입니다. 현재 가장 강력한 성능을 보여주는 OpenAI(GPT-4)와 Anthropic(Claude 3) API를 연동하는 방법을 실무 관점에서 정리했습니다.
+
+## 1. 사전 준비: API Key 발급 및 보안
+
+가장 먼저 각 서비스의 개발자 포털에서 API Key를 발급받아야 합니다.
+-   **OpenAI:** platform.openai.com
+-   **Anthropic:** console.anthropic.com
+
+**⚠️ 보안 주의사항:**
+발급받은 API Key는 절대 코드(GitHub 등)에 직접 노출하면 안 됩니다. `.env` 파일을 사용하여 환경 변수로 관리하고, 백엔드 서버에서만 호출하도록 구성해야 합니다. 프론트엔드 코드에 키를 넣으면 누구나 키를 훔쳐서 사용할 수 있습니다.
+
+## 2. OpenAI API (Chat Completions)
+
+OpenAI의 표준 라이브러리를 설치합니다. `pip install openai`
+
+```python
+from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+response = client.chat.completions.create(
+    model="gpt-4-turbo",
+    messages=[
+        {"role": "system", "content": "너는 도움이 되는 코딩 어시스턴트야."},
+        {"role": "user", "content": "파이썬으로 피보나치 수열 짜줘."}
+    ],
+    temperature=0.7, # 창의성 조절 (0~1)
+    max_tokens=500   # 최대 출력 길이 제한
+)
+
+print(response.choices[0].message.content)
+```
+
+### 주요 파라미터 팁
+-   **System Prompt:** AI의 페르소나(역할)를 설정하는 가장 중요한 부분입니다. 여기서 규칙을 잘 정해야 답변 품질이 올라갑니다.
+-   **Temperature:** 0에 가까울수록 사실적이고 일관된 답변, 1에 가까울수록 창의적이고 다양한 답변을 내놓습니다.
+
+## 3. Anthropic API (Claude 3)
+
+Claude 3는 특히 긴 문맥(Context Window) 처리와 논리적 추론, 코딩 능력에서 GPT-4와 경쟁하는 강력한 모델입니다. `pip install anthropic`
+
+```python
+import anthropic
+import os
+
+client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+
+message = client.messages.create(
+    model="claude-3-opus-20240229",
+    max_tokens=1000,
+    temperature=0,
+    system="너는 전문 기술 블로거야.",
+    messages=[
+        {"role": "user", "content": "RAG에 대해 설명해줘."}
+    ]
+)
+
+print(message.content[0].text)
+```
+
+## 4. 실무 구현 패턴: 스트리밍 (Streaming)
+
+LLM의 응답은 생성되는 데 시간이 걸립니다. 사용자가 멍하니 기다리게 하지 않으려면, 한 글자씩 타자를 치듯 보여주는 **스트리밍** 구현이 필수입니다.
+
+```python
+# OpenAI Streaming 예시
+stream = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[...],
+    stream=True, # 이 옵션을 켭니다
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content is not None:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## 결론
+
+API 연동 자체는 라이브러리가 잘 되어 있어 어렵지 않습니다. 진짜 경쟁력은 **"어떤 프롬프트를 사용하는가(Prompt Engineering)"**와 **"어떻게 문맥을 효율적으로 관리하는가(Context Management)"**에서 나옵니다. 단순한 챗봇을 넘어, 우리 서비스만의 데이터를 결합(RAG)하거나 AI가 도구를 사용하게 만드는(Agent) 방향으로 발전시켜 보시기 바랍니다.

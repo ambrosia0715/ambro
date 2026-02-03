@@ -7,6 +7,7 @@
 *.iml
 *.lock
 build/
+!build/web/
 
 # Web related
 

@@ -1,0 +1,88 @@
+# Java Optional 완벽 가이드: null을 다루는 올바른 방법
+
+`NullPointerException` (NPE)은 자바 개발자들의 가장 큰 적이자, "10억 달러짜리 실수"라고 불리는 악명 높은 에러입니다. 객체가 `null`일 수 있다는 가능성을 항상 염두에 두고 방어 코드를 작성해야 했기 때문에 코드는 지저분해지고 가독성은 떨어졌습니다.
+
+Java 8에서 도입된 `Optional<T>`은 이러한 문제를 해결하기 위해 등장했습니다. 하지만 잘못 사용하면 오히려 코드가 더 복잡해지거나 성능 저하를 유발할 수 있습니다. 이 글에서는 `Optional`의 올바른 사용법과 피해야 할 안티 패턴에 대해 심도 있게 다룹니다.
+
+## 1. Optional이란 무엇인가?
+
+`Optional<T>`는 `null`이 될 수 있는 객체를 감싸는 래퍼(Wrapper) 클래스입니다. 즉, "값이 있을 수도 있고 없을 수도 있는 상자"라고 생각하면 됩니다.
+
+-   **값이 있는 경우:** 상자 안에 실제 객체가 들어있습니다.
+-   **값이 없는 경우:** 상자는 비어있습니다 (`Optional.empty()`).
+
+이를 통해 명시적으로 "결과가 없을 수 있음"을 API 사용자에게 알릴 수 있습니다.
+
+## 2. Optional 생성하기
+
+```java
+// 1. 빈 Optional 생성
+Optional<String> empty = Optional.empty();
+
+// 2. 값이 있는 Optional 생성 (null이면 NPE 발생)
+Optional<String> notNull = Optional.of("Hello");
+
+// 3. null일 수도 있는 값으로 생성 (가장 많이 사용됨)
+Optional<String> nullable = Optional.ofNullable(maybeNullString);
+```
+
+## 3. 올바른 사용법 (Best Practices)
+
+### 3.1 `get()` 호출 전에는 반드시 확인하거나, 대안을 사용하라
+`get()`은 값이 없으면 `NoSuchElementException`을 던집니다. 이는 NPE와 다를 바가 없습니다. 대신 다음과 같은 메서드들을 사용하세요.
+
+-   `orElse(T other)`: 값이 없으면 기본값을 반환합니다.
+-   `orElseGet(Supplier<? extends T> other)`: 값이 없으면 람다식을 실행하여 값을 생성하고 반환합니다. (Lazy Evaluation)
+-   `orElseThrow(Supplier<? extends X> exceptionSupplier)`: 값이 없으면 예외를 던집니다.
+
+```java
+// Bad
+if (opt.isPresent()) {
+    return opt.get();
+}
+
+// Good
+return opt.orElse("Default");
+```
+
+### 3.2 반환 타입으로만 사용하라
+`Optional`은 설계상 **메서드의 반환 타입**으로 사용되도록 만들어졌습니다.
+-   **필드 변수로 사용 금지:** `Optional`은 `Serializable`을 구현하지 않았기 때문에 직렬화 시 문제가 발생할 수 있습니다.
+-   **매개변수로 사용 금지:** 메서드 인자로 `Optional`을 넘기는 것은 호출하는 쪽에 불필요한 래핑을 강요하며, 인자 자체가 `null`일 수 있는 복잡성을 만듭니다.
+
+### 3.3 컬렉션은 Optional로 감싸지 말라
+`Optional<List<String>>`은 최악의 패턴입니다. 빈 리스트를 표현할 때는 `Collections.emptyList()`를 반환하는 것이 훨씬 가볍고 직관적입니다.
+
+### 3.4 Primitive Optional 사용하기
+`int`, `long`, `double` 등의 기본형을 다룰 때는 `Optional<Integer>` 대신 `OptionalInt`를 사용하세요. 불필요한 박싱/언박싱 오버헤드를 줄일 수 있습니다.
+
+## 4. 실무 활용 예제: map과 flatMap
+
+`Optional`의 진가는 스트림 API와 유사한 체이닝 메서드에서 발휘됩니다.
+
+```java
+// 기존의 중첩된 null 체크
+if (order != null) {
+    Member member = order.getMember();
+    if (member != null) {
+        Address address = member.getAddress();
+        if (address != null) {
+            return address.getCity();
+        }
+    }
+}
+return "Unknown";
+
+// Optional 활용
+return Optional.ofNullable(order)
+    .map(Order::getMember)
+    .map(Member::getAddress)
+    .map(Address::getCity)
+    .orElse("Unknown");
+```
+
+코드가 훨씬 선언적이고 읽기 쉬워진 것을 볼 수 있습니다.
+
+## 결론
+
+`Optional`은 만능 해결사가 아닙니다. 무분별한 사용은 오히려 독이 될 수 있습니다. 하지만 **"결과 없음"을 명확히 표현해야 하는 반환 타입**으로 적절히 사용한다면, NPE의 공포에서 벗어나 더욱 안전하고 우아한 자바 애플리케이션을 구축할 수 있습니다.

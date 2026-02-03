@@ -1,0 +1,103 @@
+# Modern Java: Java 8부터 21까지의 변화
+
+Java는 그 어떤 언어보다 보수적이면서도, 끊임없이 진화하는 언어입니다. 특히 6개월 주기의 릴리스 모델이 정착되면서, 새로운 기능들이 빠르게 도입되고 있습니다. 많은 기업들이 아직 Java 8이나 11에 머물러 있지만, 최신 버전의 Java가 제공하는 생산성과 성능의 이점은 무시할 수 없는 수준에 이르렀습니다. 이 글에서는 Java 8 이후, 특히 Java 17과 21을 중심으로 모던 자바의 핵심 변화를 살펴보겠습니다.
+
+## 1. Java 8: 함수형 프로그래밍의 서막 (2014)
+
+Java 8은 자바 역사상 가장 큰 변화 중 하나였습니다.
+
+### Lambda Expressions (람다 표현식)
+익명 클래스의 번거로움을 줄이고, 코드를 간결하게 만들었습니다. 이는 메서드를 하나의 식(Expression)으로 표현한 것으로, 함수형 인터페이스의 인스턴스를 생성하는 우아한 방법입니다.
+
+```java
+// Before
+Runnable r = new Runnable() {
+    @Override
+    public void run() {
+        System.out.println("Hello");
+    }
+};
+
+// After (Lambda)
+Runnable r = () -> System.out.println("Hello");
+```
+
+### Stream API
+데이터 컬렉션을 함수형 스타일로 처리할 수 있게 되었습니다. `filter`, `map`, `reduce` 등의 연산을 파이프라인으로 연결하여 가독성을 높이고 병렬 처리를 쉽게 만들었습니다.
+
+```java
+List<String> names = Arrays.asList("Java", "Kotlin", "Scala");
+names.stream()
+     .filter(name -> name.startsWith("J"))
+     .map(String::toUpperCase)
+     .forEach(System.out::println);
+```
+
+## 2. Java 11: LTS의 새로운 표준 (2018)
+
+Java 11은 오랫동안 사랑받을 LTS(Long Term Support) 버전으로, 안정성과 몇 가지 문법적 개선이 이루어졌습니다.
+
+### Local Variable Syntax for Lambda
+람다 파라미터에서도 `var` 키워드를 사용할 수 있게 되어, 어노테이션(@Nonnull 등)을 적용하기 쉬워졌습니다.
+
+```java
+(var x, var y) -> x + y
+```
+
+### HTTP Client API (Standard)
+기존의 `HttpURLConnection`은 사용하기 불편하고 성능 제약이 있었습니다. Java 11에서 정식 도입된 `HttpClient`는 비동기 및 논블로킹 요청을 지원하며 HTTP/2를 기본 지원합니다.
+
+## 3. Java 17: 생산성을 위한 도약 (2021)
+
+가장 널리 쓰이는 최신 LTS 버전인 Java 17은 개발자의 생산성을 높이는 굵직한 문법들이 대거 포함되었습니다.
+
+### Records (레코드)
+데이터 운반을 위한 불변(Immutable) 객체를 생성할 때, `getter`, `equals`, `hashCode`, `toString` 등을 일일이 작성할 필요가 없어졌습니다. DTO(Data Transfer Object) 작성에 혁명적인 변화를 가져왔습니다.
+
+```java
+public record User(String name, int age) {}
+```
+
+### Pattern Matching for instanceof
+형변환(Casting)의 번거로움을 줄였습니다.
+
+```java
+// Before
+if (obj instanceof String) {
+    String s = (String) obj;
+    System.out.println(s.length());
+}
+
+// After
+if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+```
+
+### Sealed Classes
+상속을 허용할 클래스를 명시적으로 지정하여, 계층 구조를 엄격하게 제어할 수 있게 되었습니다. 이는 도메인 모델링 시 의도를 명확히 하는 데 도움을 줍니다.
+
+## 4. Java 21: 동시성의 혁명 (2023)
+
+가장 최신의 LTS 버전인 Java 21은 성능, 특히 동시성 처리 성능에 있어 획기적인 변화를 가져왔습니다.
+
+### Virtual Threads (Project Loom)
+기존의 자바 스레드(Platform Thread)는 OS 스레드와 1:1로 매핑되어 생성 비용이 비싸고 개수에 제한이 있었습니다. 가상 스레드(Virtual Thread)는 JVM 내부에서 스케줄링되는 경량 스레드로, 수백만 개의 스레드를 생성해도 메모리 부족 문제가 발생하지 않습니다. 이는 블로킹 I/O가 많은 서버 애플리케이션의 처리량을 비약적으로 향상시킵니다.
+
+```java
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    IntStream.range(0, 10_000).forEach(i -> {
+        executor.submit(() -> {
+            Thread.sleep(Duration.ofSeconds(1));
+            return i;
+        });
+    });
+}
+```
+
+### Sequenced Collections
+`List`, `Set`, `Map` 등의 컬렉션 인터페이스에 순서와 관련된 통일된 접근 방식(`getFirst`, `last`, `reversed`)을 제공합니다. 이제 `list.get(list.size() - 1)` 대신 `list.getLast()`를 사용할 수 있습니다.
+
+## 결론: 업그레이드해야 할까?
+
+레거시 시스템을 유지보수하는 것은 중요하지만, 언어의 발전은 개발자의 생산성과 시스템의 성능에 직접적인 영향을 미칩니다. 특히 **Java 17의 Record**와 **Java 21의 Virtual Threads**는 코드의 양을 줄이고 서버 비용을 절감하는 강력한 무기입니다. 지금 바로 JDK 버전을 확인하고, 마이그레이션 계획을 세워보시는 것을 추천합니다.
