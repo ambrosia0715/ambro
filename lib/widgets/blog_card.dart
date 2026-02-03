@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/blog_data.dart';
@@ -28,16 +29,23 @@ class BlogCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Thumbnail Image
+            // Thumbnail Image (웹: 직접 URL로 로드하여 asset 경로 이슈 우회)
             AspectRatio(
               aspectRatio: 16 / 9,
               child: post.isLocalImage
-                  ? Image.asset(
-                      post.thumbnailUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          _buildErrorPlaceholder(),
-                    )
+                  ? (kIsWeb
+                      ? Image.network(
+                          '/assets/${post.thumbnailUrl}',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _buildErrorPlaceholder(),
+                        )
+                      : Image.asset(
+                          post.thumbnailUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              _buildErrorPlaceholder(),
+                        ))
                   : Image.network(
                       post.thumbnailUrl,
                       fit: BoxFit.cover,

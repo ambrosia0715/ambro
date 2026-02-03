@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -164,17 +165,25 @@ class _BlogPostPageState extends State<BlogPostPage> {
                           ],
                         ),
                         const SizedBox(height: 32),
-                        // Thumbnail
+                        // Thumbnail (웹: 직접 URL로 로드하여 asset 경로 이슈 우회)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
                           child: _postData!.isLocalImage
-                              ? Image.asset(
-                                  _postData!.thumbnailUrl,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const SizedBox(),
-                                )
+                              ? (kIsWeb
+                                  ? Image.network(
+                                      '/assets/${_postData!.thumbnailUrl}',
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          const SizedBox(),
+                                    )
+                                  : Image.asset(
+                                      _postData!.thumbnailUrl,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          const SizedBox(),
+                                    ))
                               : Image.network(
                                   _postData!.thumbnailUrl,
                                   width: double.infinity,
