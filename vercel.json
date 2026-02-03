@@ -2,7 +2,7 @@
   "buildCommand": "echo 'Using pre-built files from GitHub'",
   "outputDirectory": "build/web",
   "installCommand": "echo 'No install needed'",
-  "cleanUrls": true,
+  "framework": null,
   "rewrites": [
     {
       "source": "/app-ads.txt",
@@ -14,15 +14,6 @@
     }
   ],
   "headers": [
-    {
-      "source": "/app-ads.txt",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/plain; charset=utf-8"
-        }
-      ]
-    },
     {
       "source": "/assets/(.*)",
       "headers": [
