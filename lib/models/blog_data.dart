@@ -45,7 +45,7 @@ class BlogData {
       fileName: 'jvm-memory.mdx',
       readTime: '12분',
       tags: ['Java', 'JVM', 'Performance'],
-      thumbnailUrl: 'assets/images/blog/jvm_memory.png',
+      thumbnailUrl: 'assets/images/blog/jvm_memory.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -56,7 +56,7 @@ class BlogData {
       fileName: 'modern-java-features.mdx',
       readTime: '15분',
       tags: ['Java', 'Modern Java', 'Virtual Threads'],
-      thumbnailUrl: 'assets/images/blog/modern_java_evolution.png',
+      thumbnailUrl: 'assets/images/blog/modern_java_evolution.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -67,7 +67,7 @@ class BlogData {
       fileName: 'optional-guide.mdx',
       readTime: '8분',
       tags: ['Java', 'Optional', 'Best Practices'],
-      thumbnailUrl: 'assets/images/blog/java_optional.png',
+      thumbnailUrl: 'assets/images/blog/java_optional.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -78,7 +78,7 @@ class BlogData {
       fileName: 'spring-basics.mdx',
       readTime: '10분',
       tags: ['Spring Boot', 'DI', 'IoC'],
-      thumbnailUrl: 'assets/images/blog/spring_boot_di.png',
+      thumbnailUrl: 'assets/images/blog/spring_boot_di.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -89,7 +89,7 @@ class BlogData {
       fileName: 'java-multithreading.mdx',
       readTime: '14분',
       tags: ['Java', 'Concurrency', 'Thread'],
-      thumbnailUrl: 'assets/images/blog/java_multithreading.png',
+      thumbnailUrl: 'assets/images/blog/java_multithreading.webp',
       isLocalImage: true,
     ),
 
@@ -102,7 +102,7 @@ class BlogData {
       fileName: 'venv-management.mdx',
       readTime: '10분',
       tags: ['Python', 'Virtual Env', 'Poetry'],
-      thumbnailUrl: 'assets/images/blog/python_venv.png',
+      thumbnailUrl: 'assets/images/blog/python_venv.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -113,7 +113,7 @@ class BlogData {
       fileName: 'asyncio-tutorial.mdx',
       readTime: '12분',
       tags: ['Python', 'Asyncio', 'Concurrency'],
-      thumbnailUrl: 'assets/images/blog/python_asyncio.png',
+      thumbnailUrl: 'assets/images/blog/python_asyncio.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -124,7 +124,7 @@ class BlogData {
       fileName: 'pandas-basics.mdx',
       readTime: '15분',
       tags: ['Python', 'Pandas', 'Data Analysis'],
-      thumbnailUrl: 'assets/images/blog/pandas_analysis.png',
+      thumbnailUrl: 'assets/images/blog/pandas_analysis.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -135,7 +135,7 @@ class BlogData {
       fileName: 'decorator-generator.mdx',
       readTime: '10분',
       tags: ['Python', 'Advanced'],
-      thumbnailUrl: 'assets/images/blog/python_decorators.png',
+      thumbnailUrl: 'assets/images/blog/python_decorators.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -146,7 +146,7 @@ class BlogData {
       fileName: 'fastapi-vs-flask.mdx',
       readTime: '8분',
       tags: ['Python', 'FastAPI', 'Flask'],
-      thumbnailUrl: 'assets/images/blog/fastapi_vs_flask.png',
+      thumbnailUrl: 'assets/images/blog/fastapi_vs_flask.webp',
       isLocalImage: true,
     ),
 
@@ -159,7 +159,7 @@ class BlogData {
       fileName: 'cursor-workflow.mdx',
       readTime: '8분',
       tags: ['AI', 'Cursor', 'Productivity'],
-      thumbnailUrl: 'assets/images/blog/cursor_ai.png',
+      thumbnailUrl: 'assets/images/blog/cursor_ai.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -170,7 +170,7 @@ class BlogData {
       fileName: 'llm-api-integration.mdx',
       readTime: '10분',
       tags: ['AI', 'LLM', 'API'],
-      thumbnailUrl: 'assets/images/blog/llm_api_integration.png',
+      thumbnailUrl: 'assets/images/blog/llm_api_integration.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -181,7 +181,7 @@ class BlogData {
       fileName: 'ai-code-review.mdx',
       readTime: '12분',
       tags: ['AI', 'DevOps', 'GitHub Actions'],
-      thumbnailUrl: 'assets/images/blog/ai_code_review.png',
+      thumbnailUrl: 'assets/images/blog/ai_code_review.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -192,7 +192,7 @@ class BlogData {
       fileName: 'v0-prototyping.mdx',
       readTime: '6분',
       tags: ['AI', 'UI/UX', 'v0.dev'],
-      thumbnailUrl: 'assets/images/blog/v0_prototyping.png',
+      thumbnailUrl: 'assets/images/blog/v0_prototyping.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -203,7 +203,7 @@ class BlogData {
       fileName: 'ai-unit-testing.mdx',
       readTime: '8분',
       tags: ['AI', 'Testing', 'Unit Test'],
-      thumbnailUrl: 'assets/images/blog/ai_unit_testing.png',
+      thumbnailUrl: 'assets/images/blog/ai_unit_testing.webp',
       isLocalImage: true,
     ),
 
@@ -216,7 +216,7 @@ class BlogData {
       fileName: 'rag-strategy.mdx',
       readTime: '15분',
       tags: ['AI', 'RAG', 'LLM'],
-      thumbnailUrl: 'assets/images/blog/rag_architecture.png',
+      thumbnailUrl: 'assets/images/blog/rag_architecture.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -227,7 +227,7 @@ class BlogData {
       fileName: 'vector-db-guide.mdx',
       readTime: '12분',
       tags: ['AI', 'Vector DB', 'Database'],
-      thumbnailUrl: 'assets/images/blog/vector_db_guide.png',
+      thumbnailUrl: 'assets/images/blog/vector_db_guide.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -238,7 +238,7 @@ class BlogData {
       fileName: 'ai-agent-trend.mdx',
       readTime: '10분',
       tags: ['AI', 'Agent', 'Trend'],
-      thumbnailUrl: 'assets/images/blog/ai_agents_trend.png',
+      thumbnailUrl: 'assets/images/blog/ai_agents_trend.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -249,7 +249,7 @@ class BlogData {
       fileName: 'local-llm-security.mdx',
       readTime: '10분',
       tags: ['AI', 'Local LLM', 'Security'],
-      thumbnailUrl: 'assets/images/blog/local_llm_security.png',
+      thumbnailUrl: 'assets/images/blog/local_llm_security.webp',
       isLocalImage: true,
     ),
     BlogPost(
@@ -260,7 +260,7 @@ class BlogData {
       fileName: 'developer-future.mdx',
       readTime: '8분',
       tags: ['Insight', 'Career', 'Future'],
-      thumbnailUrl: 'assets/images/blog/developer_future.png',
+      thumbnailUrl: 'assets/images/blog/developer_future.webp',
       isLocalImage: true,
     ),
   ];

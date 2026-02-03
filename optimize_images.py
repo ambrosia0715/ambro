@@ -1,29 +1,35 @@
+"""블로그 이미지를 300KB 이하 WebP로 변환 (웹 로딩 안정화)"""
 import os
 from PIL import Image
 
-def optimize_images(directory):
+MAX_WIDTH = 800
+TARGET_KB = 300
+WEBP_QUALITY = 75
+
+def optimize_to_webp(directory, replace_png=True):
     for filename in os.listdir(directory):
-        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-            filepath = os.path.join(directory, filename)
-            try:
-                with Image.open(filepath) as img:
-                    # Convert to RGB if necessary (e.g. for PNG with transparency if saving as JPG, 
-                    # but we are saving as PNG so RGBA is fine, but resizing is key)
-                    
-                    # Resize if width > 1200
-                    if img.width > 1200:
-                        ratio = 1200 / float(img.width)
-                        new_height = int(float(img.height) * ratio)
-                        img = img.resize((1200, new_height), Image.Resampling.LANCZOS)
-                    
-                    # Save with optimization
-                    # Overwrite the file
-                    img.save(filepath, optimize=True, quality=85)
-                    
-                    print(f"Optimized: {filename}")
-            except Exception as e:
-                print(f"Error processing {filename}: {e}")
+        if not filename.lower().endswith('.png'):
+            continue
+        filepath = os.path.join(directory, filename)
+        outpath = os.path.join(directory, filename[:-4] + '.webp')
+        try:
+            with Image.open(filepath) as img:
+                if img.mode in ('RGBA', 'P'):
+                    img = img.convert('RGBA')
+                else:
+                    img = img.convert('RGB')
+                if img.width > MAX_WIDTH:
+                    ratio = MAX_WIDTH / float(img.width)
+                    h = int(float(img.height) * ratio)
+                    img = img.resize((MAX_WIDTH, h), Image.Resampling.LANCZOS)
+                img.save(outpath, 'WEBP', quality=WEBP_QUALITY, method=6)
+                size_kb = os.path.getsize(outpath) / 1024
+                print(f"  {filename} -> {filename[:-4]}.webp ({size_kb:.0f}KB)")
+                if replace_png:
+                    os.remove(filepath)
+        except Exception as e:
+            print(f"  Error: {filename}: {e}")
 
 if __name__ == "__main__":
-    optimize_images('assets/images/blog')
-    optimize_images('assets/images') # Also logos
+    print("Optimizing blog images to WebP (~300KB)...")
+    optimize_to_webp('assets/images/blog')
