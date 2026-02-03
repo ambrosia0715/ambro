@@ -36,13 +36,13 @@ class BlogCard extends StatelessWidget {
                       post.thumbnailUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          _buildErrorPlaceholder(post.thumbnailUrl),
+                          _buildErrorPlaceholder(),
                     )
                   : Image.network(
                       post.thumbnailUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) =>
-                          _buildErrorPlaceholder(post.thumbnailUrl),
+                          _buildErrorPlaceholder(),
                     ),
             ),
 
@@ -141,25 +141,11 @@ class BlogCard extends StatelessWidget {
     );
   }
 
-  Widget _buildErrorPlaceholder(String? path) {
+  Widget _buildErrorPlaceholder() {
     return Container(
       color: Colors.grey.shade200,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.image_not_supported, color: Colors.grey),
-            if (path != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  path,
-                  style: const TextStyle(fontSize: 10, color: Colors.grey),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
-        ),
+      child: const Center(
+        child: Icon(Icons.image_not_supported, color: Colors.grey),
       ),
     );
   }
