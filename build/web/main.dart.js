@@ -7140,8 +7140,8 @@ s=B.d.er((a-2)/1,0,13)
 r=B.j.er(B.d.hE(s),0,12)
 q=s-r
 p=1-q
-o=B.oO[r]
-n=B.oO[r+1]
+o=B.oN[r]
+n=B.oN[r+1]
 return new A.ai(p*o.a+q*n.a,p*o.b+q*n.b)},
 aPv(a){var s,r,q,p,o,n,m
 if(a>5){s=a-5
@@ -7171,7 +7171,7 @@ if(r==null)r=3
 s=b==null?null:b.a
 r=A.Y(r,s==null?3:s,c)
 r.toString
-return B.oS[A.aSu(B.d.aA(r),0,8)]},
+return B.oR[A.aSu(B.d.aA(r),0,8)]},
 azV(a,b,c){var s=a==null,r=s?null:a.a,q=b==null
 if(r==(q?null:b.a))s=s&&q
 else s=!0
@@ -7554,17 +7554,16 @@ n=m}s.XJ(new A.Df(p,B.B7,o,n,l))
 s.IQ()},
 Ii:function Ii(a){this.a=a},
 ayP(a){var s=t.mw
-s=A.a_(new A.aU(B.oN,new A.a_M(a),s),s.h("x.E"))
+s=A.a_(new A.aU(B.oT,new A.a_M(a),s),s.h("x.E"))
 return s},
-d6:function d6(a,b,c,d,e,f,g,h){var _=this
+d6:function d6(a,b,c,d,e,f,g){var _=this
 _.a=a
 _.b=b
 _.c=c
-_.d=d
-_.e=e
-_.r=f
-_.w=g
-_.x=h},
+_.e=d
+_.r=e
+_.w=f
+_.x=g},
 a_M:function a_M(a){this.a=a},
 I9:function I9(a){this.a=a},
 ZG:function ZG(a){this.a=a},
@@ -36173,11 +36172,11 @@ gVk(){var s=this.a
 if(s instanceof A.eU)return s
 return this.a=new A.eU(s)},
 gaow(){var s,r,q,p,o,n=this
-if(n.c===1)return B.oP
+if(n.c===1)return B.oO
 s=n.d
 r=J.aX(s)
 q=r.gE(s)-J.bJ(n.e)-n.f
-if(q===0)return B.oP
+if(q===0)return B.oO
 p=[]
 for(o=0;o<q;++o)p.push(r.i(s,o))
 p.$flags=3
@@ -41279,7 +41278,7 @@ aH(){this.b0()
 this.wb()
 this.a5J()},
 a5J(){var s,r
-try{s=B.b.Ga(B.oN,new A.akr(this))
+try{s=B.b.Ga(B.oT,new A.akr(this))
 this.ar(new A.aks(this,s))}catch(r){}},
 wb(){var s=0,r=A.P(t.H),q=1,p=[],o=this,n,m,l,k,j,i
 var $async$wb=A.L(function(a,b){if(a===1){p.push(b)
@@ -41322,7 +41321,7 @@ p=A.a_(new A.Z(p,new A.aky(),o),o.h("av.E"))
 p=A.fe(B.I,p,B.aS,0,8)
 o=k.r
 n=A.S(o.a,j,j,B.WX,j)
-o=A.bs(A.b([B.Hk,B.e2,A.S(o.d,j,j,B.m_,j),B.cg,B.Hu,B.e2,A.S(o.w,j,j,B.m_,j),B.cg,B.ZQ,A.S("Ambro",j,j,B.cj,j)],r),B.B,B.i,B.k,0,j)
+o=A.bs(A.b([B.Hk,B.e2,A.S("2026-02-04",j,j,B.m_,j),B.cg,B.Hu,B.e2,A.S(o.w,j,j,B.m_,j),B.cg,B.ZQ,A.S("Ambro",j,j,B.cj,j)],r),B.B,B.i,B.k,0,j)
 m=A.br(12)
 l=A.a62("/assets/"+k.r.r,new A.akz(),B.cM,j,1/0)
 B.b.M(q,A.b([p,B.x,n,B.x,o,B.a3,A.y3(m,l),B.c0],r))}p=k.d
@@ -41803,7 +41802,7 @@ m.push(A.bO(A.S(p.b,3,B.bi,A.a8(r,r,B.a6,r,r,r,r,r,r,r,r,14,r,r,r,r,1.5,!0,r,r,r
 m.push(B.x)
 m.push(A.azB(B.cu,r,1,r,r,r))
 m.push(B.F)
-m.push(A.bs(A.b([A.cE(B.oo,B.fI,r,14),B.e2,A.S(p.d,r,r,A.a8(r,r,B.eu,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r),B.bq,A.cE(B.GJ,B.fI,r,14),B.e2,A.S(p.w,r,r,A.a8(r,r,B.eu,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r)],n),B.B,B.i,B.k,0,r))
+m.push(A.bs(A.b([A.cE(B.oo,B.fI,r,14),B.e2,A.S("2026-02-04",r,r,A.a8(r,r,B.eu,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r),B.bq,A.cE(B.GJ,B.fI,r,14),B.e2,A.S(p.w,r,r,A.a8(r,r,B.eu,r,r,r,r,r,r,r,r,12,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r)],n),B.B,B.i,B.k,0,r))
 return A.bZ(A.l1(!1,r,!0,A.as(A.b([new A.It(1.7777777777777777,o,r),A.bO(new A.a4(B.k3,A.as(m,B.n,B.i,B.k),r),1)],n),B.n,B.i,B.k),r,!0,r,r,r,B.N,r,r,r,r,r,new A.a_L(this,a),r,r,r,r,r,r,r),B.bP,B.l,0,new A.cs(q,new A.bT(B.bm,1,B.T,-1)))}}
 A.a_L.prototype={
 $0(){var s=this.a.c
@@ -55879,7 +55878,7 @@ p=h.gmF()
 o=h.r
 o=o==null?g:o*a2+a1
 n=h.w
-n=n==null?g:B.oS[B.j.er(n.a,0,8)]
+n=n==null?g:B.oR[B.j.er(n.a,0,8)]
 m=h.y
 m=m==null?g:m*a6+a5
 l=h.z
@@ -56638,8 +56637,8 @@ s=r.T
 r.dl=s==null?null:s.gIW()
 a.a=!1},
 mT(a,b,c){var s,r,q,p,o=this
-o.fF=A.aBw(o.fF,B.oQ)
-o.eY=A.aBw(o.eY,B.oQ)
+o.fF=A.aBw(o.fF,B.oP)
+o.eY=A.aBw(o.eY,B.oP)
 s=o.fF
 r=s!=null&&!s.ga7(s)
 s=o.eY
@@ -63377,7 +63376,7 @@ if(s!=null){r=b.a
 q=b.b
 p=e.cU
 p===$&&A.a()
-s.Vx(a.gbF(),new A.t(r,q,r+p,q+0),B.oR,B.oR)}return}if(e.an!=null){o=a.gbF()
+s.Vx(a.gbF(),new A.t(r,q,r+p,q+0),B.oQ,B.oQ)}return}if(e.an!=null){o=a.gbF()
 for(s=e.a3,r=b.a,q=b.b,p=e.gd7(),n=0;n<e.O;++n){m=e.an
 if(m.length<=n)break
 m=m[n]
@@ -66310,7 +66309,7 @@ A.hq.prototype={
 I(){return"ModifierKey."+this.b}}
 A.AX.prototype={
 ganc(){var s,r,q=A.n(t.xS,t.Dj)
-for(s=0;s<9;++s){r=B.oT[s]
+for(s=0;s<9;++s){r=B.oS[s]
 if(this.amt(r))q.m(0,r,B.dH)}return q}}
 A.ln.prototype={}
 A.acO.prototype={
@@ -66348,7 +66347,7 @@ i=$.jK
 if(i!=null)i.$1(new A.bH(r,q,"services library",j,p,!1))}}return!1},
 af6(a1){var s,r,q,p,o,n,m,l,k,j,i,h,g=a1.c,f=g.ganc(),e=t.v3,d=A.n(e,t.F),c=A.aB(e),b=this.d,a=A.dx(new A.b3(b,A.j(b).h("b3<1>")),e),a0=a1 instanceof A.n3
 if(a0)a.D(0,g.gjf())
-for(s=g.a,r=null,q=0;q<9;++q){p=B.oT[q]
+for(s=g.a,r=null,q=0;q<9;++q){p=B.oS[q]
 o=$.aG7()
 n=o.i(0,new A.dd(p,B.cc))
 if(n==null)continue
@@ -90394,47 +90393,6 @@ B.JQ=s([B.ar,B.m],A.am("v<CH>"))
 B.b8=new A.CL(0,"rtl")
 B.aA=new A.CL(1,"ltr")
 B.kP=s([B.b8,B.aA],A.am("v<CL>"))
-B.Jx=s(["Java","JVM","Performance"],t.s)
-B.Bn=new A.d6("JVM \uba54\ubaa8\ub9ac \uad6c\uc870 \uc644\ubcbd \uac00\uc774\ub4dc","Java \uc560\ud50c\ub9ac\ucf00\uc774\uc158 \uc131\ub2a5 \ucd5c\uc801\ud654\ub97c \uc704\ud55c JVM \uba54\ubaa8\ub9ac \uad6c\uc870(Heap, Stack, Method Area) \uc2ec\uce35 \ubd84\uc11d","java","2024-03-15","jvm-memory.mdx","assets/images/blog/jvm_memory.webp","12\ubd84",B.Jx)
-B.KI=s(["Java","Modern Java","Virtual Threads"],t.s)
-B.Bw=new A.d6("Modern Java: Java 8\ubd80\ud130 21\uae4c\uc9c0\uc758 \ubcc0\ud654","\ub78c\ub2e4, \uc2a4\ud2b8\ub9bc\ubd80\ud130 \ub808\ucf54\ub4dc, \uac00\uc0c1 \uc2a4\ub808\ub4dc\uae4c\uc9c0. \ubaa8\ub358 \uc790\ubc14\uc758 \ud575\uc2ec \uae30\ub2a5 \ucd1d\uc815\ub9ac","java","2024-03-10","modern-java-features.mdx","assets/images/blog/modern_java_evolution.webp","15\ubd84",B.KI)
-B.Jm=s(["Java","Optional","Best Practices"],t.s)
-B.BA=new A.d6("Java Optional \uc644\ubcbd \uac00\uc774\ub4dc","NullPointerException\uc744 \ud53c\ud558\uace0 Optional\uc744 \uc62c\ubc14\ub974\uac8c \uc0ac\uc6a9\ud558\ub294 \ubc29\ubc95","java","2024-03-05","optional-guide.mdx","assets/images/blog/java_optional.webp","8\ubd84",B.Jm)
-B.KC=s(["Spring Boot","DI","IoC"],t.s)
-B.BB=new A.d6("Spring Boot \uae30\ucd08: DI\uc640 IoC \uc774\ud574\ud558\uae30","\uc2a4\ud504\ub9c1 \ud504\ub808\uc784\uc6cc\ud06c\uc758 \ud575\uc2ec \ucca0\ud559\uc778 \uc81c\uc5b4\uc758 \uc5ed\uc804(IoC)\uacfc \uc758\uc874\uc131 \uc8fc\uc785(DI) \uac1c\ub150 \uc815\ub9ac","java","2024-02-28","spring-basics.mdx","assets/images/blog/spring_boot_di.webp","10\ubd84",B.KC)
-B.Jw=s(["Java","Concurrency","Thread"],t.s)
-B.Bx=new A.d6("Java \uba40\ud2f0\uc2a4\ub808\ub529\uacfc \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d","\uc2a4\ub808\ub4dc \uc0dd\uc131\ubd80\ud130 ExecutorService, \ub3d9\uae30\ud654\uae4c\uc9c0 \uc790\ubc14 \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d\uc758 \uae30\ucd08","java","2024-02-20","java-multithreading.mdx","assets/images/blog/java_multithreading.webp","14\ubd84",B.Jw)
-B.Iu=s(["Python","Virtual Env","Poetry"],t.s)
-B.Bt=new A.d6("\ud30c\uc774\uc36c \uac00\uc0c1\ud658\uacbd \uad00\ub9ac\uc758 \ubaa8\ub4e0 \uac83","venv, virtualenv, conda, poetry \ube44\uad50 \ubc0f \uc2e4\ubb34 \uac00\uc774\ub4dc","python","2024-03-14","venv-management.mdx","assets/images/blog/python_venv.webp","10\ubd84",B.Iu)
-B.JI=s(["Python","Asyncio","Concurrency"],t.s)
-B.BE=new A.d6("\ube44\ub3d9\uae30 \ud504\ub85c\uadf8\ub798\ubc0d: asyncio \uc2ec\uce35 \ubd84\uc11d","\ud30c\uc774\uc36c\uc758 \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d\uc744 \uc704\ud55c asyncio, await/async \uc644\ubcbd \uc774\ud574","python","2024-03-08","asyncio-tutorial.mdx","assets/images/blog/python_asyncio.webp","12\ubd84",B.JI)
-B.Jo=s(["Python","Pandas","Data Analysis"],t.s)
-B.Bm=new A.d6("Pandas \ub370\uc774\ud130 \ubd84\uc11d \uae30\ucd08","\ub370\uc774\ud130\ud504\ub808\uc784 \uc870\uc791\ubd80\ud130 \uc804\ucc98\ub9ac\uae4c\uc9c0 Pandas \ud575\uc2ec \uae30\ub2a5 \ub9c8\uc2a4\ud130\ud558\uae30","python","2024-03-01","pandas-basics.mdx","assets/images/blog/pandas_analysis.webp","15\ubd84",B.Jo)
-B.JH=s(["Python","Advanced"],t.s)
-B.BF=new A.d6("\ud30c\uc774\uc36c \uc911\uae09 \ubb38\ubc95: \ub370\ucf54\ub808\uc774\ud130\uc640 \uc81c\ub108\ub808\uc774\ud130","\ud30c\uc774\uc36c\ub2e4\uc6b4 \ucf54\ub4dc\ub97c \uc791\uc131\ud558\uae30 \uc704\ud55c \ub370\ucf54\ub808\uc774\ud130\uc640 \uc81c\ub108\ub808\uc774\ud130 \ud65c\uc6a9\ubc95","python","2024-02-25","decorator-generator.mdx","assets/images/blog/python_decorators.webp","10\ubd84",B.JH)
-B.JJ=s(["Python","FastAPI","Flask"],t.s)
-B.BC=new A.d6("FastAPI vs Flask: \ubaa8\ub358 \uc6f9 \ud504\ub808\uc784\uc6cc\ud06c \ube44\uad50","\ub0b4 \ud504\ub85c\uc81d\ud2b8\uc5d0 \ub9de\ub294 \ud30c\uc774\uc36c \uc6f9 \ud504\ub808\uc784\uc6cc\ud06c \uc120\ud0dd \uac00\uc774\ub4dc","python","2024-02-18","fastapi-vs-flask.mdx","assets/images/blog/fastapi_vs_flask.webp","8\ubd84",B.JJ)
-B.Jg=s(["AI","Cursor","Productivity"],t.s)
-B.Bz=new A.d6("Cursor AI \uc5d0\ub514\ud130 200% \ud65c\uc6a9\ud558\uae30","AI \ucf54\ub529 \uc5b4\uc2dc\uc2a4\ud134\ud2b8 Cursor\uc758 \uc6cc\ud06c\ud50c\ub85c\uc6b0\uc640 \uc2e4\ubb34 \ud65c\uc6a9 \ud301","ai-basic","2024-03-13","cursor-workflow.mdx","assets/images/blog/cursor_ai.webp","8\ubd84",B.Jg)
-B.Jh=s(["AI","LLM","API"],t.s)
-B.Bv=new A.d6("LLM API \uc5f0\ub3d9 \uac00\uc774\ub4dc","OpenAI, Anthropic API\ub97c \ub0b4 \uc560\ud50c\ub9ac\ucf00\uc774\uc158\uc5d0 \uc5f0\ub3d9\ud558\ub294 \ubc29\ubc95","ai-basic","2024-03-06","llm-api-integration.mdx","assets/images/blog/llm_api_integration.webp","10\ubd84",B.Jh)
-B.KN=s(["AI","DevOps","GitHub Actions"],t.s)
-B.By=new A.d6("AI\ub97c \ud65c\uc6a9\ud55c \ucf54\ub4dc \ub9ac\ubdf0 \uc790\ub3d9\ud654","GitHub Actions\uc640 LLM\uc744 \uacb0\ud569\ud558\uc5ec \uc790\ub3d9 \ucf54\ub4dc \ub9ac\ubdf0 \ubd07 \ub9cc\ub4e4\uae30","ai-basic","2024-02-29","ai-code-review.mdx","assets/images/blog/ai_code_review.webp","12\ubd84",B.KN)
-B.JP=s(["AI","UI/UX","v0.dev"],t.s)
-B.Bq=new A.d6("v0.dev\ub85c \uc6f9\uc0ac\uc774\ud2b8 \ud504\ub85c\ud1a0\ud0c0\uc774\ud551 \uac00\uc18d\ud654","\uc0dd\uc131\ud615 UI \ub3c4\uad6c v0.dev\ub97c \uc0ac\uc6a9\ud558\uc5ec \ube60\ub974\uac8c \ud504\ub85c\ud1a0\ud0c0\uc785 \ub9cc\ub4e4\uae30","ai-basic","2024-02-22","v0-prototyping.mdx","assets/images/blog/v0_prototyping.webp","6\ubd84",B.JP)
-B.J3=s(["AI","Testing","Unit Test"],t.s)
-B.Br=new A.d6("AI\uc640 \ud568\uaed8\ud558\ub294 \ub2e8\uc704 \ud14c\uc2a4\ud2b8 \uc791\uc131","AI\uc758 \ub3c4\uc6c0\uc744 \ubc1b\uc544 \ud6a8\uc728\uc801\uc73c\ub85c \ud14c\uc2a4\ud2b8 \ucf00\uc774\uc2a4\ub97c \uc0dd\uc131\ud558\uace0 \ucee4\ubc84\ub9ac\uc9c0 \ub192\uc774\uae30","ai-basic","2024-02-15","ai-unit-testing.mdx","assets/images/blog/ai_unit_testing.webp","8\ubd84",B.J3)
-B.Ji=s(["AI","RAG","LLM"],t.s)
-B.Bo=new A.d6("RAG(\uac80\uc0c9 \uc99d\uac15 \uc0dd\uc131) \uc804\ub7b5 \uac00\uc774\ub4dc","LLM\uc758 \ud658\uac01 \ud604\uc0c1\uc744 \uc904\uc774\uace0 \ucd5c\uc2e0 \uc815\ubcf4\ub97c \ubc18\uc601\ud558\ub294 RAG \uc2dc\uc2a4\ud15c \uad6c\ucd95 \uc804\ub7b5","ai-insight","2024-03-12","rag-strategy.mdx","assets/images/blog/rag_architecture.webp","15\ubd84",B.Ji)
-B.KL=s(["AI","Vector DB","Database"],t.s)
-B.Bu=new A.d6("Vector DB \ube44\uad50 \ubc0f \uc120\ud0dd \uac00\uc774\ub4dc","Pinecone, Weaviate, Milvus, Chroma \ub4f1 \uc8fc\uc694 \ubca1\ud130 DB \ud2b9\uc9d5 \ube44\uad50","ai-insight","2024-03-04","vector-db-guide.mdx","assets/images/blog/vector_db_guide.webp","12\ubd84",B.KL)
-B.Jf=s(["AI","Agent","Trend"],t.s)
-B.BD=new A.d6("AI Agent \ud2b8\ub80c\ub4dc\uc640 \ubbf8\ub798","\uc790\uc728\uc801\uc73c\ub85c \ud589\ub3d9\ud558\ub294 AI \uc5d0\uc774\uc804\ud2b8\uc758 \ud604\uc7ac \uae30\uc220 \uc218\uc900\uacfc \ud65c\uc6a9 \uc0ac\ub840","ai-insight","2024-02-26","ai-agent-trend.mdx","assets/images/blog/ai_agents_trend.webp","10\ubd84",B.Jf)
-B.KE=s(["AI","Local LLM","Security"],t.s)
-B.Bs=new A.d6("\ub85c\uceec LLM\uacfc \ubcf4\uc548","Ollama \ub4f1\uc744 \ud65c\uc6a9\ud558\uc5ec \ub85c\uceec \ud658\uacbd\uc5d0\uc11c LLM\uc744 \uad6c\ub3d9\ud558\uace0 \ub370\uc774\ud130\ub97c \ubcf4\ud638\ud558\ub294 \ubc29\ubc95","ai-insight","2024-02-19","local-llm-security.mdx","assets/images/blog/local_llm_security.webp","10\ubd84",B.KE)
-B.Jv=s(["Insight","Career","Future"],t.s)
-B.Bp=new A.d6("AI \uc2dc\ub300, \uac1c\ubc1c\uc790\uc758 \ubbf8\ub798","AI\uac00 \ucf54\ub529\ud558\ub294 \uc2dc\ub300, \uac1c\ubc1c\uc790\ub294 \uc5b4\ub5a4 \uc5ed\ub7c9\uc744 \ud0a4\uc6cc\uc57c \uc0b4\uc544\ub0a8\uc744 \uc218 \uc788\uc744\uae4c?","ai-insight","2024-02-12","developer-future.mdx","assets/images/blog/developer_future.webp","8\ubd84",B.Jv)
-B.oN=s([B.Bn,B.Bw,B.BA,B.BB,B.Bx,B.Bt,B.BE,B.Bm,B.BF,B.BC,B.Bz,B.Bv,B.By,B.Bq,B.Br,B.Bo,B.Bu,B.BD,B.Bs,B.Bp],A.am("v<d6>"))
 B.Du=new A.ou(0,"auto")
 B.Dv=new A.ou(1,"full")
 B.Dw=new A.ou(2,"chromium")
@@ -90469,7 +90427,7 @@ B.PE=new A.ai(0.63903989,0.07759639)
 B.Pl=new A.ai(0.66416338,0.0734653)
 B.Pi=new A.ai(0.68675338,0.06974996)
 B.Px=new A.ai(0.70678034,0.06529512)
-B.oO=s([B.PB,B.PA,B.Pn,B.Pq,B.Pz,B.Ph,B.Pm,B.Po,B.Pk,B.Pw,B.PE,B.Pl,B.Pi,B.Px],A.am("v<+(J,J)>"))
+B.oN=s([B.PB,B.PA,B.Pn,B.Pq,B.Pz,B.Ph,B.Pm,B.Po,B.Pk,B.Pw,B.PE,B.Pl,B.Pi,B.Px],A.am("v<+(J,J)>"))
 B.K3=s(["click","scroll"],t.s)
 B.C8=new A.rz()
 B.fa=new A.O8(1,"page")
@@ -90477,7 +90435,7 @@ B.ih=new A.ef(B.au,B.fa)
 B.K4=s([B.C8,B.ih],A.am("v<aR>"))
 B.Ki=s([],t.QP)
 B.Kc=s([],t.Ug)
-B.oQ=s([],A.am("v<aUp>"))
+B.oP=s([],A.am("v<aUp>"))
 B.K8=s([],t.IF)
 B.Ka=s([],t.D)
 B.K7=s([],t.lX)
@@ -90499,9 +90457,9 @@ B.Kk=s([],t.Lx)
 B.Km=s([],t.fm)
 B.kQ=s([],t.p)
 B.Ko=s([],t.lD)
-B.oR=s([],t.n)
+B.oQ=s([],t.n)
 B.K6=s([],t.t)
-B.oP=s([],t.ee)
+B.oO=s([],t.ee)
 B.Kn=s([],t.iG)
 B.Kj=s([],t.XS)
 B.Kr=s(["ul","ol","li","p","br"],t.s)
@@ -90524,7 +90482,7 @@ B.a0B=new A.qV("\ub3d9\uc2dc\uc5d0 \uac19\uc740 \uc22b\uc790\ub97c \uc678\uce58\
 B.a0A=new A.qV("\ub9c8\uc9c0\ub9c9 \uc22b\uc790\ub97c \ud63c\uc790 \uc678\uce58\ub294 \uc0ac\ub78c\uc774 \uc2b9\ub9ac\ud569\ub2c8\ub2e4",null)
 B.KB=s([B.Zd,B.x,B.a0C,B.a0z,B.a0B,B.a0A],t.p)
 B.eS=s([B.cL,B.c2,B.fu,B.fv,B.jn],t.QP)
-B.oS=s([B.eM,B.kG,B.kH,B.v,B.G,B.aV,B.Q,B.kI,B.ho],A.am("v<hj>"))
+B.oR=s([B.eM,B.kG,B.kH,B.v,B.G,B.aV,B.Q,B.kI,B.ho],A.am("v<hj>"))
 B.dL=new A.hq(0,"controlModifier")
 B.dM=new A.hq(1,"shiftModifier")
 B.dN=new A.hq(2,"altModifier")
@@ -90534,8 +90492,49 @@ B.lc=new A.hq(5,"numLockModifier")
 B.ld=new A.hq(6,"scrollLockModifier")
 B.le=new A.hq(7,"functionModifier")
 B.v_=new A.hq(8,"symbolModifier")
-B.oT=s([B.dL,B.dM,B.dN,B.dO,B.lb,B.lc,B.ld,B.le,B.v_],A.am("v<hq>"))
+B.oS=s([B.dL,B.dM,B.dN,B.dO,B.lb,B.lc,B.ld,B.le,B.v_],A.am("v<hq>"))
 B.kU=s([!0,!1],t.HZ)
+B.Jx=s(["Java","JVM","Performance"],t.s)
+B.Bu=new A.d6("JVM \uba54\ubaa8\ub9ac \uad6c\uc870 \uc644\ubcbd \uac00\uc774\ub4dc","Java \uc560\ud50c\ub9ac\ucf00\uc774\uc158 \uc131\ub2a5 \ucd5c\uc801\ud654\ub97c \uc704\ud55c JVM \uba54\ubaa8\ub9ac \uad6c\uc870(Heap, Stack, Method Area) \uc2ec\uce35 \ubd84\uc11d","java","jvm-memory.mdx","assets/images/blog/jvm_memory.webp","12\ubd84",B.Jx)
+B.KI=s(["Java","Modern Java","Virtual Threads"],t.s)
+B.Bt=new A.d6("Modern Java: Java 8\ubd80\ud130 21\uae4c\uc9c0\uc758 \ubcc0\ud654","\ub78c\ub2e4, \uc2a4\ud2b8\ub9bc\ubd80\ud130 \ub808\ucf54\ub4dc, \uac00\uc0c1 \uc2a4\ub808\ub4dc\uae4c\uc9c0. \ubaa8\ub358 \uc790\ubc14\uc758 \ud575\uc2ec \uae30\ub2a5 \ucd1d\uc815\ub9ac","java","modern-java-features.mdx","assets/images/blog/modern_java_evolution.webp","15\ubd84",B.KI)
+B.Jm=s(["Java","Optional","Best Practices"],t.s)
+B.BB=new A.d6("Java Optional \uc644\ubcbd \uac00\uc774\ub4dc","NullPointerException\uc744 \ud53c\ud558\uace0 Optional\uc744 \uc62c\ubc14\ub974\uac8c \uc0ac\uc6a9\ud558\ub294 \ubc29\ubc95","java","optional-guide.mdx","assets/images/blog/java_optional.webp","8\ubd84",B.Jm)
+B.KC=s(["Spring Boot","DI","IoC"],t.s)
+B.BF=new A.d6("Spring Boot \uae30\ucd08: DI\uc640 IoC \uc774\ud574\ud558\uae30","\uc2a4\ud504\ub9c1 \ud504\ub808\uc784\uc6cc\ud06c\uc758 \ud575\uc2ec \ucca0\ud559\uc778 \uc81c\uc5b4\uc758 \uc5ed\uc804(IoC)\uacfc \uc758\uc874\uc131 \uc8fc\uc785(DI) \uac1c\ub150 \uc815\ub9ac","java","spring-basics.mdx","assets/images/blog/spring_boot_di.webp","10\ubd84",B.KC)
+B.Jw=s(["Java","Concurrency","Thread"],t.s)
+B.BC=new A.d6("Java \uba40\ud2f0\uc2a4\ub808\ub529\uacfc \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d","\uc2a4\ub808\ub4dc \uc0dd\uc131\ubd80\ud130 ExecutorService, \ub3d9\uae30\ud654\uae4c\uc9c0 \uc790\ubc14 \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d\uc758 \uae30\ucd08","java","java-multithreading.mdx","assets/images/blog/java_multithreading.webp","14\ubd84",B.Jw)
+B.Iu=s(["Python","Virtual Env","Poetry"],t.s)
+B.Bz=new A.d6("\ud30c\uc774\uc36c \uac00\uc0c1\ud658\uacbd \uad00\ub9ac\uc758 \ubaa8\ub4e0 \uac83","venv, virtualenv, conda, poetry \ube44\uad50 \ubc0f \uc2e4\ubb34 \uac00\uc774\ub4dc","python","venv-management.mdx","assets/images/blog/python_venv.webp","10\ubd84",B.Iu)
+B.JI=s(["Python","Asyncio","Concurrency"],t.s)
+B.Bx=new A.d6("\ube44\ub3d9\uae30 \ud504\ub85c\uadf8\ub798\ubc0d: asyncio \uc2ec\uce35 \ubd84\uc11d","\ud30c\uc774\uc36c\uc758 \ub3d9\uc2dc\uc131 \ud504\ub85c\uadf8\ub798\ubc0d\uc744 \uc704\ud55c asyncio, await/async \uc644\ubcbd \uc774\ud574","python","asyncio-tutorial.mdx","assets/images/blog/python_asyncio.webp","12\ubd84",B.JI)
+B.Jo=s(["Python","Pandas","Data Analysis"],t.s)
+B.Bs=new A.d6("Pandas \ub370\uc774\ud130 \ubd84\uc11d \uae30\ucd08","\ub370\uc774\ud130\ud504\ub808\uc784 \uc870\uc791\ubd80\ud130 \uc804\ucc98\ub9ac\uae4c\uc9c0 Pandas \ud575\uc2ec \uae30\ub2a5 \ub9c8\uc2a4\ud130\ud558\uae30","python","pandas-basics.mdx","assets/images/blog/pandas_analysis.webp","15\ubd84",B.Jo)
+B.JH=s(["Python","Advanced"],t.s)
+B.BD=new A.d6("\ud30c\uc774\uc36c \uc911\uae09 \ubb38\ubc95: \ub370\ucf54\ub808\uc774\ud130\uc640 \uc81c\ub108\ub808\uc774\ud130","\ud30c\uc774\uc36c\ub2e4\uc6b4 \ucf54\ub4dc\ub97c \uc791\uc131\ud558\uae30 \uc704\ud55c \ub370\ucf54\ub808\uc774\ud130\uc640 \uc81c\ub108\ub808\uc774\ud130 \ud65c\uc6a9\ubc95","python","decorator-generator.mdx","assets/images/blog/python_decorators.webp","10\ubd84",B.JH)
+B.JJ=s(["Python","FastAPI","Flask"],t.s)
+B.Bw=new A.d6("FastAPI vs Flask: \ubaa8\ub358 \uc6f9 \ud504\ub808\uc784\uc6cc\ud06c \ube44\uad50","\ub0b4 \ud504\ub85c\uc81d\ud2b8\uc5d0 \ub9de\ub294 \ud30c\uc774\uc36c \uc6f9 \ud504\ub808\uc784\uc6cc\ud06c \uc120\ud0dd \uac00\uc774\ub4dc","python","fastapi-vs-flask.mdx","assets/images/blog/fastapi_vs_flask.webp","8\ubd84",B.JJ)
+B.Jg=s(["AI","Cursor","Productivity"],t.s)
+B.Bp=new A.d6("Cursor AI \uc5d0\ub514\ud130 200% \ud65c\uc6a9\ud558\uae30","AI \ucf54\ub529 \uc5b4\uc2dc\uc2a4\ud134\ud2b8 Cursor\uc758 \uc6cc\ud06c\ud50c\ub85c\uc6b0\uc640 \uc2e4\ubb34 \ud65c\uc6a9 \ud301","ai-basic","cursor-workflow.mdx","assets/images/blog/cursor_ai.webp","8\ubd84",B.Jg)
+B.Jh=s(["AI","LLM","API"],t.s)
+B.Bm=new A.d6("LLM API \uc5f0\ub3d9 \uac00\uc774\ub4dc","OpenAI, Anthropic API\ub97c \ub0b4 \uc560\ud50c\ub9ac\ucf00\uc774\uc158\uc5d0 \uc5f0\ub3d9\ud558\ub294 \ubc29\ubc95","ai-basic","llm-api-integration.mdx","assets/images/blog/llm_api_integration.webp","10\ubd84",B.Jh)
+B.KN=s(["AI","DevOps","GitHub Actions"],t.s)
+B.Br=new A.d6("AI\ub97c \ud65c\uc6a9\ud55c \ucf54\ub4dc \ub9ac\ubdf0 \uc790\ub3d9\ud654","GitHub Actions\uc640 LLM\uc744 \uacb0\ud569\ud558\uc5ec \uc790\ub3d9 \ucf54\ub4dc \ub9ac\ubdf0 \ubd07 \ub9cc\ub4e4\uae30","ai-basic","ai-code-review.mdx","assets/images/blog/ai_code_review.webp","12\ubd84",B.KN)
+B.JP=s(["AI","UI/UX","v0.dev"],t.s)
+B.Bv=new A.d6("v0.dev\ub85c \uc6f9\uc0ac\uc774\ud2b8 \ud504\ub85c\ud1a0\ud0c0\uc774\ud551 \uac00\uc18d\ud654","\uc0dd\uc131\ud615 UI \ub3c4\uad6c v0.dev\ub97c \uc0ac\uc6a9\ud558\uc5ec \ube60\ub974\uac8c \ud504\ub85c\ud1a0\ud0c0\uc785 \ub9cc\ub4e4\uae30","ai-basic","v0-prototyping.mdx","assets/images/blog/v0_prototyping.webp","6\ubd84",B.JP)
+B.J3=s(["AI","Testing","Unit Test"],t.s)
+B.BE=new A.d6("AI\uc640 \ud568\uaed8\ud558\ub294 \ub2e8\uc704 \ud14c\uc2a4\ud2b8 \uc791\uc131","AI\uc758 \ub3c4\uc6c0\uc744 \ubc1b\uc544 \ud6a8\uc728\uc801\uc73c\ub85c \ud14c\uc2a4\ud2b8 \ucf00\uc774\uc2a4\ub97c \uc0dd\uc131\ud558\uace0 \ucee4\ubc84\ub9ac\uc9c0 \ub192\uc774\uae30","ai-basic","ai-unit-testing.mdx","assets/images/blog/ai_unit_testing.webp","8\ubd84",B.J3)
+B.Ji=s(["AI","RAG","LLM"],t.s)
+B.By=new A.d6("RAG(\uac80\uc0c9 \uc99d\uac15 \uc0dd\uc131) \uc804\ub7b5 \uac00\uc774\ub4dc","LLM\uc758 \ud658\uac01 \ud604\uc0c1\uc744 \uc904\uc774\uace0 \ucd5c\uc2e0 \uc815\ubcf4\ub97c \ubc18\uc601\ud558\ub294 RAG \uc2dc\uc2a4\ud15c \uad6c\ucd95 \uc804\ub7b5","ai-insight","rag-strategy.mdx","assets/images/blog/rag_architecture.webp","15\ubd84",B.Ji)
+B.KL=s(["AI","Vector DB","Database"],t.s)
+B.Bq=new A.d6("Vector DB \ube44\uad50 \ubc0f \uc120\ud0dd \uac00\uc774\ub4dc","Pinecone, Weaviate, Milvus, Chroma \ub4f1 \uc8fc\uc694 \ubca1\ud130 DB \ud2b9\uc9d5 \ube44\uad50","ai-insight","vector-db-guide.mdx","assets/images/blog/vector_db_guide.webp","12\ubd84",B.KL)
+B.Jf=s(["AI","Agent","Trend"],t.s)
+B.Bo=new A.d6("AI Agent \ud2b8\ub80c\ub4dc\uc640 \ubbf8\ub798","\uc790\uc728\uc801\uc73c\ub85c \ud589\ub3d9\ud558\ub294 AI \uc5d0\uc774\uc804\ud2b8\uc758 \ud604\uc7ac \uae30\uc220 \uc218\uc900\uacfc \ud65c\uc6a9 \uc0ac\ub840","ai-insight","ai-agent-trend.mdx","assets/images/blog/ai_agents_trend.webp","10\ubd84",B.Jf)
+B.KE=s(["AI","Local LLM","Security"],t.s)
+B.BA=new A.d6("\ub85c\uceec LLM\uacfc \ubcf4\uc548","Ollama \ub4f1\uc744 \ud65c\uc6a9\ud558\uc5ec \ub85c\uceec \ud658\uacbd\uc5d0\uc11c LLM\uc744 \uad6c\ub3d9\ud558\uace0 \ub370\uc774\ud130\ub97c \ubcf4\ud638\ud558\ub294 \ubc29\ubc95","ai-insight","local-llm-security.mdx","assets/images/blog/local_llm_security.webp","10\ubd84",B.KE)
+B.Jv=s(["Insight","Career","Future"],t.s)
+B.Bn=new A.d6("AI \uc2dc\ub300, \uac1c\ubc1c\uc790\uc758 \ubbf8\ub798","AI\uac00 \ucf54\ub529\ud558\ub294 \uc2dc\ub300, \uac1c\ubc1c\uc790\ub294 \uc5b4\ub5a4 \uc5ed\ub7c9\uc744 \ud0a4\uc6cc\uc57c \uc0b4\uc544\ub0a8\uc744 \uc218 \uc788\uc744\uae4c?","ai-insight","developer-future.mdx","assets/images/blog/developer_future.webp","8\ubd84",B.Jv)
+B.oT=s([B.Bu,B.Bt,B.BB,B.BF,B.BC,B.Bz,B.Bx,B.Bs,B.BD,B.Bw,B.Bp,B.Bm,B.Br,B.Bv,B.BE,B.By,B.Bq,B.Bo,B.BA,B.Bn],A.am("v<d6>"))
 B.H5=new A.b6(58502,"MaterialIcons",null,!1)
 B.EQ=new A.y(1,0.08235294117647059,0.396078431372549,0.7529411764705882,B.e)
 B.MC=new A.dg([50,B.en,100,B.jL,200,B.fQ,300,B.n8,400,B.nd,500,B.bd,600,B.nn,700,B.aK,800,B.EQ,900,B.nk],t.pl)
