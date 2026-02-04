@@ -41412,7 +41412,7 @@ return null},
 $S:0}
 A.L2.prototype={
 F(a){var s=this,r=null
-return A.ip(A.cE(new A.co(B.fy,new A.a4(B.b0,A.as(A.b([s.w8(a,"java","Latest in Java","Java"),B.a3,s.w8(a,"python","Latest in Python","Python"),B.a3,s.w8(a,"ai-basic","Latest in AI Dev","AI Dev"),B.a3,s.w8(a,"ai-insight","Latest in AI Insight","AI Insight"),B.c0],t.p),B.n,B.i,B.k),r),r),r,r),r,r,B.a5)},
+return A.ip(A.cE(new A.co(B.fy,new A.a4(B.b0,A.as(A.b([s.w8(a,"ai-basic","Latest in AI Dev","AI Dev"),B.a3,s.w8(a,"ai-insight","Latest in AI Insight","AI Insight"),B.a3,s.w8(a,"java","Latest in Java","Java"),B.a3,s.w8(a,"python","Latest in Python","Python"),B.c0],t.p),B.n,B.i,B.k),r),r),r,r),r,r,B.a5)},
 w8(a,b,c,d){var s,r,q=null,p=A.ayQ(b),o=A.f8(p,0,A.kv(3,"count",t.S),A.X(p).c).dJ(0)
 if(o.length===0)return B.aY
 p=A.S(c,q,q,B.Af,q)
@@ -41822,7 +41822,7 @@ F(a){var s=null,r=this.a2O(a),q=t.p
 q=A.b([new A.OM(this.c,s),new A.OG(A.as(A.b([B.zU,A.bc(A.cE(new A.co(B.fy,A.as(A.b([A.fe(B.dk,A.b([new A.Eq("\uac1c\uc778\uc815\ubcf4\ucc98\ub9ac\ubc29\uce68","/privacy",s),new A.SB(s),new A.Eq("\ubb38\uc758\ud558\uae30","/contact",s)],q),B.aS,8,16),B.q,B.Z3,B.z,B.Zu],q),B.B,B.i,B.k),s),s,s),B.o,s,s,new A.bl(B.fL,s,new A.df(new A.bT(B.bm,1,B.T,-1),B.t,B.t,B.t),s,s,s,B.D),s,s,B.Gb,1/0)],q),B.B,B.i,B.k),!1,s)],q)
 return A.aBI(r,B.l,new A.JO(q,B.a5,!1,s,s,B.B6,s,!1,s,0,s,s,B.zR,B.ax,s,s,B.ah,B.aD,s),new A.KD(B.Hs,B.jA,new A.a7Q(a),B.a1r,s))},
 a2O(a){var s,r=null,q=A.bc(r,B.o,B.bm,r,r,1,r,r,r),p=t.p,o=A.b([A.l1(!1,r,!0,A.bs(A.b([A.bc(B.DC,B.o,r,r,new A.bl(B.cT,r,r,A.br(8),r,r,B.D),36,r,r,36),B.bq,B.Yc],p),B.B,B.i,B.k,0,r),r,!0,r,r,r,r,r,r,r,r,r,new A.a7L(a),r,r,r,r,r,r,r),B.zU],p),n=t.w
-if(A.bW(a,r,n).w.a.a>800)B.b.M(o,A.b([new A.rb("Java","/blog/java",r),new A.rb("Python","/blog/python",r),new A.rb("AI Dev","/blog/ai-basic",r),new A.rb("AI Insight","/blog/ai-insight",r),B.cg,new A.PV(r)],p))
+if(A.bW(a,r,n).w.a.a>800)B.b.M(o,A.b([new A.rb("AI Dev","/blog/ai-basic",r),new A.rb("AI Insight","/blog/ai-insight",r),new A.rb("Java","/blog/java",r),new A.rb("Python","/blog/python",r),B.cg,new A.PV(r)],p))
 o=A.bs(o,B.B,B.i,B.k,0,r)
 s=A.b([],p)
 if(A.bW(a,r,n).w.a.a>800)B.b.M(s,A.b([B.cg,A.Ld(r,r,r,B.Hq,r,r,new A.a7M(),r,r,r,"\uac80\uc0c9"),A.Ld(r,r,r,B.Hn,r,r,new A.a7N(),r,r,r,"\ub2e4\ud06c \ubaa8\ub4dc"),B.RN],p))
@@ -41844,7 +41844,7 @@ A.a7P.prototype={
 $1(a){return A.cU(this.a).cw(a,null)},
 $S:58}
 A.a7O.prototype={
-$1(a){return A.b([B.Pd,B.Pa,B.Pb,B.Pc,B.P9,B.yL,B.yK],t.Do)},
+$1(a){return A.b([B.Pb,B.Pc,B.Pd,B.Pa,B.P9,B.yL,B.yK],t.Do)},
 $S:113}
 A.rb.prototype={
 F(a){var s,r,q,p,o=null,n=A.Ac(a,o,t.X)

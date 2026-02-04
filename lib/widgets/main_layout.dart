@@ -89,10 +89,10 @@ class MainLayout extends StatelessWidget {
             const Spacer(),
             // Desktop Menu
             if (MediaQuery.of(context).size.width > 800) ...[
-              _NavButton(label: 'Java', path: '/blog/java'),
-              _NavButton(label: 'Python', path: '/blog/python'),
               _NavButton(label: 'AI Dev', path: '/blog/ai-basic'),
               _NavButton(label: 'AI Insight', path: '/blog/ai-insight'),
+              _NavButton(label: 'Java', path: '/blog/java'),
+              _NavButton(label: 'Python', path: '/blog/python'),
               const SizedBox(width: 16),
               _AboutDropdown(),
             ],
@@ -119,12 +119,12 @@ class MainLayout extends StatelessWidget {
             icon: const Icon(Icons.menu, color: Colors.black87),
             onSelected: (value) => context.go(value),
             itemBuilder: (context) => [
-              const PopupMenuItem(value: '/blog/java', child: Text('Java')),
-              const PopupMenuItem(value: '/blog/python', child: Text('Python')),
               const PopupMenuItem(
                   value: '/blog/ai-basic', child: Text('AI Dev')),
               const PopupMenuItem(
                   value: '/blog/ai-insight', child: Text('AI Insight')),
+              const PopupMenuItem(value: '/blog/java', child: Text('Java')),
+              const PopupMenuItem(value: '/blog/python', child: Text('Python')),
               const PopupMenuDivider(),
               const PopupMenuItem(value: '/about', child: Text('소개 (About)')),
               const PopupMenuItem(value: '/about/apps', child: Text('Apps')),

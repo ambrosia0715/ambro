@@ -18,15 +18,15 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSection(context, 'java', 'Latest in Java', 'Java'),
-                const SizedBox(height: 32),
-                _buildSection(context, 'python', 'Latest in Python', 'Python'),
-                const SizedBox(height: 32),
                 _buildSection(
                     context, 'ai-basic', 'Latest in AI Dev', 'AI Dev'),
                 const SizedBox(height: 32),
                 _buildSection(context, 'ai-insight', 'Latest in AI Insight',
                     'AI Insight'),
+                const SizedBox(height: 32),
+                _buildSection(context, 'java', 'Latest in Java', 'Java'),
+                const SizedBox(height: 32),
+                _buildSection(context, 'python', 'Latest in Python', 'Python'),
                 const SizedBox(height: 48),
               ],
             ),
