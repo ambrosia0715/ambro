@@ -6,8 +6,10 @@
 .pub/
 *.iml
 *.lock
-build/
+# build/ 제외하고 build/web/만 트래킹 (Vercel 배포용)
+build/*
 !build/web/
+!build/web/**
 
 # Web related
 
