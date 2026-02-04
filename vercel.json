@@ -4,6 +4,10 @@
   "installCommand": "echo 'No install needed'",
   "rewrites": [
     {
+      "source": "/ads.txt",
+      "destination": "/ads.txt"
+    },
+    {
       "source": "/app-ads.txt",
       "destination": "/app-ads.txt"
     },
