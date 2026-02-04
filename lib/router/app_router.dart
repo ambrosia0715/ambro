@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../pages/home_page.dart';
+import '../pages/about_page.dart';
 import '../pages/about_apps_page.dart';
 import '../pages/blog_list_page.dart';
 import '../pages/blog_post_page.dart';
@@ -54,6 +54,10 @@ final GoRouter appRouter = GoRouter(
           ],
         ),
         // About & Apps
+        GoRoute(
+          path: '/about',
+          pageBuilder: (context, state) => _noTransitionPage(const AboutPage()),
+        ),
         GoRoute(
           path: '/about/apps',
           pageBuilder: (context, state) =>

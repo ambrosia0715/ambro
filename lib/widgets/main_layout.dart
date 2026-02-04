@@ -126,7 +126,7 @@ class MainLayout extends StatelessWidget {
               const PopupMenuItem(
                   value: '/blog/ai-insight', child: Text('AI Insight')),
               const PopupMenuDivider(),
-              const PopupMenuItem(value: '/', child: Text('소개 (About)')),
+              const PopupMenuItem(value: '/about', child: Text('소개 (About)')),
               const PopupMenuItem(value: '/about/apps', child: Text('Apps')),
             ],
           ),
@@ -242,7 +242,7 @@ class _AboutDropdown extends StatelessWidget {
         ),
         itemBuilder: (context) => [
           const PopupMenuItem(
-            value: '/',
+            value: '/about',
             child: Text('소개 (About)'),
           ),
           const PopupMenuItem(
