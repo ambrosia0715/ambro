@@ -12,6 +12,18 @@
       "destination": "/app-ads.txt"
     },
     {
+      "source": "/robots.txt",
+      "destination": "/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/sitemap.xml"
+    },
+    {
+      "source": "/rss.xml",
+      "destination": "/rss.xml"
+    },
+    {
       "source": "/((?!assets/|.*\\.).*)",
       "destination": "/index.html"
     }
