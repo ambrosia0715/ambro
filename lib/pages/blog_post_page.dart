@@ -202,25 +202,49 @@ class _BlogPostPageState extends State<BlogPostPage> {
                         data: _content ?? '',
                         selectable: true,
                         imageBuilder: (uri, title, altText) {
+                          final raw = uri.toString();
                           final path = uri.path;
+
+                          // 1) 본문에서 사용하는 로컬 asset 이미지 (assets/images/...)
+                          if (raw.contains('assets/images/')) {
+                            // uri가 절대 URL이든 상대 경로든 상관없이 assets/images 부터 잘라서 사용
+                            final idx = raw.indexOf('assets/images/');
+                            final assetPath =
+                                raw.substring(idx); // assets/images/...
+
+                            if (kIsWeb) {
+                              // Flutter 웹 빌드 구조상 /assets/assets/images/... 로 접근해야 함
+                              return Image.network(
+                                '/assets/$assetPath',
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) =>
+                                    _buildImageError(altText),
+                              );
+                            } else {
+                              return Image.asset(
+                                assetPath,
+                                fit: BoxFit.contain,
+                                errorBuilder: (_, __, ___) =>
+                                    _buildImageError(altText),
+                              );
+                            }
+                          }
+
+                          // 2) 외부 URL (예: https://...)
                           if (uri.scheme == 'http' || uri.scheme == 'https') {
                             return Image.network(
-                              uri.toString(),
+                              raw,
                               fit: BoxFit.contain,
                               errorBuilder: (_, __, ___) =>
                                   _buildImageError(altText),
                             );
                           }
-                          if (kIsWeb && path.startsWith('assets/')) {
-                            return Image.network(
-                              '/assets/$path',
-                              fit: BoxFit.contain,
-                              errorBuilder: (_, __, ___) =>
-                                  _buildImageError(altText),
-                            );
-                          }
+
+                          // 3) 기타 로컬 경로 (예외 케이스)
+                          final localPath =
+                              path.isNotEmpty ? path : raw; // fallback
                           return Image.asset(
-                            path,
+                            localPath,
                             fit: BoxFit.contain,
                             errorBuilder: (_, __, ___) =>
                                 _buildImageError(altText),
