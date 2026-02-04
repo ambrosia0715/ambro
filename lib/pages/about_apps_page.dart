@@ -7,8 +7,8 @@ class AboutAppsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1200),
@@ -16,10 +16,21 @@ class AboutAppsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                '앱',
+                'Apps',
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
+                  color: Color(0xFF1A1A1A),
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Ambro에서 제공하는 앱들을 만나보세요',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 48),
@@ -106,10 +117,10 @@ class _CategorySection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+            color: Color(0xFF1A1A1A),
           ),
         ),
         const SizedBox(height: 8),
@@ -169,6 +180,11 @@ class _AppCard extends StatelessWidget {
     return SizedBox(
       width: 350,
       child: Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: Colors.grey.shade200),
+        ),
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
@@ -182,7 +198,7 @@ class _AppCard extends StatelessWidget {
                     width: 64,
                     height: 64,
                     decoration: BoxDecoration(
-                      color: (iconColor ?? Theme.of(context).primaryColor)
+                      color: (iconColor ?? const Color(0xFF6200EE))
                           .withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -195,7 +211,7 @@ class _AppCard extends StatelessWidget {
                           return Icon(
                             Icons.apps,
                             size: 32,
-                            color: iconColor ?? Theme.of(context).primaryColor,
+                            color: iconColor ?? const Color(0xFF6200EE),
                           );
                         },
                       ),
@@ -220,9 +236,15 @@ class _AppCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: onTap,
-                  child: const Text('자세히 보기'),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: onTap,
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color(0xFF1976D2),
+                    ),
+                    child: const Text('자세히 보기 →'),
+                  ),
                 ),
               ],
             ),

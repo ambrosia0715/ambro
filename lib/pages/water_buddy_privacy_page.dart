@@ -7,8 +7,8 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -19,8 +19,11 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
                 // Back Button
                 TextButton.icon(
                   onPressed: () => context.go('/apps/mate/water-buddy'),
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, size: 18),
                   label: const Text('앱 정보로 돌아가기'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF1976D2),
+                  ),
                 ),
                 const SizedBox(height: 24),
 
@@ -30,6 +33,8 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A1A1A),
+                    letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -96,8 +101,7 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _BulletPoint(
-                        text: '식물 정보: 식물 이름, 사진, 물주기 주기, 마지막 물 준 날짜'),
+                    _BulletPoint(text: '식물 정보: 식물 이름, 사진, 물주기 주기, 마지막 물 준 날짜'),
                     _BulletPoint(text: '알림 설정: 알림 시간 및 활성화 상태'),
                     _BulletPoint(text: '앱 설정: 사용자 환경 설정'),
                     const SizedBox(height: 16),
@@ -194,10 +198,8 @@ class WaterBuddyPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(
-                        text:
-                            'Android: 설정 > Google > 광고 > 광고 맞춤설정 선택 해제'),
-                    _BulletPoint(
-                        text: 'iOS: 설정 > 개인정보 보호 > 광고 > 광고 추적 제한'),
+                        text: 'Android: 설정 > Google > 광고 > 광고 맞춤설정 선택 해제'),
+                    _BulletPoint(text: 'iOS: 설정 > 개인정보 보호 > 광고 > 광고 추적 제한'),
                   ],
                 ),
                 const SizedBox(height: 24),

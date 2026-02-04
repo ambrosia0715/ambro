@@ -9,8 +9,8 @@ class OngiPrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -21,8 +21,11 @@ class OngiPrivacyPage extends StatelessWidget {
                 // 뒤로가기 버튼
                 TextButton.icon(
                   onPressed: () => context.go('/apps/aicent/ongi'),
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, size: 18),
                   label: const Text('앱 정보로 돌아가기'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF1976D2),
+                  ),
                 ),
                 const SizedBox(height: 24),
 
@@ -32,6 +35,8 @@ class OngiPrivacyPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A1A1A),
+                    letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -98,18 +103,15 @@ class OngiPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(text: '인증 정보'),
+                    _BulletPoint(text: '  - 이메일 주소 (이메일 회원가입 시)'),
                     _BulletPoint(
-                        text: '  - 이메일 주소 (이메일 회원가입 시)'),
-                    _BulletPoint(
-                        text:
-                            '  - 비밀번호 (Firebase Authentication에서 암호화하여 저장)'),
+                        text: '  - 비밀번호 (Firebase Authentication에서 암호화하여 저장)'),
                     _BulletPoint(
                         text:
                             '  - Google 계정 정보 (Google 로그인 시): 이메일, 이름, 프로필 사진 URL'),
                     const SizedBox(height: 12),
                     _BulletPoint(text: '일기 데이터'),
-                    _BulletPoint(
-                        text: '  - 작성한 일기 내용 (감정, 목표, 할 일, 마음 한 줄)'),
+                    _BulletPoint(text: '  - 작성한 일기 내용 (감정, 목표, 할 일, 마음 한 줄)'),
                     _BulletPoint(text: '  - AI 코멘트'),
                     _BulletPoint(text: '  - 작성 일시 및 수정 일시'),
                     const SizedBox(height: 12),
@@ -127,13 +129,11 @@ class OngiPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(text: '기기 정보'),
-                    _BulletPoint(
-                        text: '  - 기기 모델, 운영체제 버전, 고유 식별자 (디바이스 ID)'),
+                    _BulletPoint(text: '  - 기기 모델, 운영체제 버전, 고유 식별자 (디바이스 ID)'),
                     _BulletPoint(text: '  - 앱 버전 정보'),
                     const SizedBox(height: 12),
                     _BulletPoint(text: '서비스 이용 정보'),
-                    _BulletPoint(
-                        text: '  - 서비스 이용 기록, 접속 로그, 쿠키, 접속 IP 정보'),
+                    _BulletPoint(text: '  - 서비스 이용 기록, 접속 로그, 쿠키, 접속 IP 정보'),
                     const SizedBox(height: 16),
                     const Text(
                       '2.2 수집 방법',
@@ -215,8 +215,7 @@ class OngiPrivacyPage extends StatelessWidget {
                         text:
                             '회원 정보: 회원 탈퇴 시까지 (단, 관련 법령에 따라 일정 기간 보관 필요 시 해당 기간 동안 보관)'),
                     _BulletPoint(
-                        text:
-                            '일기 데이터: 회원 탈퇴 시까지 (이용자가 삭제 요청 시 즉시 삭제)'),
+                        text: '일기 데이터: 회원 탈퇴 시까지 (이용자가 삭제 요청 시 즉시 삭제)'),
                     _BulletPoint(text: '로그 정보: 최대 1년'),
                     const SizedBox(height: 12),
                     const Text(
@@ -264,8 +263,7 @@ class OngiPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     _BulletPoint(text: '제공 항목: 이메일, 일기 데이터, 사용자 프로필 정보'),
-                    _BulletPoint(
-                        text: '이용 목적: 사용자 인증, 데이터 저장 및 동기화, 서비스 분석'),
+                    _BulletPoint(text: '이용 목적: 사용자 인증, 데이터 저장 및 동기화, 서비스 분석'),
                     _BulletPoint(text: '보유 기간: 회원 탈퇴 시까지'),
                     const SizedBox(height: 12),
                     const Text(
@@ -275,11 +273,9 @@ class OngiPrivacyPage extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    _BulletPoint(
-                        text: '제공 항목: 일기 내용 (감정, 목표, 할 일, 마음 한 줄)'),
+                    _BulletPoint(text: '제공 항목: 일기 내용 (감정, 목표, 할 일, 마음 한 줄)'),
                     _BulletPoint(text: '이용 목적: AI 코멘트 생성'),
-                    _BulletPoint(
-                        text: '보유 기간: AI 코멘트 생성 후 즉시 삭제 (저장하지 않음)'),
+                    _BulletPoint(text: '보유 기간: AI 코멘트 생성 후 즉시 삭제 (저장하지 않음)'),
                     const SizedBox(height: 12),
                     const Text(
                       'Google AdMob',
@@ -457,13 +453,10 @@ class OngiPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(text: '법령에 특별한 규정이 있는 경우'),
+                    _BulletPoint(text: '다른 사람의 생명·신체를 해할 우려가 있는 경우'),
+                    _BulletPoint(text: '다른 사람의 재산과 이익을 부당하게 침해할 우려가 있는 경우'),
                     _BulletPoint(
-                        text: '다른 사람의 생명·신체를 해할 우려가 있는 경우'),
-                    _BulletPoint(
-                        text: '다른 사람의 재산과 이익을 부당하게 침해할 우려가 있는 경우'),
-                    _BulletPoint(
-                        text:
-                            '공공기관이 법령 등에서 정하는 소관 업무의 수행을 위하여 불가피한 경우'),
+                        text: '공공기관이 법령 등에서 정하는 소관 업무의 수행을 위하여 불가피한 경우'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -485,7 +478,8 @@ class OngiPrivacyPage extends StatelessWidget {
                       style: TextStyle(fontSize: 16, height: 1.6),
                     ),
                     const SizedBox(height: 8),
-                    _NumberedPoint(number: '1', text: '파기 대상: 수집·이용 목적이 달성된 개인정보'),
+                    _NumberedPoint(
+                        number: '1', text: '파기 대상: 수집·이용 목적이 달성된 개인정보'),
                     _NumberedPoint(
                         number: '2', text: '파기 시점: 회원 탈퇴 요청 시 또는 보유기간 경과 시'),
                     _NumberedPoint(
@@ -601,7 +595,8 @@ class OngiPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(text: 'Android: Google Advertising ID'),
-                    _BulletPoint(text: 'iOS: Identifier for Advertisers (IDFA)'),
+                    _BulletPoint(
+                        text: 'iOS: Identifier for Advertisers (IDFA)'),
                     const SizedBox(height: 8),
                     const Text(
                       '광고 식별자는 맞춤형 광고 제공을 위해 사용되며, 기기 설정에서 광고 추적을 제한할 수 있습니다.',
@@ -895,4 +890,3 @@ class _ContactItem extends StatelessWidget {
     );
   }
 }
-

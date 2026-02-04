@@ -8,8 +8,8 @@ class WaterBuddyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -193,8 +193,7 @@ class WaterBuddyPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _BulletPoint(
-                            text: '식물을 키우지만 물주는 날을 자주 잊는 분'),
+                        _BulletPoint(text: '식물을 키우지만 물주는 날을 자주 잊는 분'),
                         _BulletPoint(text: '여러 종류의 식물을 관리하는 분'),
                         _BulletPoint(text: '식물 초보자부터 전문가까지'),
                         _BulletPoint(text: '간단하고 가벼운 앱을 선호하는 분'),
@@ -223,12 +222,16 @@ class WaterBuddyPage extends StatelessWidget {
                           spacing: 12,
                           runSpacing: 12,
                           children: [
-                            _HighlightChip(icon: Icons.money_off, label: '완전 무료'),
+                            _HighlightChip(
+                                icon: Icons.money_off, label: '완전 무료'),
                             _HighlightChip(
                                 icon: Icons.offline_bolt, label: '오프라인 작동'),
-                            _HighlightChip(icon: Icons.security, label: '개인정보 수집 없음'),
-                            _HighlightChip(icon: Icons.language, label: '한국어 지원'),
-                            _HighlightChip(icon: Icons.flash_on, label: '가볍고 빠름'),
+                            _HighlightChip(
+                                icon: Icons.security, label: '개인정보 수집 없음'),
+                            _HighlightChip(
+                                icon: Icons.language, label: '한국어 지원'),
+                            _HighlightChip(
+                                icon: Icons.flash_on, label: '가볍고 빠름'),
                           ],
                         ),
                       ],

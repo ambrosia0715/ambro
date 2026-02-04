@@ -10,8 +10,8 @@ class PillPingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -257,7 +257,8 @@ class PillPingPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        _InfoRow(label: 'Android', value: 'Android 8.0 (API 26) 이상'),
+                        _InfoRow(
+                            label: 'Android', value: 'Android 8.0 (API 26) 이상'),
                         _InfoRow(label: 'iOS', value: 'iOS 14.0 이상'),
                         _InfoRow(
                             label: '인터넷 연결',
@@ -285,8 +286,7 @@ class PillPingPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         const _InfoRow(label: '개발자', value: 'MinSeok Kang'),
                         const _InfoRow(label: '버전', value: '1.0.0 (Build 1)'),
-                        const _InfoRow(
-                            label: '카테고리', value: '라이프스타일, 건강'),
+                        const _InfoRow(label: '카테고리', value: '라이프스타일, 건강'),
                         const _InfoRow(label: '연령 등급', value: '전체 이용가'),
                         const _InfoRow(label: '가격', value: '무료 (광고 포함)'),
                         const SizedBox(height: 16),
@@ -560,4 +560,3 @@ class _DownloadButton extends StatelessWidget {
     );
   }
 }
-

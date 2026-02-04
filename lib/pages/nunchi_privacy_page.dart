@@ -7,8 +7,8 @@ class NunchiPrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -19,8 +19,11 @@ class NunchiPrivacyPage extends StatelessWidget {
                 // Back Button
                 TextButton.icon(
                   onPressed: () => context.go('/apps/play/nunchi-game'),
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, size: 18),
                   label: const Text('앱 정보로 돌아가기'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF1976D2),
+                  ),
                 ),
                 const SizedBox(height: 24),
 
@@ -30,6 +33,8 @@ class NunchiPrivacyPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A1A1A),
+                    letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 8),

@@ -9,8 +9,8 @@ class PillPingPrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -21,8 +21,11 @@ class PillPingPrivacyPage extends StatelessWidget {
                 // 뒤로가기 버튼
                 TextButton.icon(
                   onPressed: () => context.go('/apps/mate/pill-ping'),
-                  icon: const Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back, size: 18),
                   label: const Text('앱 정보로 돌아가기'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: const Color(0xFF1976D2),
+                  ),
                 ),
                 const SizedBox(height: 24),
 
@@ -32,6 +35,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
+                    color: Color(0xFF1A1A1A),
+                    letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -63,8 +68,7 @@ class PillPingPrivacyPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     _BulletPoint(text: '약 이름: 사용자가 입력한 약의 이름'),
                     _BulletPoint(
-                        text:
-                            '복용 시간 설정: 아침, 점심, 저녁 복용 여부 및 각 시간대의 시각(시, 분)'),
+                        text: '복용 시간 설정: 아침, 점심, 저녁 복용 여부 및 각 시간대의 시각(시, 분)'),
                     _BulletPoint(
                         text:
                             '복용 기록: 예정된 복용 시간, 실제 복용 시간, 복용 상태(예정/복용/미루기/누락)'),
@@ -77,10 +81,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text: '기기 정보: 알림 발송을 위한 기기 식별자 (로컬에서만 사용)'),
-                    _BulletPoint(
-                        text: '알림 권한 상태: 알림 기능 작동을 위한 권한 상태'),
+                    _BulletPoint(text: '기기 정보: 알림 발송을 위한 기기 식별자 (로컬에서만 사용)'),
+                    _BulletPoint(text: '알림 권한 상태: 알림 기능 작동을 위한 권한 상태'),
                     const SizedBox(height: 16),
                     const Text(
                       '1.3 광고 관련 정보',
@@ -122,7 +124,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                         text: '앱 기능 개선 - 사용자 경험 향상, 버그 수정 및 기능 추가'),
                     _NumberedPoint(
                         number: '3',
-                        text: '광고 표시 - 무료 앱 운영을 위한 광고 수익화, Google AdMob을 통한 광고 표시'),
+                        text:
+                            '광고 표시 - 무료 앱 운영을 위한 광고 수익화, Google AdMob을 통한 광고 표시'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -139,13 +142,9 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text: '모든 데이터는 사용자의 기기 내부 저장소에만 저장됩니다'),
-                    _BulletPoint(
-                        text: '클라우드나 외부 서버로 데이터가 전송되지 않습니다'),
-                    _BulletPoint(
-                        text:
-                            '데이터는 기기의 앱 전용 저장 공간에 암호화되어 저장됩니다'),
+                    _BulletPoint(text: '모든 데이터는 사용자의 기기 내부 저장소에만 저장됩니다'),
+                    _BulletPoint(text: '클라우드나 외부 서버로 데이터가 전송되지 않습니다'),
+                    _BulletPoint(text: '데이터는 기기의 앱 전용 저장 공간에 암호화되어 저장됩니다'),
                     const SizedBox(height: 12),
                     const Text(
                       '3.2 정보 보관 기간',
@@ -167,14 +166,9 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text:
-                            '데이터는 기기 내부에만 저장되므로 외부 유출 위험이 최소화됩니다'),
-                    _BulletPoint(
-                        text: 'Hive 데이터베이스를 사용하여 안전하게 저장됩니다'),
-                    _BulletPoint(
-                        text:
-                            '인터넷 연결 없이도 앱의 모든 기능을 사용할 수 있습니다'),
+                    _BulletPoint(text: '데이터는 기기 내부에만 저장되므로 외부 유출 위험이 최소화됩니다'),
+                    _BulletPoint(text: 'Hive 데이터베이스를 사용하여 안전하게 저장됩니다'),
+                    _BulletPoint(text: '인터넷 연결 없이도 앱의 모든 기능을 사용할 수 있습니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -204,11 +198,9 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
+                    _BulletPoint(text: 'Google AdMob을 사용하여 광고를 표시합니다'),
                     _BulletPoint(
-                        text: 'Google AdMob을 사용하여 광고를 표시합니다'),
-                    _BulletPoint(
-                        text:
-                            'Google AdMob은 자체 개인정보 처리방침에 따라 정보를 수집할 수 있습니다'),
+                        text: 'Google AdMob은 자체 개인정보 처리방침에 따라 정보를 수집할 수 있습니다'),
                     _BulletPoint(
                         text:
                             'Google AdMob 개인정보 처리방침: https://policies.google.com/privacy'),
@@ -222,8 +214,7 @@ class PillPingPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(
-                        text:
-                            '법원의 명령이나 법적 절차에 따라 정보를 제공해야 하는 경우에만 제공됩니다'),
+                        text: '법원의 명령이나 법적 절차에 따라 정보를 제공해야 하는 경우에만 제공됩니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -241,8 +232,7 @@ class PillPingPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(
-                        text:
-                            '앱 내에서 언제든지 저장된 약 정보와 복용 기록을 확인할 수 있습니다'),
+                        text: '앱 내에서 언제든지 저장된 약 정보와 복용 기록을 확인할 수 있습니다'),
                     const SizedBox(height: 12),
                     const Text(
                       '5.2 데이터 수정',
@@ -252,11 +242,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text: '앱 내에서 약 정보를 수정하거나 삭제할 수 있습니다'),
-                    _BulletPoint(
-                        text:
-                            '복용 기록은 수정할 수 없으며, 복용 상태만 변경할 수 있습니다'),
+                    _BulletPoint(text: '앱 내에서 약 정보를 수정하거나 삭제할 수 있습니다'),
+                    _BulletPoint(text: '복용 기록은 수정할 수 없으며, 복용 상태만 변경할 수 있습니다'),
                     const SizedBox(height: 12),
                     const Text(
                       '5.3 데이터 삭제',
@@ -266,10 +253,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text: '앱 내에서 개별 약 정보를 삭제할 수 있습니다'),
-                    _BulletPoint(
-                        text: '앱을 삭제하면 모든 데이터가 함께 삭제됩니다'),
+                    _BulletPoint(text: '앱 내에서 개별 약 정보를 삭제할 수 있습니다'),
+                    _BulletPoint(text: '앱을 삭제하면 모든 데이터가 함께 삭제됩니다'),
                     const SizedBox(height: 12),
                     const Text(
                       '5.4 알림 권한 거부',
@@ -280,10 +265,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     _BulletPoint(
-                        text:
-                            '알림 권한을 거부할 수 있으나, 이 경우 알림 기능이 작동하지 않습니다'),
-                    _BulletPoint(
-                        text: '알림 권한은 설정에서 언제든지 변경할 수 있습니다'),
+                        text: '알림 권한을 거부할 수 있으나, 이 경우 알림 기능이 작동하지 않습니다'),
+                    _BulletPoint(text: '알림 권한은 설정에서 언제든지 변경할 수 있습니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -318,10 +301,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _BulletPoint(
-                        text: 'Google AdMob은 사용자에게 맞춤 광고를 표시할 수 있습니다'),
-                    _BulletPoint(
-                        text: '광고 개인화 설정은 기기 설정에서 변경할 수 있습니다'),
+                    _BulletPoint(text: 'Google AdMob은 사용자에게 맞춤 광고를 표시할 수 있습니다'),
+                    _BulletPoint(text: '광고 개인화 설정은 기기 설정에서 변경할 수 있습니다'),
                     const SizedBox(height: 12),
                     const Text(
                       '6.3 광고 ID 재설정',
@@ -331,11 +312,9 @@ class PillPingPrivacyPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
+                    _BulletPoint(text: 'Android: 설정 > Google > 광고 > 광고 ID 재설정'),
                     _BulletPoint(
-                        text: 'Android: 설정 > Google > 광고 > 광고 ID 재설정'),
-                    _BulletPoint(
-                        text:
-                            'iOS: 설정 > 개인정보 보호 > Apple 광고 > 개인화된 광고 끄기'),
+                        text: 'iOS: 설정 > 개인정보 보호 > Apple 광고 > 개인화된 광고 끄기'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -344,11 +323,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                 _SectionCard(
                   title: '7. 아동의 개인정보 보호',
                   children: [
-                    _BulletPoint(
-                        text: '이 앱은 13세 미만의 아동을 대상으로 하지 않습니다'),
-                    _BulletPoint(
-                        text:
-                            '13세 미만의 아동이 사용하는 경우, 보호자의 동의가 필요합니다'),
+                    _BulletPoint(text: '이 앱은 13세 미만의 아동을 대상으로 하지 않습니다'),
+                    _BulletPoint(text: '13세 미만의 아동이 사용하는 경우, 보호자의 동의가 필요합니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -357,15 +333,9 @@ class PillPingPrivacyPage extends StatelessWidget {
                 _SectionCard(
                   title: '8. 개인정보 처리방침 변경',
                   children: [
-                    _BulletPoint(
-                        text:
-                            '개인정보 처리방침은 필요에 따라 변경될 수 있습니다'),
-                    _BulletPoint(
-                        text:
-                            '중요한 변경사항이 있는 경우 앱 내 공지 또는 이메일로 알려드립니다'),
-                    _BulletPoint(
-                        text:
-                            '변경된 개인정보 처리방침은 앱에 게시된 시점부터 효력이 발생합니다'),
+                    _BulletPoint(text: '개인정보 처리방침은 필요에 따라 변경될 수 있습니다'),
+                    _BulletPoint(text: '중요한 변경사항이 있는 경우 앱 내 공지 또는 이메일로 알려드립니다'),
+                    _BulletPoint(text: '변경된 개인정보 처리방침은 앱에 게시된 시점부터 효력이 발생합니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -376,11 +346,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                   children: [
                     _BulletPoint(text: '앱 자체는 쿠키를 사용하지 않습니다'),
                     _BulletPoint(
-                        text:
-                            'Google AdMob은 쿠키 및 유사한 추적 기술을 사용할 수 있습니다'),
-                    _BulletPoint(
-                        text:
-                            '자세한 내용은 Google AdMob 개인정보 처리방침을 참고하세요'),
+                        text: 'Google AdMob은 쿠키 및 유사한 추적 기술을 사용할 수 있습니다'),
+                    _BulletPoint(text: '자세한 내용은 Google AdMob 개인정보 처리방침을 참고하세요'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -389,11 +356,8 @@ class PillPingPrivacyPage extends StatelessWidget {
                 _SectionCard(
                   title: '10. 국제 사용자',
                   children: [
-                    _BulletPoint(
-                        text: '이 앱은 대한민국 법률에 따라 운영됩니다'),
-                    _BulletPoint(
-                        text:
-                            '해외에서 사용하는 경우, 해당 국가의 법률도 적용될 수 있습니다'),
+                    _BulletPoint(text: '이 앱은 대한민국 법률에 따라 운영됩니다'),
+                    _BulletPoint(text: '해외에서 사용하는 경우, 해당 국가의 법률도 적용될 수 있습니다'),
                   ],
                 ),
                 const SizedBox(height: 24),
@@ -664,4 +628,3 @@ class _ContactItem extends StatelessWidget {
     );
   }
 }
-

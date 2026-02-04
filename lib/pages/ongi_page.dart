@@ -10,8 +10,8 @@ class OngiPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 600),
-      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(minHeight: 800),
+      padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 900),
@@ -213,15 +213,11 @@ class OngiPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 16),
-                        _BulletPoint(
-                            text: '매일 일기를 쓰고 싶지만 시간이 부족한 분'),
+                        _BulletPoint(text: '매일 일기를 쓰고 싶지만 시간이 부족한 분'),
                         _BulletPoint(text: '간단하게 하루를 기록하고 싶은 분'),
-                        _BulletPoint(
-                            text: 'AI의 응원 메시지로 하루를 마무리하고 싶은 분'),
-                        _BulletPoint(
-                            text: '감정을 추적하고 자기 이해를 높이고 싶은 분'),
-                        _BulletPoint(
-                            text: '목표와 할 일을 함께 관리하고 싶은 분'),
+                        _BulletPoint(text: 'AI의 응원 메시지로 하루를 마무리하고 싶은 분'),
+                        _BulletPoint(text: '감정을 추적하고 자기 이해를 높이고 싶은 분'),
+                        _BulletPoint(text: '목표와 할 일을 함께 관리하고 싶은 분'),
                       ],
                     ),
                   ),
@@ -245,11 +241,9 @@ class OngiPage extends StatelessWidget {
                         const SizedBox(height: 16),
                         const _InfoRow(label: '개발자', value: 'Ambro (엠브로)'),
                         const _InfoRow(label: '버전', value: '1.0.0'),
-                        const _InfoRow(
-                            label: '카테고리', value: '일기, AI, 생산성'),
+                        const _InfoRow(label: '카테고리', value: '일기, AI, 생산성'),
                         const _InfoRow(label: '연령 등급', value: '전체 이용가'),
-                        const _InfoRow(
-                            label: '가격', value: '무료 (프리미엄 구독 가능)'),
+                        const _InfoRow(label: '가격', value: '무료 (프리미엄 구독 가능)'),
                         const _InfoRow(
                             label: '지원 플랫폼',
                             value: 'iOS 13.0 이상, Android 5.0 이상'),
@@ -500,4 +494,3 @@ class _DownloadButton extends StatelessWidget {
     );
   }
 }
-
