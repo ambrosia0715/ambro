@@ -136,6 +136,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ambro.space/blog/ai-basic/vibe-coding.mdx</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ambro.space/blog/ai-insight/openclaw-guide.mdx</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ambro.space/blog/ai-insight/rag-strategy.mdx</loc>
     <lastmod>2026-02-04</lastmod>
     <changefreq>monthly</changefreq>

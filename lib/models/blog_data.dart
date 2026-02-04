@@ -206,8 +206,30 @@ class BlogData {
       thumbnailUrl: 'assets/images/blog/ai_unit_testing.webp',
       isLocalImage: true,
     ),
+    BlogPost(
+      title: '바이브코딩(Vibe Coding)의 개념과 기초',
+      description: '자연어로 설명하면 AI가 코드를 생성하는 바이브코딩의 핵심 개념과 시작하는 방법',
+      category: 'ai-basic',
+      date: '2026-02-05',
+      fileName: 'vibe-coding.mdx',
+      readTime: '9분',
+      tags: ['AI', '바이브코딩', 'Vibe Coding', 'Cursor'],
+      thumbnailUrl: 'assets/images/blog/vibe_coding.webp',
+      isLocalImage: true,
+    ),
 
     // AI Insight
+    BlogPost(
+      title: 'OpenClaw 최신 가이드: 개인용 AI 에이전트',
+      description: '메신저에서 실질적인 업무를 수행하는 오픈소스 AI 에이전트 OpenClaw의 최신 정보와 활용법',
+      category: 'ai-insight',
+      date: '2026-02-05',
+      fileName: 'openclaw-guide.mdx',
+      readTime: '10분',
+      tags: ['AI', 'OpenClaw', 'Agent', '오픈소스'],
+      thumbnailUrl: 'assets/images/blog/openclaw_ai.webp',
+      isLocalImage: true,
+    ),
     BlogPost(
       title: 'RAG(검색 증강 생성) 전략 가이드',
       description: 'LLM의 환각 현상을 줄이고 최신 정보를 반영하는 RAG 시스템 구축 전략',
@@ -266,6 +288,8 @@ class BlogData {
   ];
 
   static List<BlogPost> getPostsByCategory(String categoryId) {
-    return posts.where((post) => post.category == categoryId).toList();
+    final list = posts.where((post) => post.category == categoryId).toList();
+    list.sort((a, b) => b.date.compareTo(a.date)); // 최신순
+    return list;
   }
 }
