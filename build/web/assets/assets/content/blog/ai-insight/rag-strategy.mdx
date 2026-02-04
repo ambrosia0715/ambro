@@ -9,7 +9,7 @@ LLM(Large Language Model)은 강력하지만 두 가지 치명적인 약점이 �
 
 RAG는 시험 볼 때 '오픈북 테스트'를 하는 것과 같습니다. LLM이 머릿속에 있는 지식(학습 데이터)만으로 답하는 것이 아니라, 외부 도서관(Vector DB)에서 관련 정보를 찾아보고(Retrieval) 그 정보를 바탕으로 답을 생성(Generation)하는 방식입니다.
 
-![RAG Architecture Diagram](https://placehold.co/800x400/png?text=RAG+Architecture)
+![RAG Architecture Diagram](assets/images/blog/rag_architecture.webp)
 
 1.  **Ingestion:** 문서를 쪼개고(Chunking), 임베딩(Embedding)하여 벡터 DB에 저장합니다.
 2.  **Retrieval:** 사용자의 질문과 가장 유사한 문서를 벡터 DB에서 검색합니다.

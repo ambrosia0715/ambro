@@ -174,15 +174,17 @@ class _BlogPostPageState extends State<BlogPostPage> {
                                       '/assets/${_postData!.thumbnailUrl}',
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          const SizedBox(),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(),
                                     )
                                   : Image.asset(
                                       _postData!.thumbnailUrl,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) =>
-                                          const SizedBox(),
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(),
                                     ))
                               : Image.network(
                                   _postData!.thumbnailUrl,
@@ -195,10 +197,35 @@ class _BlogPostPageState extends State<BlogPostPage> {
                         const SizedBox(height: 48),
                       ],
 
-                      // Markdown Content
+                      // Markdown Content (imageBuilder: 웹에서 본문 이미지 asset 경로 올바르게 로드)
                       MarkdownBody(
                         data: _content ?? '',
                         selectable: true,
+                        imageBuilder: (uri, title, altText) {
+                          final path = uri.path;
+                          if (uri.scheme == 'http' || uri.scheme == 'https') {
+                            return Image.network(
+                              uri.toString(),
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) =>
+                                  _buildImageError(altText),
+                            );
+                          }
+                          if (kIsWeb && path.startsWith('assets/')) {
+                            return Image.network(
+                              '/assets/$path',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, __, ___) =>
+                                  _buildImageError(altText),
+                            );
+                          }
+                          return Image.asset(
+                            path,
+                            fit: BoxFit.contain,
+                            errorBuilder: (_, __, ___) =>
+                                _buildImageError(altText),
+                          );
+                        },
                         styleSheet: MarkdownStyleSheet(
                           h1: const TextStyle(
                               fontSize: 32,
@@ -314,6 +341,20 @@ class _BlogPostPageState extends State<BlogPostPage> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImageError(String? altText) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Text(
+          altText ?? 'Image',
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+          textAlign: TextAlign.center,
         ),
       ),
     );

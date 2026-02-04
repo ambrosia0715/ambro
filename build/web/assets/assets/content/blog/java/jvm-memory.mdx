@@ -9,7 +9,7 @@ Java 개발자라면 누구나 한 번쯤 `OutOfMemoryError`나 `StackOverflowEr
 
 JVM이 OS로부터 할당받은 메모리 영역을 런타임 데이터 영역이라고 합니다. 이 영역은 크게 **스레드 간 공유되는 영역**과 **스레드별로 독립적인 영역**으로 나뉩니다.
 
-![JVM Memory Architecture Diagram](https://placehold.co/800x400/png?text=JVM+Memory+Structure)
+![JVM Memory Architecture Diagram](assets/images/blog/jvm_memory.webp)
 *(이미지 설명: Method Area와 Heap은 모든 스레드가 공유하며, Stack, PC Register, Native Method Stack은 스레드마다 생성됩니다.)*
 
 ### 1.1 스레드 공유 영역 (Thread-Shared)
