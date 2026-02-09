@@ -1,0 +1,110 @@
+# 스프링 부트(Spring Boot) 최신 가이드: 개념, 구조, 설치 및 활용
+
+_작성일: 2026-02-09_
+
+스프링 부트(Spring Boot)는 스프링 프레임워크의 장점을 그대로 가져오면서, 실무에서 가장 번거로운 부분인 **설정과 프로젝트 부트스트랩(초기 구성)**을 극적으로 단순화한 프레임워크입니다. “스프링을 더 쉽게 쓰기 위한 제품”이라고 이해하면 가장 정확합니다. 이번 글에서는 스프링 부트의 개념, 내부 구조, 설치(프로젝트 생성) 방법과 실전 활용 팁을 정리합니다.
+
+![Spring Boot 개요](assets/images/blog/spring_boot_hero.webp)
+
+## 1) 스프링 부트란?
+
+스프링 부트가 해결하는 문제는 명확합니다.
+
+- 스프링 기반 앱을 만들려면 설정이 너무 많다(XML/빈/서버/로그/프로파일…)
+- WAS(Tomcat 등) 설치/배포가 번거롭다
+- 프로젝트마다 같은 의존성/설정이 반복된다
+
+스프링 부트는 아래 3가지를 “기본값으로” 제공합니다.
+
+1. **Auto Configuration(자동 설정)**: 클래스패스에 있는 라이브러리를 보고 적절한 설정을 자동 적용  
+2. **Starter 의존성**: 기능 단위로 묶인 의존성을 한 번에 추가(`spring-boot-starter-web` 등)  
+3. **Embedded Server(내장 서버)**: 톰캣/제티 같은 서버를 앱에 포함해 실행 가능  
+
+## 2) 구조: 부트가 동작하는 큰 그림
+
+스프링 부트 애플리케이션은 보통 아래 요소로 구성됩니다.
+
+- **`@SpringBootApplication`**: 컴포넌트 스캔 + 자동설정 + 설정 클래스 역할을 합친 진입점
+- **Auto Configuration**: 조건부 설정(`@Conditional...`)으로 상황에 맞게 Bean 구성
+- **Externalized Configuration**: `application.yml/properties` + 환경 변수 + 프로파일로 설정 분리
+- **Actuator**: 운영을 위한 상태/메트릭/헬스체크 엔드포인트 제공
+
+부트의 핵심은 “많이 쓰는 조합을 합리적인 기본값으로 제공하되, 필요하면 언제든 커스터마이즈 가능”하다는 점입니다.
+
+## 3) 설치 및 시작(가장 표준적인 방법)
+
+스프링 부트는 보통 Gradle 또는 Maven으로 시작합니다. (예시는 Gradle)
+
+### (1) 의존성 추가
+
+```gradle
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+```
+
+### (2) 실행 진입점 만들기
+
+```java
+@SpringBootApplication
+public class DemoApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(DemoApplication.class, args);
+  }
+}
+```
+
+### (3) 간단한 컨트롤러 추가
+
+```java
+@RestController
+class HelloController {
+  @GetMapping("/hello")
+  String hello() { return "hello"; }
+}
+```
+
+이 정도만으로도 내장 톰캣이 뜨고, `GET /hello`가 동작합니다.
+
+## 4) 실무 활용 포인트
+
+### (1) 프로파일로 환경 분리하기
+
+개발/스테이징/운영 환경에서 DB, 외부 API 주소, 로그 레벨은 다릅니다. 부트는 이를 프로파일로 잘 분리하도록 돕습니다.
+
+```yaml
+# application.yml
+spring:
+  profiles:
+    active: dev
+```
+
+```yaml
+# application-prod.yml
+logging:
+  level:
+    root: INFO
+```
+
+### (2) Actuator로 “운영 가능성” 올리기
+
+Actuator는 헬스체크, 메트릭, 환경정보 등을 노출해 모니터링과 장애 대응을 쉽게 합니다.
+
+- `/actuator/health`
+- `/actuator/metrics`
+
+운영에서는 반드시 **노출 범위 제한/인증**을 함께 설정하세요.
+
+### (3) 스타터 선택 기준
+
+- `starter-web`: 서블릿 기반 MVC(가장 일반적)
+- `starter-webflux`: 리액티브(고동시성/스트리밍)
+- `starter-data-jpa`: JPA 기반 데이터 접근
+
+“프로젝트 성격에 맞는 스타터 조합”이 부트 생산성의 핵심입니다.
+
+## 결론
+
+스프링 부트는 스프링의 강력한 개념(IoC/DI, AOP, 모듈)을 유지하면서도, 실무에서 반복되던 설정과 배포 비용을 크게 줄여줍니다. 처음에는 기본값으로 빠르게 만들고, 성장하면서 필요한 부분만 명시적으로 커스터마이즈하는 접근이 가장 효율적입니다.
+

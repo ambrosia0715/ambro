@@ -92,6 +92,50 @@ class BlogData {
       thumbnailUrl: 'assets/images/blog/java_multithreading.webp',
       isLocalImage: true,
     ),
+    BlogPost(
+      title: '스프링 프레임워크 완전 정복: 개념, 구조, 사용방법',
+      description: 'IoC/DI, AOP, 모듈 구조를 중심으로 스프링 프레임워크의 핵심을 정리하고 실전 사용 흐름까지 이해하기',
+      category: 'java',
+      date: '2026-02-09',
+      fileName: 'spring-framework-guide.mdx',
+      readTime: '11분',
+      tags: ['Java', 'Spring', 'IoC', 'DI', 'AOP'],
+      thumbnailUrl: 'assets/images/blog/spring_framework_hero.webp',
+      isLocalImage: true,
+    ),
+    BlogPost(
+      title: '스프링 부트 최신 가이드: 개념, 구조, 설치 및 활용',
+      description: '자동 설정, Starter, 내장 서버, Actuator까지 스프링 부트의 동작 원리와 실무 활용 포인트 정리',
+      category: 'java',
+      date: '2026-02-09',
+      fileName: 'spring-boot-guide.mdx',
+      readTime: '10분',
+      tags: ['Java', 'Spring Boot', 'Auto Config', 'Starter', 'Actuator'],
+      thumbnailUrl: 'assets/images/blog/spring_boot_hero.webp',
+      isLocalImage: true,
+    ),
+    BlogPost(
+      title: '스프링 vs 스프링 부트 비교: 언제 무엇을 써야 할까?',
+      description: '목적, 설정 방식, 의존성, 실행/운영 관점에서 스프링과 스프링 부트를 표로 비교하고 선택 기준 정리',
+      category: 'java',
+      date: '2026-02-09',
+      fileName: 'spring-vs-springboot.mdx',
+      readTime: '9분',
+      tags: ['Java', 'Spring', 'Spring Boot', 'Comparison'],
+      thumbnailUrl: 'assets/images/blog/spring_vs_boot_hero.webp',
+      isLocalImage: true,
+    ),
+    BlogPost(
+      title: 'Spring Boot RESTful 사용방법: 설정과 작성 패턴',
+      description: 'starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리',
+      category: 'java',
+      date: '2026-02-09',
+      fileName: 'spring-boot-restful.mdx',
+      readTime: '9분',
+      tags: ['Java', 'Spring Boot', 'REST', 'API'],
+      thumbnailUrl: 'assets/images/blog/spring_boot_rest.webp',
+      isLocalImage: true,
+    ),
 
     // Python
     BlogPost(
@@ -210,11 +254,22 @@ class BlogData {
       title: '바이브코딩(Vibe Coding)의 개념과 기초',
       description: '자연어로 설명하면 AI가 코드를 생성하는 바이브코딩의 핵심 개념과 시작하는 방법',
       category: 'ai-basic',
-      date: '2026-02-05',
+      date: '2026-02-09',
       fileName: 'vibe-coding.mdx',
       readTime: '9분',
       tags: ['AI', '바이브코딩', 'Vibe Coding', 'Cursor'],
       thumbnailUrl: 'assets/images/blog/vibe_coding.webp',
+      isLocalImage: true,
+    ),
+    BlogPost(
+      title: 'Google Antigravity 최신 가이드',
+      description: '에이전트 중심 IDE Antigravity의 최신 기능, 설치 및 실무 활용 방법',
+      category: 'ai-basic',
+      date: '2026-02-09',
+      fileName: 'google-antigravity.mdx',
+      readTime: '11분',
+      tags: ['AI', 'IDE', 'Agent', 'Google', 'Antigravity'],
+      thumbnailUrl: 'assets/images/blog/google_antigravity.webp',
       isLocalImage: true,
     ),
 
@@ -223,7 +278,7 @@ class BlogData {
       title: 'OpenClaw 최신 가이드: 개인용 AI 에이전트',
       description: '메신저에서 실질적인 업무를 수행하는 오픈소스 AI 에이전트 OpenClaw의 최신 정보와 활용법',
       category: 'ai-insight',
-      date: '2026-02-05',
+      date: '2026-02-09',
       fileName: 'openclaw-guide.mdx',
       readTime: '10분',
       tags: ['AI', 'OpenClaw', 'Agent', '오픈소스'],
@@ -289,7 +344,15 @@ class BlogData {
 
   static List<BlogPost> getPostsByCategory(String categoryId) {
     final list = posts.where((post) => post.category == categoryId).toList();
-    list.sort((a, b) => b.date.compareTo(a.date)); // 최신순
+    list.sort((a, b) {
+      final dateCmp = b.date.compareTo(a.date); // 최신순
+      if (dateCmp != 0) return dateCmp;
+
+      // 날짜가 같으면, 원본 목록에서 더 "최근에 추가된" 항목을 앞으로
+      final ai = posts.indexWhere((p) => p.fileName == a.fileName);
+      final bi = posts.indexWhere((p) => p.fileName == b.fileName);
+      return bi.compareTo(ai);
+    });
     return list;
   }
 }
