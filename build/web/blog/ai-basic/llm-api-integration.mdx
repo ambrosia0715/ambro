@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM API 연동 가이드 - Ambro Tech Blog</title>
+  <meta name="description" content="OpenAI, Anthropic API를 내 애플리케이션에 연동하는 방법">
+  <meta name="keywords" content="AI, LLM, API">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="LLM API 연동 가이드">
+  <meta property="og:description" content="OpenAI, Anthropic API를 내 애플리케이션에 연동하는 방법">
+  <meta property="og:url" content="https://ambro.space/blog/ai-basic/llm-api-integration.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/llm_api_integration.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-02-04">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LLM API 연동 가이드">
+  <meta name="twitter:description" content="OpenAI, Anthropic API를 내 애플리케이션에 연동하는 방법">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/llm_api_integration.webp">
+  <link rel="canonical" href="https://ambro.space/blog/ai-basic/llm-api-integration.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LLM API 연동 가이드",
+  "description": "OpenAI, Anthropic API를 내 애플리케이션에 연동하는 방법",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-02-04",
+  "dateModified": "2026-02-04",
+  "image": "https://ambro.space/assets/assets/images/blog/llm_api_integration.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/ai-basic/llm-api-integration.mdx"
+  },
+  "keywords": "AI, LLM, API"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/ai-basic">AI 개발 기초</a> &gt;
+    <span>LLM API 연동 가이드</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">AI</span> <span class="tag">LLM</span> <span class="tag">API</span></div>
+    <h1>LLM API 연동 가이드</h1>
+    <div class="meta">2026-02-04 &middot; 10분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/llm_api_integration.webp" alt="LLM API 연동 가이드" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>LLM API 연동 가이드: OpenAI, Anthropic 활용하기</h1>
+<p>바야흐로 생성형 AI(Generative AI)의 시대입니다. 기업이나 개인 프로젝트에서 나만의 AI 서비스를 만들고 싶다면, 거대 언어 모델(LLM)을 내 애플리케이션에 연동하는 것이 필수입니다. 현재 가장 강력한 성능을 보여주는 OpenAI(GPT-4)와 Anthropic(Claude 3) API를 연동하는 방법을 실무 관점에서 정리했습니다.</p>
+<h2>1. 사전 준비: API Key 발급 및 보안</h2>
+<p>가장 먼저 각 서비스의 개발자 포털에서 API Key를 발급받아야 합니다.</p>
+<ul>
+<li><strong>OpenAI:</strong> platform.openai.com</li>
+<li><strong>Anthropic:</strong> console.anthropic.com</li>
+</ul>
+<p><strong>⚠️ 보안 주의사항:</strong></p>
+<p>발급받은 API Key는 절대 코드(GitHub 등)에 직접 노출하면 안 됩니다. <code>.env</code> 파일을 사용하여 환경 변수로 관리하고, 백엔드 서버에서만 호출하도록 구성해야 합니다. 프론트엔드 코드에 키를 넣으면 누구나 키를 훔쳐서 사용할 수 있습니다.</p>
+<h2>2. OpenAI API (Chat Completions)</h2>
+<p>OpenAI의 표준 라이브러리를 설치합니다. <code>pip install openai</code></p>
+<pre><code class="language-python">
+from openai import OpenAI
+import os
+
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+
+response = client.chat.completions.create(
+    model="gpt-4-turbo",
+    messages=[
+        {"role": "system", "content": "너는 도움이 되는 코딩 어시스턴트야."},
+        {"role": "user", "content": "파이썬으로 피보나치 수열 짜줘."}
+    ],
+    temperature=0.7, # 창의성 조절 (0~1)
+    max_tokens=500   # 최대 출력 길이 제한
+)
+
+print(response.choices[0].message.content)
+</code></pre>
+<h3>주요 파라미터 팁</h3>
+<ul>
+<li><strong>System Prompt:</strong> AI의 페르소나(역할)를 설정하는 가장 중요한 부분입니다. 여기서 규칙을 잘 정해야 답변 품질이 올라갑니다.</li>
+<li><strong>Temperature:</strong> 0에 가까울수록 사실적이고 일관된 답변, 1에 가까울수록 창의적이고 다양한 답변을 내놓습니다.</li>
+</ul>
+<h2>3. Anthropic API (Claude 3)</h2>
+<p>Claude 3는 특히 긴 문맥(Context Window) 처리와 논리적 추론, 코딩 능력에서 GPT-4와 경쟁하는 강력한 모델입니다. <code>pip install anthropic</code></p>
+<pre><code class="language-python">
+import anthropic
+import os
+
+client = anthropic.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY"))
+
+message = client.messages.create(
+    model="claude-3-opus-20240229",
+    max_tokens=1000,
+    temperature=0,
+    system="너는 전문 기술 블로거야.",
+    messages=[
+        {"role": "user", "content": "RAG에 대해 설명해줘."}
+    ]
+)
+
+print(message.content[0].text)
+</code></pre>
+<h2>4. 실무 구현 패턴: 스트리밍 (Streaming)</h2>
+<p>LLM의 응답은 생성되는 데 시간이 걸립니다. 사용자가 멍하니 기다리게 하지 않으려면, 한 글자씩 타자를 치듯 보여주는 <strong>스트리밍</strong> 구현이 필수입니다.</p>
+<pre><code class="language-python">
+# OpenAI Streaming 예시
+stream = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[...],
+    stream=True, # 이 옵션을 켭니다
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content is not None:
+        print(chunk.choices[0].delta.content, end="")
+</code></pre>
+<h2>결론</h2>
+<p>API 연동 자체는 라이브러리가 잘 되어 있어 어렵지 않습니다. 진짜 경쟁력은 <strong>"어떤 프롬프트를 사용하는가(Prompt Engineering)"</strong>와 <strong>"어떻게 문맥을 효율적으로 관리하는가(Context Management)"</strong>에서 나옵니다. 단순한 챗봇을 넘어, 우리 서비스만의 데이터를 결합(RAG)하거나 AI가 도구를 사용하게 만드는(Agent) 방향으로 발전시켜 보시기 바랍니다.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/ai-basic">더 많은 AI 개발 기초 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

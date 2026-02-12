@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:go_router/go_router.dart';
 import '../models/blog_data.dart';
+import '../utils/seo_helper_stub.dart' if (dart.library.html) '../utils/seo_helper.dart';
 import 'package:markdown/markdown.dart' as md;
 
 class BlogPostPage extends StatefulWidget {
@@ -42,6 +43,9 @@ class _BlogPostPageState extends State<BlogPostPage> {
       setState(() {
         _postData = post;
       });
+      // 동적 페이지 타이틀 설정 (SEO)
+      setPageTitle('${post.title} - Ambro Tech Blog');
+      setPageMeta(post.description);
     } catch (_) {}
   }
 

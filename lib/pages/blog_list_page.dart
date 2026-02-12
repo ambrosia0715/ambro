@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/blog_data.dart';
 import '../widgets/blog_card.dart';
+import '../utils/seo_helper_stub.dart' if (dart.library.html) '../utils/seo_helper.dart';
 
 class BlogListPage extends StatelessWidget {
   final String category;
@@ -13,6 +13,9 @@ class BlogListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final categoryName = BlogData.categories[category] ?? '블로그';
     final posts = BlogData.getPostsByCategory(category);
+    // 동적 페이지 타이틀 설정 (SEO)
+    setPageTitle('$categoryName - Ambro Tech Blog');
+    setPageMeta('$categoryName 관련 기술 블로그 글 목록 - Ambro Tech Blog');
 
     return Container(
       constraints: const BoxConstraints(minHeight: 800),

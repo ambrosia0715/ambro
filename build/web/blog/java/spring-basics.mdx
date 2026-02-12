@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot 기초: DI와 IoC 이해하기 - Ambro Tech Blog</title>
+  <meta name="description" content="스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리">
+  <meta name="keywords" content="Spring Boot, DI, IoC">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Spring Boot 기초: DI와 IoC 이해하기">
+  <meta property="og:description" content="스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리">
+  <meta property="og:url" content="https://ambro.space/blog/java/spring-basics.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/spring_boot_di.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-02-04">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Spring Boot 기초: DI와 IoC 이해하기">
+  <meta name="twitter:description" content="스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/spring_boot_di.webp">
+  <link rel="canonical" href="https://ambro.space/blog/java/spring-basics.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Spring Boot 기초: DI와 IoC 이해하기",
+  "description": "스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-02-04",
+  "dateModified": "2026-02-04",
+  "image": "https://ambro.space/assets/assets/images/blog/spring_boot_di.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/java/spring-basics.mdx"
+  },
+  "keywords": "Spring Boot, DI, IoC"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/java">Java</a> &gt;
+    <span>Spring Boot 기초: DI와 IoC 이해하기</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">Spring Boot</span> <span class="tag">DI</span> <span class="tag">IoC</span></div>
+    <h1>Spring Boot 기초: DI와 IoC 이해하기</h1>
+    <div class="meta">2026-02-04 &middot; 10분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/spring_boot_di.webp" alt="Spring Boot 기초: DI와 IoC 이해하기" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>Spring Boot 기초: DI와 IoC 이해하기</h1>
+<p>스프링 프레임워크(Spring Framework)를 처음 접할 때 가장 먼저 마주치지만, 가장 이해하기 어려운 개념이 바로 <strong>IoC(Inversion of Control)</strong>와 <strong>DI(Dependency Injection)</strong>입니다. 이 두 가지 개념은 스프링의 존재 이유이자, 객체지향 설계를 완성하는 핵심 철학입니다.</p>
+<p>이 글에서는 복잡한 용어 대신 실생활의 비유와 간단한 코드로 DI와 IoC의 본질을 파헤쳐 봅니다.</p>
+<h2>1. 강한 결합(Tightly Coupled)의 문제점</h2>
+<p>개발자가 직접 객체를 생성하고 관리하는 전통적인 방식을 살펴봅시다.</p>
+<pre><code class="language-java">
+public class SamsungEngine {
+    public void start() { System.out.println("Samsung Engine Start"); }
+}
+
+public class Car {
+    private SamsungEngine engine;
+
+    public Car() {
+        // Car가 Engine의 생성과 선택을 직접 제어함 (강한 결합)
+        this.engine = new SamsungEngine();
+    }
+}
+</code></pre>
+<p>위 코드에서 <code>Car</code>는 <code>SamsungEngine</code>에 강하게 의존하고 있습니다. 만약 엔진을 <code>HyundaiEngine</code>으로 바꾸고 싶다면 <code>Car</code> 클래스의 코드를 직접 수정해야 합니다. 이는 유연성이 떨어지고 테스트하기도 어려운 코드입니다.</p>
+<h2>2. IoC (Inversion of Control, 제어의 역전)</h2>
+<p>IoC는 <strong>"내가 쓸 객체를 내가 직접 만들지 않고, 남이 만들어 준 것을 쓴다"</strong>는 원칙입니다. 여기서 '제어권'이 역전되었다는 말은 객체의 생명주기(생성, 초기화, 소멸) 관리 책임이 개발자에게서 프레임워크(스프링 컨테이너)로 넘어갔음을 의미합니다.</p>
+<p>스프링에서는 개발자가 <code>@Component</code>, <code>@Service</code>, <code>@Repository</code> 등의 어노테이션을 붙이면, 스프링 컨테이너가 알아서 객체(Bean)를 생성하고 관리합니다.</p>
+<h2>3. DI (Dependency Injection, 의존성 주입)</h2>
+<p>DI는 IoC를 구현하는 구체적인 디자인 패턴 중 하나입니다. 객체가 필요로 하는 의존성(다른 객체)을 외부에서 주입해주는 것입니다. 마치 장난감 로봇에 배터리를 끼워주는 것과 같습니다.</p>
+<h3>3.1 DI의 3가지 방식</h3>
+<p><strong>1. 생성자 주입 (Constructor Injection) - 권장!</strong></p>
+<pre><code class="language-java">
+@Service
+public class Car {
+    private final Engine engine;
+
+    // 생성자를 통해 외부에서 Engine을 주입받음
+    @Autowired
+    public Car(Engine engine) {
+        this.engine = engine;
+    }
+}
+</code></pre>
+<ul>
+<li><strong>장점:</strong> 불변성(final) 보장, 테스트 용이성, 순환 참조 방지. 스프링 팀에서 가장 권장하는 방식입니다.</li>
+</ul>
+<p><strong>2. 세터 주입 (Setter Injection)</strong></p>
+<pre><code class="language-java">
+@Service
+public class Car {
+    private Engine engine;
+
+    @Autowired
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+}
+</code></pre>
+<ul>
+<li><strong>장점:</strong> 선택적인 의존성이나 런타임에 의존성을 변경해야 할 때 유용하지만, 거의 사용되지 않습니다.</li>
+</ul>
+<p><strong>3. 필드 주입 (Field Injection) - 비권장</strong></p>
+<pre><code class="language-java">
+@Service
+public class Car {
+    @Autowired
+    private Engine engine;
+}
+</code></pre>
+<ul>
+<li><strong>단점:</strong> 코드는 간결하지만, 외부에서 의존성을 주입할 방법이 없어 테스트가 어렵고 프레임워크에 강하게 종속됩니다.</li>
+</ul>
+<h2>4. 왜 DI와 IoC를 사용하는가?</h2>
+<ul>
+<li><strong>결합도 감소 (Decoupling):</strong> 객체 간의 의존성이 느슨해져서, 하나의 모듈을 수정해도 다른 모듈에 미치는 영향이 적습니다.</li>
+<li><strong>유연한 코드:</strong> 인터페이스를 사용하여 구현체를 쉽게 교체할 수 있습니다. (예: <code>Engine</code> 인터페이스만 바라보고 있으면, 실제 주입되는 빈이 <code>Samsung</code>이든 <code>Hyundai</code>든 상관없음)</li>
+<li><strong>테스트 용이성:</strong> 단위 테스트 시 실제 DB 연결 객체 대신 가짜 객체(Mock)를 주입하여 비즈니스 로직만 독립적으로 테스트할 수 있습니다.</li>
+</ul>
+<h2>결론</h2>
+<p>Spring Boot의 마법 같은 자동 설정 뒤에는 항상 DI와 IoC가 작동하고 있습니다. "알아서 해주니까 편하다"를 넘어서, <strong>"객체 간의 관계를 어떻게 느슨하게 설계할 것인가"</strong>에 대한 고민이 선행될 때, 진정한 스프링 개발자로 거듭날 수 있습니다. 생성자 주입을 생활화하고, 인터페이스 기반으로 설계하는 습관을 길러보세요.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/java">더 많은 Java 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

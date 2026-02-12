@@ -138,9 +138,9 @@ class _CategorySection extends StatelessWidget {
               padding: const EdgeInsets.all(32.0),
               child: Center(
                 child: Text(
-                  '준비 중입니다',
+                  '새로운 앱이 곧 추가됩니다. 기대해주세요!',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.grey.shade500,
                   ),
                 ),

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../models/blog_data.dart';
 import '../widgets/blog_card.dart';
+import '../utils/seo_helper_stub.dart' if (dart.library.html) '../utils/seo_helper.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // 동적 페이지 타이틀 설정 (SEO)
+    setPageTitle('Ambro Tech Blog - AI, Java, Python 기술 블로그');
     return SingleChildScrollView(
       child: Center(
         child: ConstrainedBox(

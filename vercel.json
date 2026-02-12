@@ -2,6 +2,16 @@
   "buildCommand": "echo 'Using pre-built files from GitHub'",
   "outputDirectory": "build/web",
   "installCommand": "echo 'No install needed'",
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/blog/:path*.mdx",
+      "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=UTF-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/ads.txt",

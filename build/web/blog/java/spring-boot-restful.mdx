@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spring Boot RESTful 사용방법: 설정과 작성 패턴 - Ambro Tech Blog</title>
+  <meta name="description" content="starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리">
+  <meta name="keywords" content="Java, Spring Boot, REST, API">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Spring Boot RESTful 사용방법: 설정과 작성 패턴">
+  <meta property="og:description" content="starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리">
+  <meta property="og:url" content="https://ambro.space/blog/java/spring-boot-restful.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/spring_boot_rest.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-02-09">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Spring Boot RESTful 사용방법: 설정과 작성 패턴">
+  <meta name="twitter:description" content="starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/spring_boot_rest.webp">
+  <link rel="canonical" href="https://ambro.space/blog/java/spring-boot-restful.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Spring Boot RESTful 사용방법: 설정과 작성 패턴",
+  "description": "starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-02-09",
+  "dateModified": "2026-02-09",
+  "image": "https://ambro.space/assets/assets/images/blog/spring_boot_rest.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/java/spring-boot-restful.mdx"
+  },
+  "keywords": "Java, Spring Boot, REST, API"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/java">Java</a> &gt;
+    <span>Spring Boot RESTful 사용방법: 설정과 작성 패턴</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">Java</span> <span class="tag">Spring Boot</span> <span class="tag">REST</span> <span class="tag">API</span></div>
+    <h1>Spring Boot RESTful 사용방법: 설정과 작성 패턴</h1>
+    <div class="meta">2026-02-09 &middot; 9분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/spring_boot_rest.webp" alt="Spring Boot RESTful 사용방법: 설정과 작성 패턴" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>Spring Boot에서 RESTful API 만들기: 설정부터 작성 패턴까지</h1>
+<p><em>작성일: 2026-02-09</em></p>
+<p>RESTful API는 <strong>URL로 자원(Resource)</strong>, <strong>HTTP 메서드로 행위(Action)</strong>를 표현해 일관된 인터페이스를 만드는 방식입니다. Spring Boot는 REST에 필요한 구성(Jackson, 내장 서버, MVC)을 기본값으로 제공해 빠르게 시작할 수 있습니다. 이 글에서는 Boot 환경에서 REST API를 만들 때 필요한 <strong>설정(의존성/JSON/검증/예외 처리)</strong>과 <strong>메서드별 URL 양식</strong>, 그리고 실무에서 자주 헷갈리는 포인트(PUT vs PATCH, 여러 ID/필터 처리)를 예시와 함께 정리합니다.</p>
+<img src="/assets/assets/images/blog/spring_boot_rest.webp" alt="Spring Boot REST API" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;margin:1em 0;">
+<h2>1) 기본 설정: 의존성과 프로젝트 준비</h2>
+<p>Spring Boot에서 REST API를 만들 때 가장 기본은 <code>spring-boot-starter-web</code>입니다.</p>
+<pre><code class="language-gradle">
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-validation'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+</code></pre>
+<ul>
+<li><code>starter-web</code>: <code>@RestController</code>, Jackson(JSON), 내장 톰캣 등 REST에 필요한 기본 묶음</li>
+<li><code>starter-validation</code>: <code>@Valid</code>로 요청 DTO 검증(Bean Validation)</li>
+</ul>
+<h3>(추가) 기본 설정 파일 예시</h3>
+<p>요청/응답 로깅이나 JSON 네이밍 같은 “팀 기본값”은 <code>application.yml</code>로 통일하는 게 좋습니다.</p>
+<pre><code class="language-yaml">
+server:
+  port: 8080
+
+spring:
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+</code></pre>
+<h2>2) 작성 패턴(핵심만)</h2>
+<ul>
+<li><strong>Controller는 얇게</strong>: HTTP 입출력만 처리하고, 규칙은 Service로</li>
+<li><strong>DTO 분리</strong>: 엔티티 노출 대신 Request/Response DTO로 계약 고정</li>
+<li><strong>검증</strong>: <code>@Valid</code> + <code>starter-validation</code>으로 요청값을 초기에 차단</li>
+</ul>
+<p>간단한 계층 예시는 아래처럼 생각하면 됩니다.</p>
+<pre><code class="language-text">
+Controller(HTTP) → Service(규칙/트랜잭션) → Repository(DB)
+</code></pre>
+<h2>3) RESTful하게 설계하는 규칙(실무 체크리스트)</h2>
+<h3>(1) URL은 자원 중심으로</h3>
+<ul>
+<li>좋은 예: <code>GET /users/1</code>, <code>POST /users</code>, <code>PUT /users/1</code></li>
+<li>덜 좋은 예: <code>POST /createUser</code>, <code>GET /getUser</code></li>
+</ul>
+<h3>(2) 메서드별 선언 & URL 양식(예시)</h3>
+<p>REST는 보통 “목록 URL”과 “단건 URL”을 나눕니다.</p>
+<table><thead><tr>
+<th>메서드</th>
+<th>URL 양식</th>
+<th>의미</th>
+<th>Spring Boot 선언</th>
+<th>파라미터 받기(예시)</th>
+</tr></thead><tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/users</code></td>
+<td>목록 조회(페이징/필터)</td>
+<td><code>@GetMapping</code></td>
+<td><code>@RequestParam int page, int size</code> / 여러 값: <code>@RequestParam List<Long> ids</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>단건 조회</td>
+<td><code>@GetMapping("/{id}")</code></td>
+<td><code>@PathVariable Long id</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/users</code></td>
+<td>생성</td>
+<td><code>@PostMapping</code></td>
+<td><code>@RequestBody CreateUserRequest body</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>전체 교체(멱등)</td>
+<td><code>@PutMapping("/{id}")</code></td>
+<td><code>@PathVariable Long id, @RequestBody UpdateUserRequest body</code></td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>부분 수정</td>
+<td><code>@PatchMapping("/{id}")</code></td>
+<td><code>@PathVariable Long id, @RequestBody PatchUserRequest body</code></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/users/{id}</code></td>
+<td>삭제(멱등)</td>
+<td><code>@DeleteMapping("/{id}")</code></td>
+<td><code>@PathVariable Long id</code></td>
+</tr>
+</tbody></table>
+<h4><code>id</code> 값을 실제로 “받아서 쓰는” 방법</h4>
+<pre><code class="language-java">
+@GetMapping("/{id}")
+public UserResponse get(@PathVariable Long id) {
+  return userService.getById(id);
+}
+</code></pre>
+<h4>값을 여러 개 받을 때(대표 패턴 2가지)</h4>
+<ul>
+<li><strong>PathVariable 여러 개</strong>: 리소스가 계층 구조일 때</li>
+</ul>
+<pre><code class="language-java">
+@GetMapping("/users/{userId}/orders/{orderId}")
+public OrderResponse getOrder(
+  @PathVariable Long userId,
+  @PathVariable Long orderId
+) { /* ... */ }
+</code></pre>
+<ul>
+<li><strong>QueryParam 여러 개</strong>: 필터/검색/배치 조회일 때</li>
+</ul>
+<pre><code class="language-java">
+@GetMapping
+public List&lt;UserResponse&gt; list(@RequestParam List&lt;Long&gt; ids) { /* ... */ }
+// 호출 예: /api/v1/users?ids=1&amp;ids=2&amp;ids=3
+</code></pre>
+<blockquote><p>팁: “여러 ID로 조회”가 핵심 요구라면 <code>/users:batchGet</code> 같은 RPC 스타일 대신, 위처럼 QueryParam으로 해결하면 REST 스타일을 유지하기 쉽습니다.</p></blockquote>
+<blockquote><p>참고: 사용자가 “push”라고 말하는 경우가 있는데, REST 표준 HTTP 메서드는 <strong>POST</strong>입니다.</p></blockquote>
+<h3>(3) 상태코드를 명확히</h3>
+<ul>
+<li>생성 성공: <code>201 Created</code></li>
+<li>잘못된 요청: <code>400 Bad Request</code></li>
+<li>리소스 없음: <code>404 Not Found</code></li>
+</ul>
+<p>Spring에서는 <code>ResponseEntity</code>로 상태코드와 헤더를 명시할 수 있습니다.</p>
+<h4><code>POST</code>에서 Location 헤더 주기(권장)</h4>
+<pre><code class="language-java">
+@PostMapping
+public ResponseEntity&lt;UserResponse&gt; create(@Valid @RequestBody CreateUserRequest req) {
+  var created = userService.create(req);
+  return ResponseEntity
+    .created(URI.create("/api/v1/users/" + created.id()))
+    .body(created);
+}
+</code></pre>
+<h3>(4) PUT vs PATCH, 언제 쓰나?</h3>
+<ul>
+<li><strong>PUT</strong>: 리소스를 “전체 교체”하는 의미. 같은 요청을 여러 번 보내도 결과가 같아야(멱등) 합니다.</li>
+<li><strong>PATCH</strong>: 일부 필드만 변경. 변경 필드가 많지 않거나 부분 업데이트가 잦을 때 유리합니다.</li>
+</ul>
+<p>실무에서는 “사용자 프로필 전체 수정” 같은 화면은 PUT, “알림 설정 한 개 토글” 같은 화면은 PATCH로 구분하는 편이 자연스럽습니다.</p>
+<h2>4) 예외 처리: API 품질을 좌우하는 핵심</h2>
+<p>REST API는 실패했을 때도 “읽기 쉬운 규격화된 응답”을 주는 것이 중요합니다. Spring Boot에서는 <code>@RestControllerAdvice</code>로 전역 예외 처리를 구성합니다.</p>
+<pre><code class="language-java">
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleValidation(MethodArgumentNotValidException e) {
+    return ResponseEntity.badRequest().body(ErrorResponse.of("VALIDATION_ERROR", "요청값이 올바르지 않습니다."));
+  }
+}
+
+public record ErrorResponse(String code, String message) {
+  static ErrorResponse of(String code, String message) { return new ErrorResponse(code, message); }
+}
+</code></pre>
+<p>검증 오류(400)가 발생했을 때, 프론트가 메시지를 바로 표시할 수 있도록 <code>code/message</code> 구조를 통일해두면 운영이 편해집니다.</p>
+<h2>5) 실전 팁(최소 세트)</h2>
+<ul>
+<li><strong>버전</strong>: <code>/api/v1</code> 등 규칙을 초기에 고정</li>
+<li><strong>페이징</strong>: 목록 API는 <code>page/size/sort</code> 표준화</li>
+</ul>
+<p>예를 들어 목록 API는 아래처럼 “기본값”을 두고 확장합니다.</p>
+<pre><code class="language-java">
+@GetMapping
+public Page&lt;UserResponse&gt; list(
+  @RequestParam(defaultValue = "0") int page,
+  @RequestParam(defaultValue = "20") int size,
+  @RequestParam(required = false) String q
+) { /* ... */ }
+</code></pre>
+<h2>결론</h2>
+<p>Spring Boot REST API의 핵심은 <strong>규칙과 구조(계층 분리, DTO, 예외 처리)</strong>입니다. URL/메서드 규칙과 오류 응답 포맷을 먼저 고정하고, 그 위에 기능을 쌓으면 API가 커져도 유지보수 비용이 폭발하지 않습니다.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/java">더 많은 Java 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

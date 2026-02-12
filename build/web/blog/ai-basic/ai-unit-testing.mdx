@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI와 함께하는 단위 테스트 작성 - Ambro Tech Blog</title>
+  <meta name="description" content="AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기">
+  <meta name="keywords" content="AI, Testing, Unit Test">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="AI와 함께하는 단위 테스트 작성">
+  <meta property="og:description" content="AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기">
+  <meta property="og:url" content="https://ambro.space/blog/ai-basic/ai-unit-testing.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/ai_unit_testing.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-02-04">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI와 함께하는 단위 테스트 작성">
+  <meta name="twitter:description" content="AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/ai_unit_testing.webp">
+  <link rel="canonical" href="https://ambro.space/blog/ai-basic/ai-unit-testing.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI와 함께하는 단위 테스트 작성",
+  "description": "AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-02-04",
+  "dateModified": "2026-02-04",
+  "image": "https://ambro.space/assets/assets/images/blog/ai_unit_testing.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/ai-basic/ai-unit-testing.mdx"
+  },
+  "keywords": "AI, Testing, Unit Test"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/ai-basic">AI 개발 기초</a> &gt;
+    <span>AI와 함께하는 단위 테스트 작성</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">AI</span> <span class="tag">Testing</span> <span class="tag">Unit Test</span></div>
+    <h1>AI와 함께하는 단위 테스트 작성</h1>
+    <div class="meta">2026-02-04 &middot; 8분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/ai_unit_testing.webp" alt="AI와 함께하는 단위 테스트 작성" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>AI와 함께하는 단위 테스트(Unit Testing) 작성</h1>
+<p>"테스트 코드를 짜야 한다"는 말은 개발자라면 귀에 못이 박히게 듣는 말입니다. 하지만 실무에서 비즈니스 로직 짜기도 바쁜 와중에 꼼꼼한 테스트 코드까지 작성하기란 쉽지 않습니다. 테스트 케이스를 생각하고, 데이터를 모킹(Mocking)하고, 검증 로직을 짜는 과정은 지루하고 반복적이기 때문입니다.</p>
+<p>다행히도, <strong>단위 테스트 작성은 LLM(AI)이 가장 잘하는 분야 중 하나</strong>입니다. AI를 활용하여 테스트 커버리지를 효율적으로 높이고, 코드의 안정성을 확보하는 방법을 소개합니다.</p>
+<h2>1. 왜 AI가 테스트 작성에 강할까?</h2>
+<ul>
+<li><strong>명확한 문맥:</strong> 테스트할 함수(코드)라는 명확한 입력이 주어집니다.</li>
+<li><strong>정형화된 패턴:</strong> 테스트 코드는 <code>Given-When-Then</code> 같은 구조가 뚜렷하여 AI가 패턴을 학습하기 쉽습니다.</li>
+<li><strong>엣지 케이스 발견:</strong> 사람은 '행복한 경로(Happy Path)'만 생각하기 쉽지만, AI는 빈 값, 음수, 특수 문자 등 다양한 예외 상황(Edge Case)을 창의적으로 제안합니다.</li>
+</ul>
+<h2>2. 실전 워크플로우: Cursor/Copilot 활용</h2>
+<p>IDE에 내장된 AI 도구(GitHub Copilot, Cursor 등)를 활용하면 생산성이 배가됩니다.</p>
+<h3>2.1 테스트 케이스 생성 요청</h3>
+<p>테스트하고 싶은 함수를 드래그한 후 AI에게 요청합니다.</p>
+<blockquote><p>"이 함수에 대한 단위 테스트를 작성해줘. <code>JUnit 5</code>와 <code>Mockito</code>를 사용하고, 정상 동작하는 경우와 예외가 발생하는 경우를 모두 포함해줘."</p></blockquote>
+<h3>2.2 테스트 데이터 생성 (Mocking)</h3>
+<p>복잡한 객체를 테스트하려면 가짜 데이터(Mock)를 만들어야 하는데, 이게 꽤 귀찮습니다.</p>
+<blockquote><p>"User 객체 테스트를 위한 JSON 더미 데이터를 5개 정도 생성해줘. 다양한 나이대와 이메일 형식을 포함해서."</p></blockquote>
+<h3>2.3 엣지 케이스 보강</h3>
+<p>AI가 작성한 기본 테스트에 더해, 놓친 부분이 없는지 물어봅니다.</p>
+<blockquote><p>"이 로직에서 발생할 수 있는 잠재적인 버그나 엣지 케이스가 더 있을까? 그에 대한 테스트도 추가해줘."</p></blockquote>
+<h2>3. 프롬프트 팁: 테스트 품질 높이기</h2>
+<ul>
+<li><strong>기술 스택 명시:</strong> "Jest와 React Testing Library를 써줘", "Pytest 스타일로 짜줘" 같이 구체적인 라이브러리를 지정하세요.</li>
+<li><strong>테스트 스타일 지정:</strong> "AAA(Arrange-Act-Assert) 패턴으로 주석을 달아줘", "테스트 함수명은 한글로 작성해줘" 등 컨벤션을 지키게 하세요.</li>
+</ul>
+<h2>4. 주의사항: 맹신은 금물</h2>
+<p>AI가 작성한 테스트 코드가 <strong>"실패해야 할 때 성공하는"</strong> 잘못된 테스트일 수도 있습니다. 또는 비즈니스 로직을 잘못 이해하고 엉뚱한 검증을 할 수도 있습니다.</p>
+<p>따라서 AI가 짜준 테스트 코드는 <strong>반드시 개발자가 눈으로 검증하고 실행</strong>해봐야 합니다.</p>
+<h2>결론</h2>
+<p>AI를 활용하면 테스트 코드 작성에 드는 시간을 50% 이상 단축할 수 있습니다. 지루한 '타이핑'은 AI에게 맡기고, 개발자는 <strong>'무엇을 테스트해야 하는가'</strong>라는 본질적인 고민에 집중하세요. 테스트 커버리지가 올라갈수록, 리팩토링과 배포에 대한 자신감이 생길 것입니다.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/ai-basic">더 많은 AI 개발 기초 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>
