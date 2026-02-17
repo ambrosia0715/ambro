@@ -2,7 +2,6 @@
   "buildCommand": "echo 'Using pre-built files from GitHub'",
   "outputDirectory": "build/web",
   "installCommand": "echo 'No install needed'",
-  "cleanUrls": true,
   "headers": [
     {
       "source": "/blog/:path*.mdx",
@@ -32,6 +31,38 @@
     {
       "source": "/rss.xml",
       "destination": "/rss.xml"
+    },
+    {
+      "source": "/blog/java",
+      "destination": "/blog/java.html"
+    },
+    {
+      "source": "/blog/python",
+      "destination": "/blog/python.html"
+    },
+    {
+      "source": "/blog/ai-basic",
+      "destination": "/blog/ai-basic.html"
+    },
+    {
+      "source": "/blog/ai-insight",
+      "destination": "/blog/ai-insight.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/about/apps",
+      "destination": "/about/apps.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
     },
     {
       "source": "/((?!assets/|.*\\.).*)",
