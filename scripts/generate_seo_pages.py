@@ -485,6 +485,164 @@ def generate_homepage_html(all_posts):
 </html>'''
 
 
+# ── 정적 페이지 생성 ──
+
+def _static_page(title, desc, canonical_path, body_html):
+    """정적 페이지(about, privacy, contact 등)의 HTML을 생성합니다."""
+    canonical = f'{SITE_URL}{canonical_path}'
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} - Ambro Tech Blog</title>
+  <meta name="description" content="{desc}">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{title} - Ambro Tech Blog">
+  <meta property="og:description" content="{desc}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <link rel="canonical" href="{canonical}">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_CLIENT}" crossorigin="anonymous"></script>
+  <style>
+    body{{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}}
+    #seo-content{{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}}
+    #seo-content h1{{font-size:2em;margin-bottom:.5em;color:#1a1a1a}}
+    #seo-content h2{{font-size:1.4em;margin-top:1.5em;color:#212529}}
+    #seo-content p{{margin:.8em 0;font-size:16px}}
+    #seo-content ul{{padding-left:1.5em}}
+    #seo-content li{{margin:.3em 0}}
+    #seo-content a{{color:#1976d2;text-decoration:none}}
+  </style>
+</head>
+<body>
+  <div id="seo-content">
+    {body_html}
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  {FLUTTER_HIDE_SCRIPT}
+</body>
+</html>'''
+
+
+def generate_static_pages():
+    """about, privacy, contact, about/apps 페이지의 프리렌더링 HTML을 생성합니다."""
+    pages = []
+
+    # ── /about ──
+    pages.append(('about.html', _static_page(
+        '소개 (About)',
+        '15년 차 시니어 개발자 Ambro의 기술 블로그. Java/Spring 전문, AI 도구 활용.',
+        '/about',
+        '''<h1>견고한 웹 생태계를 만드는 개발자 Ambro입니다</h1>
+    <p>강민석 &middot; 15년 차 시니어 개발자 (Java/Spring 전문)</p>
+    <p>레거시의 견고함과 최신 AI 도구(Cursor, LLM)의 효율성을 결합하여 가치를 창출하는 1인 개발자 및 기업가입니다.</p>
+
+    <h2>Tech Stack &amp; Expertise</h2>
+    <h3>Backend</h3>
+    <p>Java(Spring Boot) 기반 백엔드 및 API 설계 전문성</p>
+    <ul><li>Java</li><li>Spring Boot</li><li>REST API</li><li>비즈니스 로직 설계</li></ul>
+    <h3>AI &amp; Productivity</h3>
+    <p>차세대 개발 워크플로우 숙련도</p>
+    <ul><li>Cursor</li><li>Replit</li><li>Ollama</li><li>LLM 활용</li></ul>
+
+    <h2>Why Ambro Blog?</h2>
+    <p><strong>기초가 튼튼해야 무너지지 않는다</strong></p>
+    <p>이 블로그는 Java/Python의 핵심 문법과 최신 AI 정보를 공유합니다. 개발자들이 실무에서 겪는 병목 현상을 해결해주는 가이드북 같은 블로그를 지향하며, 최신 IT 정보를 통해 함께 성장하는 공간이 되고자 합니다.</p>
+
+    <h2>My Projects</h2>
+    <ul>
+      <li><a href="/apps/aicent/ongi">온기</a> - AI가 전해주는 위로의 일기 앱</li>
+      <li><a href="/apps/play/nunchi-game">눈치게임</a> - 친구들과 함께하는 숫자 맞추기 게임</li>
+      <li><a href="/apps/mate/water-buddy">물주기 알림_lite</a> - 식물 돌봄을 돕는 알림 앱</li>
+      <li><a href="/apps/mate/pill-ping">PILL PING lite</a> - 약 복용 시간 알림 앱</li>
+    </ul>
+    <p><a href="/about/apps">전체 앱 보기</a></p>'''
+    )))
+
+    # ── /about/apps ──
+    pages.append(('about/apps.html', _static_page(
+        'Apps',
+        'Ambro에서 제공하는 앱들을 만나보세요. AI 일기 앱 온기, 눈치게임, 물주기 알림, PILL PING 등.',
+        '/about/apps',
+        '''<h1>Apps</h1>
+    <p>Ambro에서 제공하는 앱들을 만나보세요.</p>
+
+    <h2>AIcent - AI를 사용하는 앱 모음</h2>
+    <ul><li><a href="/apps/aicent/ongi"><strong>온기</strong></a> - 따뜻한 일기 앱. AI가 전해주는 위로의 한마디</li></ul>
+
+    <h2>Play - 단순 게임형 앱 모음</h2>
+    <ul><li><a href="/apps/play/nunchi-game"><strong>눈치게임</strong></a> - 친구들과 함께 즐기는 숫자 맞추기 게임</li></ul>
+
+    <h2>Mate - 생활 보조 앱 모음</h2>
+    <ul>
+      <li><a href="/apps/mate/water-buddy"><strong>물주기 알림_lite</strong></a> - 식물마다 주기를 설정하면 날짜에 맞춰 알려드려요</li>
+      <li><a href="/apps/mate/pill-ping"><strong>PILL PING lite</strong></a> - 약 복용 시간을 놓치지 않도록 도와주는 알림 앱</li>
+    </ul>'''
+    )))
+
+    # ── /privacy ──
+    pages.append(('privacy.html', _static_page(
+        '개인정보처리방침',
+        'Ambro 개인정보처리방침. 개인정보의 수집, 이용, 보유, 파기 등에 관한 사항을 안내합니다.',
+        '/privacy',
+        '''<h1>개인정보처리방침</h1>
+    <p><em>최종 업데이트: 2025년 11월 3일</em></p>
+    <p>Ambro(이하 "회사")는 정보통신망 이용촉진 및 정보보호 등에 관한 법률, 개인정보보호법 등 관련 법령에 따라 이용자의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보처리방침을 수립·공개합니다.</p>
+
+    <h2>제1조 (개인정보의 수집 및 이용 목적)</h2>
+    <p>회사는 다음의 목적을 위하여 개인정보를 처리합니다.</p>
+    <ul><li>회원 가입 및 관리</li><li>서비스 제공 및 개선</li><li>고객 문의 및 불만 처리</li></ul>
+
+    <h2>제2조 (수집하는 개인정보의 항목)</h2>
+    <p>회사는 서비스 제공을 위해 필요한 최소한의 개인정보를 수집합니다.</p>
+    <ul><li>필수항목: 닉네임, 기기 식별 정보</li><li>선택항목: 위치 정보(서비스 이용 시)</li><li>자동 수집 항목: 서비스 이용 기록, 접속 로그, 쿠키, 접속 IP 정보</li></ul>
+
+    <h2>제3조 (개인정보의 보유 및 이용기간)</h2>
+    <p>회사는 법령에 따른 개인정보 보유·이용기간 또는 이용자로부터 개인정보를 수집 시 동의받은 개인정보 보유·이용기간 내에서 개인정보를 처리·보유합니다.</p>
+    <ul><li>회원 탈퇴 시까지 (단, 관계 법령 위반에 따른 수사·조사 등이 진행 중인 경우에는 해당 수사·조사 종료 시까지)</li></ul>
+
+    <h2>제4조 (개인정보의 제3자 제공)</h2>
+    <p>회사는 이용자의 개인정보를 제1조에서 명시한 범위 내에서만 처리하며, 이용자의 동의, 법률의 특별한 규정 등 개인정보 보호법 제17조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.</p>
+
+    <h2>제5조 (이용자의 권리·의무 및 행사방법)</h2>
+    <p>이용자는 회사에 대해 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.</p>
+    <ul><li>개인정보 열람 요구</li><li>오류 등이 있을 경우 정정 요구</li><li>삭제 요구</li><li>처리정지 요구</li></ul>
+
+    <h2>제6조 (개인정보의 파기)</h2>
+    <p>회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 지체없이 해당 개인정보를 파기합니다.</p>
+
+    <h2>제7조 (개인정보 보호책임자)</h2>
+    <p>이메일: ambrosia0715.ambro@gmail.com</p>
+
+    <h2>제8조 (개인정보 처리방침 변경)</h2>
+    <p>이 개인정보처리방침은 2025년 11월 3일부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.</p>'''
+    )))
+
+    # ── /contact ──
+    pages.append(('contact.html', _static_page(
+        '문의하기',
+        'Ambro 앱 관련 문의 안내. 이메일: ambrosia0715.ambro@gmail.com',
+        '/contact',
+        '''<h1>문의하기</h1>
+    <p>앱 관련 문의는 이메일로 연락해주세요.</p>
+    <p><strong>이메일:</strong> ambrosia0715.ambro@gmail.com</p>'''
+    )))
+
+    count = 0
+    for filename, html in pages:
+        out = BUILD_DIR / filename
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(html, encoding='utf-8')
+        count += 1
+
+    return count
+
+
 # ── 메인 실행 ──
 
 def main():
@@ -514,7 +672,7 @@ def main():
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding='utf-8')
         ok += 1
-    print(f'[2/3] 포스트 SEO 페이지 생성: {ok}개')
+    print(f'[2/4] 포스트 SEO 페이지 생성: {ok}개')
 
     # 카테고리 목록 HTML 생성
     for cid, cname in CATEGORY_NAMES.items():
@@ -524,14 +682,18 @@ def main():
         out = BUILD_DIR / 'blog' / f'{cid}.html'
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding='utf-8')
-    print(f'[3/3] 카테고리 SEO 페이지 생성: {len(CATEGORY_NAMES)}개')
+    print(f'[3/4] 카테고리 SEO 페이지 생성: {len(CATEGORY_NAMES)}개')
+
+    # 정적 페이지(about, privacy, contact 등) 생성
+    static_count = generate_static_pages()
+    print(f'[4/4] 정적 페이지 SEO 생성: {static_count}개 (about, apps, privacy, contact)')
 
     # 홈페이지 index.html 덮어쓰기
     hp = generate_homepage_html(posts)
     (BUILD_DIR / 'index.html').write_text(hp, encoding='utf-8')
     print('[OK] 홈페이지 index.html SEO 강화 완료')
 
-    print(f'\n=== 완료: 포스트 {ok} + 카테고리 {len(CATEGORY_NAMES)} + 홈페이지 1 ===')
+    print(f'\n=== 완료: 포스트 {ok} + 카테고리 {len(CATEGORY_NAMES)} + 정적 {static_count} + 홈페이지 1 ===')
 
 
 if __name__ == '__main__':
