@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini 3.1 Pro 발표: Google AI의 새로운 이정표 - Ambro Tech Blog</title>
+  <meta name="description" content="추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석">
+  <meta name="keywords" content="AI, Gemini, Google, LLM, Benchmark">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Gemini 3.1 Pro 발표: Google AI의 새로운 이정표">
+  <meta property="og:description" content="추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석">
+  <meta property="og:url" content="https://ambro.space/blog/ai-insight/gemini-31-pro.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/gemini_31_pro.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-02-20">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gemini 3.1 Pro 발표: Google AI의 새로운 이정표">
+  <meta name="twitter:description" content="추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/gemini_31_pro.webp">
+  <link rel="canonical" href="https://ambro.space/blog/ai-insight/gemini-31-pro.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Gemini 3.1 Pro 발표: Google AI의 새로운 이정표",
+  "description": "추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-02-20",
+  "dateModified": "2026-02-20",
+  "image": "https://ambro.space/assets/assets/images/blog/gemini_31_pro.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/ai-insight/gemini-31-pro.mdx"
+  },
+  "keywords": "AI, Gemini, Google, LLM, Benchmark"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/ai-insight">AI Insight</a> &gt;
+    <span>Gemini 3.1 Pro 발표: Google AI의 새로운 이정표</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">AI</span> <span class="tag">Gemini</span> <span class="tag">Google</span> <span class="tag">LLM</span> <span class="tag">Benchmark</span></div>
+    <h1>Gemini 3.1 Pro 발표: Google AI의 새로운 이정표</h1>
+    <div class="meta">2026-02-20 &middot; 8분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/gemini_31_pro.webp" alt="Gemini 3.1 Pro 발표: Google AI의 새로운 이정표" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>Gemini 3.1 Pro 발표: Google AI의 새로운 이정표</h1>
+<p>2026년 2월 19일, Google DeepMind가 최신 AI 모델 <strong>Gemini 3.1 Pro</strong>를 공식 발표했습니다. Gemini 3 Pro의 후속 모델로, 추론 능력과 에이전틱 워크플로우를 대폭 강화한 프론티어 모델입니다. 코딩, 수학, 일반 지식 벤치마크에서 역대 최고 성적을 기록하며 AI 업계에 큰 파장을 일으키고 있습니다.</p>
+<img src="/assets/assets/images/blog/gemini_31_pro.webp" alt="Gemini 3.1 Pro 소개" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;margin:1em 0;">
+<h2>핵심 특징</h2>
+<h3>1M 토큰 컨텍스트 윈도우</h3>
+<p>Gemini 3.1 Pro는 최대 <strong>100만 토큰</strong>의 입력과 <strong>64K 토큰</strong>의 출력을 지원합니다. 대규모 코드베이스 전체를 한 번에 분석하거나, 수백 페이지의 문서를 한꺼번에 요약하는 작업이 가능합니다.</p>
+<h3>네이티브 멀티모달</h3>
+<p>텍스트, 이미지, 오디오, 비디오, 코드를 동시에 처리하는 네이티브 멀티모달 모델입니다. 화면 녹화 영상을 분석하며 코드 수정 방안을 제안하는 워크플로우가 자연스럽게 이루어집니다.</p>
+<h3>Medium Thinking 모드</h3>
+<p>새롭게 도입된 <strong>Medium Thinking</strong> 레벨은 비용, 속도, 성능의 균형을 최적화합니다. 가벼운 질문에는 빠르게, 복잡한 추론에는 깊게 사고하도록 조절할 수 있어 API 호출 비용을 크게 절감합니다.</p>
+<h2>벤치마크 성능</h2>
+<img src="/assets/assets/images/blog/gemini_31_pro_benchmark.webp" alt="Gemini 3.1 Pro 벤치마크 비교" loading="lazy" style="max-width:100%;height:auto;border-radius:8px;margin:1em 0;">
+<p>주요 벤치마크에서 압도적인 성과를 보여줍니다:</p>
+<table><thead><tr>
+<th>벤치마크</th>
+<th>점수</th>
+</tr></thead><tbody>
+<tr>
+<td>코딩 (Coding)</td>
+<td>96.0%</td>
+</tr>
+<tr>
+<td>수학 (Mathematics)</td>
+<td>95.9%</td>
+</tr>
+<tr>
+<td>일반 지식 (General Knowledge)</td>
+<td>99.5%</td>
+</tr>
+<tr>
+<td>ARC-AGI-2</td>
+<td>77.1%</td>
+</tr>
+<tr>
+<td>지시 따르기 (Instruction Following)</td>
+<td>93.9%</td>
+</tr>
+</tbody></table>
+<p>특히 <strong>ARC-AGI-2</strong>에서 77.1%를 기록해 전작 Gemini 3 Pro 대비 <strong>2배 이상</strong>의 추론 성능 향상을 달성했습니다. 코딩과 수학 영역에서 96% 수준은 사실상 전문가급 정확도입니다.</p>
+<h2>강화된 기능</h2>
+<h3>에이전틱 워크플로우 개선</h3>
+<p>AI 에이전트가 도구를 조합하고 여러 단계를 스스로 실행하는 <strong>에이전틱 신뢰성</strong>이 크게 향상되었습니다. 복잡한 멀티스텝 작업에서 중간 단계 오류를 자체적으로 감지하고 수정하는 능력이 강화되어, 프로덕션 환경에서의 에이전트 활용이 한층 현실적이 되었습니다.</p>
+<h3>SVG 애니메이션 생성</h3>
+<p>텍스트 설명만으로 <strong>코드 기반 SVG 애니메이션</strong>을 직접 생성하는 기능이 추가되었습니다. 웹사이트에 바로 적용할 수 있는 애니메이션 그래픽을 자연어 한 줄로 만들 수 있어 디자이너와 개발자 모두에게 유용합니다.</p>
+<h3>Sparse MoE 아키텍처</h3>
+<p><strong>Sparse Mixture-of-Experts(MoE)</strong> 기반 Transformer 구조를 채택해 효율성과 성능을 동시에 높였습니다. 작업에 필요한 전문가 모듈만 선택적으로 실행하므로, 동일 품질 대비 추론 비용이 절감됩니다.</p>
+<h2>사용 방법</h2>
+<p>현재 <strong>Google AI Studio</strong>, <strong>Gemini API</strong>, <strong>Vertex AI</strong>, Gemini 앱, <strong>NotebookLM</strong>, Android Studio 등에서 프리뷰 버전으로 이용할 수 있습니다. 기존 Gemini 3 Pro를 사용하던 개발자는 API 엔드포인트만 변경하면 바로 전환 가능합니다.</p>
+<h2>결론</h2>
+<p>Gemini 3.1 Pro는 추론력, 멀티모달, 에이전트 기능 모두를 한 단계 끌어올린 모델입니다. ARC-AGI-2에서 2배 이상의 점프와 Medium Thinking 모드 도입은 실무 활용 가치를 크게 높입니다. AI 에이전트와 대규모 코드 분석에 관심 있는 개발자라면 반드시 주목해야 할 모델입니다.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/ai-insight">더 많은 AI Insight 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

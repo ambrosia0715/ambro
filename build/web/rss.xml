@@ -5,8 +5,15 @@
     <link>https://ambro.space</link>
     <description>Java, Python, AI 개발 기초와 인사이트를 공유하는 기술 블로그. 견고한 웹 생태계를 만드는 개발자 Ambro입니다.</description>
     <language>ko-KR</language>
-    <lastBuildDate>Mon, 09 Feb 2026 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 20 Feb 2026 00:00:00 +0900</lastBuildDate>
     <atom:link href="https://ambro.space/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Gemini 3.1 Pro 발표: Google AI의 새로운 이정표</title>
+      <link>https://ambro.space/blog/ai-insight/gemini-31-pro.mdx</link>
+      <description>추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석</description>
+      <pubDate>Fri, 20 Feb 2026 00:00:00 +0900</pubDate>
+      <guid isPermaLink="true">https://ambro.space/blog/ai-insight/gemini-31-pro.mdx</guid>
+    </item>
     <item>
       <title>Google Antigravity 최신 가이드</title>
       <link>https://ambro.space/blog/ai-basic/google-antigravity.mdx</link>

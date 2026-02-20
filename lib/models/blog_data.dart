@@ -275,6 +275,17 @@ class BlogData {
 
     // AI Insight
     BlogPost(
+      title: 'Gemini 3.1 Pro 발표: Google AI의 새로운 이정표',
+      description: '추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석',
+      category: 'ai-insight',
+      date: '2026-02-20',
+      fileName: 'gemini-31-pro.mdx',
+      readTime: '8분',
+      tags: ['AI', 'Gemini', 'Google', 'LLM', 'Benchmark'],
+      thumbnailUrl: 'assets/images/blog/gemini_31_pro.webp',
+      isLocalImage: true,
+    ),
+    BlogPost(
       title: 'OpenClaw 최신 가이드: 개인용 AI 에이전트',
       description: '메신저에서 실질적인 업무를 수행하는 오픈소스 AI 에이전트 OpenClaw의 최신 정보와 활용법',
       category: 'ai-insight',
