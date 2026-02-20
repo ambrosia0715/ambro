@@ -1,70 +1,294 @@
-# FastAPI vs Flask: 모던 파이썬 웹 프레임워크 비교
+# FastAPI vs Flask: 모던 파이썬 웹 프레임워크 실전 비교
 
-파이썬 웹 개발 생태계는 오랫동안 Django와 Flask가 양분해 왔습니다. 하지만 최근 몇 년 사이, 압도적인 성능과 개발 경험을 앞세운 **FastAPI**가 혜성처럼 등장하여 판도를 바꾸고 있습니다.
+새 프로젝트를 시작하려는데 팀에서 논쟁이 벌어집니다. "Flask로 빠르게 만들자" vs "FastAPI로 제대로 만들자". 이 글에서 동일한 기능을 두 프레임워크로 직접 구현하면서 차이점을 체감해봅시다.
 
-새로운 프로젝트를 시작하려는 당신, 익숙한 Flask를 쓸지, 트렌디한 FastAPI를 쓸지 고민 중이신가요? 두 프레임워크의 장단점을 철저히 비교해 드립니다.
+## 1. 프레임워크 한눈에 비교
 
-## 1. Flask: 검증된 마이크로 프레임워크
+본격적인 코드에 앞서, 두 프레임워크의 핵심 특성을 비교합니다.
 
-Flask는 "Micro"라는 철학 아래 최소한의 기능만 제공하고 나머지는 개발자의 자유에 맡기는 프레임워크입니다.
+| 항목 | Flask | FastAPI |
+|------|-------|---------|
+| 첫 릴리스 | 2010년 | 2018년 |
+| 비동기 지원 | 제한적 (2.0부터 부분 지원) | 네이티브 async/await |
+| 데이터 검증 | 수동 또는 Marshmallow 등 | Pydantic 내장 |
+| API 문서 자동 생성 | 없음 (Swagger 수동 설정) | Swagger UI + ReDoc 자동 생성 |
+| 타입 힌트 활용 | 선택 사항 | 핵심 설계 원칙 |
+| 성능 (요청/초) | ~800 req/s | ~3000+ req/s |
+| 학습 곡선 | 매우 낮음 | 낮음 (타입 힌트 필요) |
+| 생태계 성숙도 | 매우 풍부 | 빠르게 성장 중 |
 
-### 장점
--   **단순함과 유연성:** 배우기 쉽고 구조가 간단하여 작은 프로젝트나 프로토타입을 빠르게 만드는 데 유리합니다.
--   **방대한 생태계:** 오래된 만큼 수많은 확장 라이브러리(Extension)와 레퍼런스, 커뮤니티 지원이 존재합니다.
+## 2. 환경 설정
 
-### 단점
--   **비동기 지원 부족:** 기본적으로 동기(Sync) 방식이라 고성능 비동기 처리가 어렵습니다. (최신 버전에서 `async` 지원이 추가되었으나, 태생적 한계가 있음)
--   **데이터 검증의 번거로움:** 요청 파라미터를 검증하려면 별도 라이브러리(Marshmallow 등)를 붙여야 하고 코드가 길어집니다.
+두 프레임워크를 모두 설치하고 같은 기능을 구현해봅시다.
 
-## 2. FastAPI: 고성능과 생산성의 결정체
+```bash
+# Flask 설치
+pip install flask
 
-FastAPI는 현대적인 파이썬 기능(Type Hint, Asyncio)을 적극 활용하여 만들어진 프레임워크입니다.
+# FastAPI + ASGI 서버 설치
+pip install fastapi uvicorn
+```
 
-### 장점
--   **압도적인 성능:** Node.js나 Go에 필적하는 성능을 냅니다. Starlette(비동기)와 Pydantic(데이터 검증)을 기반으로 하여 매우 빠릅니다.
--   **자동 문서화 (Swagger UI):** 코드만 짜면 대화형 API 문서가 자동으로 생성됩니다. 프론트엔드 개발자와 협업할 때 신세계입니다.
--   **타입 안전성:** Python Type Hint를 강제하여 IDE의 자동완성 지원을 완벽하게 받고, 버그를 컴파일 타임(개발 시점)에 잡을 수 있습니다.
--   **생산성:** 데이터 검증 코드를 따로 짤 필요가 없어 코드 양이 획기적으로 줍니다.
+## 3. Hello World 비교
 
-### 단점
--   **상대적으로 적은 레퍼런스:** 빠르게 성장 중이지만, Flask나 Django에 비해 역사가 짧아 자료가 적을 수 있습니다.
+### Flask
 
-## 3. 코드 비교
-
-**Flask**
 ```python
-from flask import Flask, request
+# app_flask.py
+from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/items', methods=['POST'])
-def create_item():
-    data = request.json
-    # 데이터 검증 로직을 직접 짜야 함
-    if 'name' not in data:
-        return {"error": "Name required"}, 400
-    return {"name": data['name']}
+@app.route("/")
+def hello():
+    return {"message": "Hello from Flask!"}
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
 ```
 
-**FastAPI**
+```bash
+python app_flask.py
+# → http://127.0.0.1:5000 에서 확인
+```
+
+### FastAPI
+
 ```python
+# app_fastapi.py
 from fastapi import FastAPI
-from pydantic import BaseModel
 
 app = FastAPI()
 
-class Item(BaseModel):
-    name: str # 타입 힌트로 자동 검증
-
-@app.post("/items")
-def create_item(item: Item):
-    return {"name": item.name} # 자동 JSON 변환 및 문서화
+@app.get("/")
+async def hello():
+    return {"message": "Hello from FastAPI!"}
 ```
 
-## 결론: 무엇을 선택해야 할까?
+```bash
+uvicorn app_fastapi:app --reload --port=8000
+# → http://127.0.0.1:8000 에서 확인
+# → http://127.0.0.1:8000/docs 에서 Swagger UI 자동 생성!
+```
 
--   **새로운 API 서버를 구축한다면?** 무조건 **FastAPI**를 추천합니다. 성능, 문서화, 개발 생산성 모든 면에서 압도적입니다.
--   **간단한 HTML 렌더링 웹사이트라면?** 템플릿 엔진(Jinja2)과의 통합이 자연스러운 **Flask**가 여전히 편할 수 있습니다.
--   **기존 레거시가 Flask라면?** 굳이 무리해서 바꿀 필요는 없지만, 점진적으로 마이그레이션 하는 것을 고려해볼 만합니다.
+FastAPI는 코드를 작성하는 것만으로 `/docs` 경로에 대화형 API 문서가 자동 생성됩니다. 프론트엔드 개발자와 협업할 때 별도의 API 문서를 작성할 필요가 없습니다.
 
-FastAPI는 단순히 빠른 프레임워크가 아니라, 파이썬 개발의 패러다임을 "타입 기반"과 "비동기"로 바꾸고 있는 혁신적인 도구입니다.
+## 4. CRUD API 구현 비교
+
+실무에서 가장 흔한 CRUD(Create, Read, Update, Delete) API를 구현하면서 차이를 비교합니다. 간단한 할 일(Todo) 관리 API를 만들어봅시다.
+
+### Flask로 구현
+
+```python
+# flask_todo.py
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+todos = []
+next_id = 1
+
+@app.route("/todos", methods=["GET"])
+def get_todos():
+    return jsonify(todos)
+
+@app.route("/todos", methods=["POST"])
+def create_todo():
+    global next_id
+    data = request.get_json()
+
+    # 수동으로 데이터 검증해야 함
+    if not data or "title" not in data:
+        return jsonify({"error": "title 필드는 필수입니다"}), 400
+    if not isinstance(data["title"], str):
+        return jsonify({"error": "title은 문자열이어야 합니다"}), 400
+
+    todo = {
+        "id": next_id,
+        "title": data["title"],
+        "completed": data.get("completed", False)
+    }
+    todos.append(todo)
+    next_id += 1
+    return jsonify(todo), 201
+
+@app.route("/todos/<int:todo_id>", methods=["PUT"])
+def update_todo(todo_id):
+    data = request.get_json()
+    for todo in todos:
+        if todo["id"] == todo_id:
+            todo["title"] = data.get("title", todo["title"])
+            todo["completed"] = data.get("completed", todo["completed"])
+            return jsonify(todo)
+    return jsonify({"error": "Todo를 찾을 수 없습니다"}), 404
+
+@app.route("/todos/<int:todo_id>", methods=["DELETE"])
+def delete_todo(todo_id):
+    global todos
+    before = len(todos)
+    todos = [t for t in todos if t["id"] != todo_id]
+    if len(todos) == before:
+        return jsonify({"error": "Todo를 찾을 수 없습니다"}), 404
+    return "", 204
+```
+
+### FastAPI로 구현
+
+```python
+# fastapi_todo.py
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Optional
+
+app = FastAPI(title="Todo API", version="1.0.0")
+
+class TodoCreate(BaseModel):
+    title: str
+    completed: bool = False
+
+class TodoUpdate(BaseModel):
+    title: Optional[str] = None
+    completed: Optional[bool] = None
+
+class TodoResponse(BaseModel):
+    id: int
+    title: str
+    completed: bool
+
+todos: list[dict] = []
+next_id = 1
+
+@app.get("/todos", response_model=list[TodoResponse])
+async def get_todos():
+    return todos
+
+@app.post("/todos", response_model=TodoResponse, status_code=201)
+async def create_todo(todo: TodoCreate):
+    global next_id
+    new_todo = {"id": next_id, **todo.model_dump()}
+    todos.append(new_todo)
+    next_id += 1
+    return new_todo
+
+@app.put("/todos/{todo_id}", response_model=TodoResponse)
+async def update_todo(todo_id: int, todo_update: TodoUpdate):
+    for todo in todos:
+        if todo["id"] == todo_id:
+            update_data = todo_update.model_dump(exclude_unset=True)
+            todo.update(update_data)
+            return todo
+    raise HTTPException(status_code=404, detail="Todo를 찾을 수 없습니다")
+
+@app.delete("/todos/{todo_id}", status_code=204)
+async def delete_todo(todo_id: int):
+    global todos
+    before = len(todos)
+    todos = [t for t in todos if t["id"] != todo_id]
+    if len(todos) == before:
+        raise HTTPException(status_code=404, detail="Todo를 찾을 수 없습니다")
+```
+
+### 핵심 차이점 분석
+
+| 비교 포인트 | Flask | FastAPI |
+|------------|-------|---------|
+| 데이터 검증 | `if "title" not in data` 수동 작성 | `Pydantic BaseModel`에서 자동 처리 |
+| 타입 변환 | `request.get_json()` → dict 수동 파싱 | 함수 인자로 자동 파싱 및 타입 변환 |
+| 에러 응답 | 직접 JSON 구성 | 422 Validation Error 자동 반환 |
+| API 문서 | 별도 작성 필요 | `/docs`에서 자동 제공 |
+| 응답 직렬화 | `jsonify()` 수동 호출 | `response_model`로 자동 처리 |
+
+FastAPI에서 잘못된 데이터를 보내면 이런 응답이 자동으로 반환됩니다:
+
+```json
+{
+  "detail": [
+    {
+      "type": "missing",
+      "loc": ["body", "title"],
+      "msg": "Field required",
+      "input": {}
+    }
+  ]
+}
+```
+
+검증 코드를 한 줄도 작성하지 않았는데 Pydantic이 알아서 처리합니다.
+
+## 5. 비동기 성능 차이 체감하기
+
+외부 API를 호출하는 엔드포인트에서 비동기의 차이가 극명하게 드러납니다.
+
+```python
+# FastAPI: 비동기로 여러 외부 서비스 동시 호출
+import httpx
+import asyncio
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/dashboard")
+async def get_dashboard():
+    async with httpx.AsyncClient() as client:
+        user_task = client.get("https://api.example.com/user")
+        orders_task = client.get("https://api.example.com/orders")
+        stats_task = client.get("https://api.example.com/stats")
+
+        user, orders, stats = await asyncio.gather(
+            user_task, orders_task, stats_task
+        )
+
+    return {
+        "user": user.json(),
+        "orders": orders.json(),
+        "stats": stats.json()
+    }
+```
+
+세 API 호출이 동시에 실행되므로, 가장 느린 호출 시간만큼만 걸립니다. Flask의 동기 방식이었다면 세 호출의 시간이 합산됩니다.
+
+## 6. 흔한 실수와 트러블슈팅
+
+### FastAPI에서 흔한 실수
+
+```python
+# 실수 1: 경로 순서 문제
+@app.get("/users/{user_id}")  # 이게 먼저 매칭됨
+async def get_user(user_id: str): ...
+
+@app.get("/users/me")  # 여기 도달 불가! "me"가 user_id로 매칭
+async def get_current_user(): ...
+
+# 해결: 구체적인 경로를 먼저 선언
+@app.get("/users/me")
+async def get_current_user(): ...
+
+@app.get("/users/{user_id}")
+async def get_user(user_id: str): ...
+
+# 실수 2: async 빠뜨리고 await 사용 → SyntaxError
+# 실수 3: Flask의 request.json 대신 Pydantic 모델을 사용해야 함
+```
+
+## 7. 선택 가이드: 어떤 상황에서 무엇을 쓸까?
+
+**FastAPI를 선택하세요:**
+- RESTful API 서버 또는 마이크로서비스를 구축할 때
+- 비동기 I/O가 필요한 고성능 서비스를 만들 때
+- 프론트엔드 팀과 API 스펙 공유가 중요할 때
+- 타입 안전성과 자동 검증이 필요할 때
+
+**Flask를 선택하세요:**
+- Jinja2 템플릿으로 HTML을 렌더링하는 전통적인 웹사이트를 만들 때
+- 빠른 프로토타입이 필요하고 팀이 Flask에 익숙할 때
+- 기존 Flask 기반 프로젝트를 유지보수할 때
+
+## 결론
+
+Flask는 10년 넘게 검증된 훌륭한 프레임워크입니다. 하지만 **새로운 API 서버를 만든다면 FastAPI가 거의 모든 면에서 우위**에 있습니다. 자동 문서화, 타입 기반 검증, 네이티브 비동기 지원은 개발 생산성과 코드 품질을 동시에 끌어올립니다.
+
+핵심 정리:
+- FastAPI는 **성능 3~4배**, **코드량 30~40% 절감**, **API 문서 자동 생성**
+- Flask는 **HTML 렌더링 웹사이트**와 **레거시 유지보수**에 여전히 강점
+
+지금 바로 `pip install fastapi uvicorn`을 실행하고, `/docs`에서 Swagger UI를 확인해보세요.

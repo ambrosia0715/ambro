@@ -1,103 +1,246 @@
 # Modern Java: Java 8부터 21까지의 변화
 
-Java는 그 어떤 언어보다 보수적이면서도, 끊임없이 진화하는 언어입니다. 특히 6개월 주기의 릴리스 모델이 정착되면서, 새로운 기능들이 빠르게 도입되고 있습니다. 많은 기업들이 아직 Java 8이나 11에 머물러 있지만, 최신 버전의 Java가 제공하는 생산성과 성능의 이점은 무시할 수 없는 수준에 이르렀습니다. 이 글에서는 Java 8 이후, 특히 Java 17과 21을 중심으로 모던 자바의 핵심 변화를 살펴보겠습니다.
+"우리 회사는 아직 Java 8인데, 굳이 업그레이드해야 하나요?" 실무에서 자주 듣는 질문입니다. 결론부터 말하면, Java 17의 Record 하나만으로도 DTO 보일러플레이트가 80% 줄어들고, Java 21의 Virtual Threads는 서버 처리량을 10배 이상 끌어올릴 수 있습니다. 이 글에서는 Java 8부터 21까지 실무에서 바로 쓸 수 있는 핵심 기능들을 코드와 함께 비교합니다.
 
-## 1. Java 8: 함수형 프로그래밍의 서막 (2014)
+## 1. Java 8: 함수형 프로그래밍의 시작 (2014)
 
-Java 8은 자바 역사상 가장 큰 변화 중 하나였습니다.
+Java 8은 자바 역사상 가장 큰 패러다임 전환이었습니다. 이전까지 "모든 것이 객체"였던 자바에 함수형 프로그래밍 개념이 도입되었습니다.
 
-### Lambda Expressions (람다 표현식)
-익명 클래스의 번거로움을 줄이고, 코드를 간결하게 만들었습니다. 이는 메서드를 하나의 식(Expression)으로 표현한 것으로, 함수형 인터페이스의 인스턴스를 생성하는 우아한 방법입니다.
+### Lambda Expressions
+
+익명 클래스 대신 람다로 표현하면 코드가 극적으로 간결해집니다.
 
 ```java
-// Before
-Runnable r = new Runnable() {
+// Before: 익명 클래스 (5줄)
+Collections.sort(names, new Comparator<String>() {
     @Override
-    public void run() {
-        System.out.println("Hello");
+    public int compare(String a, String b) {
+        return a.compareTo(b);
     }
-};
+});
 
-// After (Lambda)
-Runnable r = () -> System.out.println("Hello");
+// After: 람다 (1줄)
+Collections.sort(names, (a, b) -> a.compareTo(b));
+
+// 메서드 참조로 더 간결하게
+Collections.sort(names, String::compareTo);
 ```
 
-### Stream API
-데이터 컬렉션을 함수형 스타일로 처리할 수 있게 되었습니다. `filter`, `map`, `reduce` 등의 연산을 파이프라인으로 연결하여 가독성을 높이고 병렬 처리를 쉽게 만들었습니다.
+### Stream API 실전 활용
+
+단순한 필터링을 넘어, 실무에서 자주 쓰는 패턴들을 살펴봅시다.
 
 ```java
-List<String> names = Arrays.asList("Java", "Kotlin", "Scala");
-names.stream()
-     .filter(name -> name.startsWith("J"))
-     .map(String::toUpperCase)
-     .forEach(System.out::println);
+List<Order> orders = getOrders();
+
+// 패턴 1: 그룹핑 — 상태별 주문 분류
+Map<OrderStatus, List<Order>> byStatus = orders.stream()
+    .collect(Collectors.groupingBy(Order::getStatus));
+
+// 패턴 2: 집계 — 총 매출 계산
+long totalRevenue = orders.stream()
+    .filter(o -> o.getStatus() == OrderStatus.COMPLETED)
+    .mapToLong(Order::getAmount)
+    .sum();
+
+// 패턴 3: 변환 — DTO 리스트 생성
+List<OrderDto> dtos = orders.stream()
+    .map(o -> new OrderDto(o.getId(), o.getAmount()))
+    .toList(); // Java 16+에서는 .toList() 사용 가능
 ```
 
-## 2. Java 11: LTS의 새로운 표준 (2018)
+### Optional
 
-Java 11은 오랫동안 사랑받을 LTS(Long Term Support) 버전으로, 안정성과 몇 가지 문법적 개선이 이루어졌습니다.
-
-### Local Variable Syntax for Lambda
-람다 파라미터에서도 `var` 키워드를 사용할 수 있게 되어, 어노테이션(@Nonnull 등)을 적용하기 쉬워졌습니다.
+`null` 반환 대신 `Optional`을 사용해 NPE를 방지합니다.
 
 ```java
-(var x, var y) -> x + y
+// 기존: null 체크 지옥
+String city = null;
+if (user != null && user.getAddress() != null) {
+    city = user.getAddress().getCity();
+}
+
+// Optional 체이닝
+String city = Optional.ofNullable(user)
+    .map(User::getAddress)
+    .map(Address::getCity)
+    .orElse("Unknown");
 ```
 
-### HTTP Client API (Standard)
-기존의 `HttpURLConnection`은 사용하기 불편하고 성능 제약이 있었습니다. Java 11에서 정식 도입된 `HttpClient`는 비동기 및 논블로킹 요청을 지원하며 HTTP/2를 기본 지원합니다.
+## 2. Java 11: 안정성의 LTS (2018)
 
-## 3. Java 17: 생산성을 위한 도약 (2021)
+### 새로운 String 메서드
 
-가장 널리 쓰이는 최신 LTS 버전인 Java 17은 개발자의 생산성을 높이는 굵직한 문법들이 대거 포함되었습니다.
-
-### Records (레코드)
-데이터 운반을 위한 불변(Immutable) 객체를 생성할 때, `getter`, `equals`, `hashCode`, `toString` 등을 일일이 작성할 필요가 없어졌습니다. DTO(Data Transfer Object) 작성에 혁명적인 변화를 가져왔습니다.
+사소해 보이지만 실무에서 유틸 클래스를 줄여주는 메서드들입니다.
 
 ```java
-public record User(String name, int age) {}
+" hello ".strip();        // "hello" (유니코드 공백도 처리)
+"".isBlank();              // true (빈 문자열 + 공백만 있는 경우)
+"line1\nline2".lines()     // Stream<String>으로 변환
+    .forEach(System.out::println);
+"ha".repeat(3);            // "hahaha"
+```
+
+### HTTP Client API
+
+`HttpURLConnection`을 대체하는 현대적인 HTTP 클라이언트입니다.
+
+```java
+HttpClient client = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://api.example.com/users"))
+    .header("Content-Type", "application/json")
+    .GET()
+    .build();
+
+// 동기 호출
+HttpResponse<String> response = client.send(request,
+    HttpResponse.BodyHandlers.ofString());
+System.out.println(response.statusCode()); // 200
+System.out.println(response.body());
+
+// 비동기 호출
+client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+    .thenApply(HttpResponse::body)
+    .thenAccept(System.out::println);
+```
+
+## 3. Java 17: 생산성 혁명 (2021 LTS)
+
+### Records — DTO의 혁명
+
+기존에 DTO 하나 만들려면 필드, 생성자, getter, equals, hashCode, toString을 모두 작성해야 했습니다.
+
+```java
+// Before: 전통적인 DTO (약 40줄)
+public class UserDto {
+    private final String name;
+    private final int age;
+
+    public UserDto(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    // equals, hashCode, toString 생략...
+}
+
+// After: Record (1줄)
+public record UserDto(String name, int age) {}
+// 생성자, getter(name(), age()), equals, hashCode, toString 자동 생성
+```
+
+Record는 불변(immutable)이므로 스레드 세이프하고, Spring의 `@RequestBody`와도 완벽히 호환됩니다.
+
+### Sealed Classes — 타입 계층 제어
+
+```java
+// Payment 타입은 이 세 가지만 허용
+public sealed interface Payment
+    permits CreditCard, BankTransfer, DigitalWallet {}
+
+public record CreditCard(String number, String cvv) implements Payment {}
+public record BankTransfer(String accountNo) implements Payment {}
+public record DigitalWallet(String provider) implements Payment {}
+
+// switch에서 모든 케이스를 강제할 수 있음 (Java 21에서 완성)
 ```
 
 ### Pattern Matching for instanceof
-형변환(Casting)의 번거로움을 줄였습니다.
 
 ```java
-// Before
+// Before: 캐스팅을 두 번 써야 함
 if (obj instanceof String) {
     String s = (String) obj;
     System.out.println(s.length());
 }
 
-// After
+// After: 선언과 동시에 바인딩
 if (obj instanceof String s) {
     System.out.println(s.length());
 }
 ```
 
-### Sealed Classes
-상속을 허용할 클래스를 명시적으로 지정하여, 계층 구조를 엄격하게 제어할 수 있게 되었습니다. 이는 도메인 모델링 시 의도를 명확히 하는 데 도움을 줍니다.
+### Text Blocks — 여러 줄 문자열
 
-## 4. Java 21: 동시성의 혁명 (2023)
-
-가장 최신의 LTS 버전인 Java 21은 성능, 특히 동시성 처리 성능에 있어 획기적인 변화를 가져왔습니다.
-
-### Virtual Threads (Project Loom)
-기존의 자바 스레드(Platform Thread)는 OS 스레드와 1:1로 매핑되어 생성 비용이 비싸고 개수에 제한이 있었습니다. 가상 스레드(Virtual Thread)는 JVM 내부에서 스케줄링되는 경량 스레드로, 수백만 개의 스레드를 생성해도 메모리 부족 문제가 발생하지 않습니다. 이는 블로킹 I/O가 많은 서버 애플리케이션의 처리량을 비약적으로 향상시킵니다.
+SQL이나 JSON을 자바 코드에 넣을 때 탈출 문자 지옥에서 벗어납니다.
 
 ```java
+// Before
+String json = "{\n" +
+    "  \"name\": \"Java\",\n" +
+    "  \"version\": 17\n" +
+    "}";
+
+// After: Text Block (Java 15+)
+String json = """
+    {
+      "name": "Java",
+      "version": 17
+    }
+    """;
+```
+
+## 4. Java 21: 동시성의 혁명 (2023 LTS)
+
+### Virtual Threads — 경량 스레드
+
+기존 Platform Thread는 OS 스레드와 1:1 매핑되어 스레드 하나당 약 1MB의 메모리를 소비합니다. Virtual Thread는 JVM이 관리하는 경량 스레드로, 수백만 개를 생성해도 문제없습니다.
+
+```java
+// 기존: 10,000개 스레드 생성 → OS 자원 고갈 위험
+ExecutorService old = Executors.newFixedThreadPool(200);
+
+// Virtual Threads: 10,000개도 거뜬
 try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
-    IntStream.range(0, 10_000).forEach(i -> {
+    for (int i = 0; i < 10_000; i++) {
         executor.submit(() -> {
+            // DB 조회 같은 블로킹 I/O 작업
             Thread.sleep(Duration.ofSeconds(1));
-            return i;
+            return fetchFromDB();
         });
-    });
+    }
+}
+```
+
+Spring Boot 3.2+에서는 `spring.threads.virtual.enabled=true` 한 줄이면 모든 요청 처리에 Virtual Threads가 적용됩니다.
+
+### Switch Pattern Matching
+
+Sealed Classes와 결합하면 타입 안전한 분기 처리가 가능합니다.
+
+```java
+public String describe(Payment payment) {
+    return switch (payment) {
+        case CreditCard c   -> "카드 결제: " + c.number();
+        case BankTransfer b -> "계좌 이체: " + b.accountNo();
+        case DigitalWallet d -> "디지털 지갑: " + d.provider();
+    }; // sealed이므로 default 불필요 — 컴파일러가 완전성 보장
 }
 ```
 
 ### Sequenced Collections
-`List`, `Set`, `Map` 등의 컬렉션 인터페이스에 순서와 관련된 통일된 접근 방식(`getFirst`, `last`, `reversed`)을 제공합니다. 이제 `list.get(list.size() - 1)` 대신 `list.getLast()`를 사용할 수 있습니다.
 
-## 결론: 업그레이드해야 할까?
+컬렉션의 첫 번째/마지막 요소 접근이 통일되었습니다.
 
-레거시 시스템을 유지보수하는 것은 중요하지만, 언어의 발전은 개발자의 생산성과 시스템의 성능에 직접적인 영향을 미칩니다. 특히 **Java 17의 Record**와 **Java 21의 Virtual Threads**는 코드의 양을 줄이고 서버 비용을 절감하는 강력한 무기입니다. 지금 바로 JDK 버전을 확인하고, 마이그레이션 계획을 세워보시는 것을 추천합니다.
+```java
+List<String> list = List.of("A", "B", "C");
+list.getFirst();    // "A" (기존: list.get(0))
+list.getLast();     // "C" (기존: list.get(list.size() - 1))
+list.reversed();    // ["C", "B", "A"]
+```
+
+## 버전별 핵심 기능 요약
+
+| 버전 | 핵심 기능 | 실무 영향도 |
+|---|---|---|
+| Java 8 | Lambda, Stream, Optional | 코드 스타일 전환 |
+| Java 11 | HTTP Client, String API, var | 유틸 의존성 감소 |
+| Java 17 | Record, Sealed Classes, Pattern Matching | DTO 보일러플레이트 제거 |
+| Java 21 | Virtual Threads, Switch Pattern Matching | 서버 처리량 극대화 |
+
+## 결론: 지금 업그레이드를 시작하세요
+
+레거시 시스템 유지보수는 중요하지만, 언어의 발전을 무시하면 기술 부채가 쌓입니다. 당장 Java 21로 전환이 어렵다면, 최소한 **Java 17 LTS**로의 마이그레이션을 추천합니다. Record와 Pattern Matching만으로도 코드량이 눈에 띄게 줄어들고, 이후 Java 21로의 전환도 수월해집니다. `jdeps` 도구로 호환성을 먼저 점검해 보세요.

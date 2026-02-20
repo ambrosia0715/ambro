@@ -1,74 +1,301 @@
-# 비동기 프로그래밍: Python asyncio 심층 분석
+# 비동기 프로그래밍: Python asyncio 심층 튜토리얼
 
-파이썬은 전통적으로 싱글 스레드 언어(GIL 때문)로 알려져 있어, 높은 동시성 처리가 필요한 작업에 취약하다는 인식이 있었습니다. 하지만 Python 3.4에서 `asyncio` 라이브러리가 도입되면서, 파이썬으로도 Node.js나 Go처럼 고성능 비동기 I/O 처리가 가능해졌습니다.
+API 서버에서 외부 API 3개를 호출해야 하는 상황을 떠올려 보세요. 각 호출에 1초씩 걸린다면, 동기 코드로는 3초가 필요합니다. 하지만 `asyncio`를 사용하면? **단 1초**면 충분합니다. 3개의 요청을 동시에 보내고, 가장 느린 응답이 올 때까지만 기다리면 되니까요.
 
-이 글에서는 동기와 비동기의 차이점부터 `async/await` 문법, 그리고 실무에서 `asyncio`를 제대로 활용하는 패턴까지 깊이 있게 다룹니다.
+이 글에서는 개념 설명에 그치지 않고, 직접 복사해서 실행할 수 있는 코드와 함께 `asyncio`의 핵심을 단계별로 파헤칩니다.
 
-## 1. 동기(Sync) vs 비동기(Async)
+## 1. 동기 vs 비동기: 체감 성능 차이 확인
 
-### 동기 (Blocking I/O)
-코드가 순차적으로 실행됩니다. 예를 들어, 웹 요청을 보내면 응답이 올 때까지 프로그램은 아무것도 하지 않고 멈춰있습니다(Block). CPU는 놀고 있는데 시간만 흐르는 비효율이 발생합니다.
+백문이 불여일견. 동기 코드와 비동기 코드의 실행 시간을 직접 비교해봅시다.
 
-### 비동기 (Non-blocking I/O)
-웹 요청을 보낸 후, 응답을 기다리지 않고 즉시 다음 작업을 수행합니다. 나중에 응답이 오면 그때 다시 돌아와서 처리합니다. 이를 통해 하나의 스레드로도 수천, 수만 개의 I/O 작업을 동시에 처리할 수 있습니다.
+### 동기 방식 (순차 실행)
 
-## 2. 핵심 개념: Coroutine과 Event Loop
+```python
+import time
 
-### Coroutine (코루틴)
-일반 함수(`def`)와 달리 실행을 중간에 멈추고(`await`) 제어권을 다른 코루틴에 넘겨줄 수 있는 함수입니다. `async def`로 정의합니다.
+def task(name, seconds):
+    print(f"[시작] {name} ({seconds}초 소요 예정)")
+    time.sleep(seconds)
+    print(f"[완료] {name}")
+    return f"{name} 결과"
 
-### Event Loop (이벤트 루프)
-비동기 작업들의 스케줄러이자 지휘자입니다. 등록된 코루틴들을 순차적으로 조금씩 실행시키며, I/O 대기 상태인 작업은 뒤로 미루고 실행 가능한 작업에 CPU를 할당합니다.
+start = time.time()
+results = []
+results.append(task("DB 조회", 2))
+results.append(task("외부 API 호출", 3))
+results.append(task("파일 읽기", 1))
+print(f"\n총 소요 시간: {time.time() - start:.1f}초")
+print(f"결과: {results}")
+```
 
-## 3. async/await 문법
+```
+# 출력:
+# [시작] DB 조회 (2초 소요 예정)
+# [완료] DB 조회
+# [시작] 외부 API 호출 (3초 소요 예정)
+# [완료] 외부 API 호출
+# [시작] 파일 읽기 (1초 소요 예정)
+# [완료] 파일 읽기
+#
+# 총 소요 시간: 6.0초
+```
+
+2 + 3 + 1 = **6초**. 각 작업이 끝날 때까지 다음 작업은 꼼짝도 못합니다.
+
+### 비동기 방식 (동시 실행)
 
 ```python
 import asyncio
 import time
 
-async def say_after(delay, what):
-    await asyncio.sleep(delay) # 여기서 제어권을 반납하고 대기함
-    print(what)
+async def task(name, seconds):
+    print(f"[시작] {name} ({seconds}초 소요 예정)")
+    await asyncio.sleep(seconds)  # 대기 중 다른 작업에 양보
+    print(f"[완료] {name}")
+    return f"{name} 결과"
 
 async def main():
-    print(f"started at {time.strftime('%X')}")
-
-    # 두 코루틴을 동시에 예약 (Parallel Execution)
-    task1 = asyncio.create_task(say_after(1, 'hello'))
-    task2 = asyncio.create_task(say_after(2, 'world'))
-
-    # 두 작업이 끝날 때까지 기다림
-    await task1
-    await task2
-
-    print(f"finished at {time.strftime('%X')}")
+    start = time.time()
+    results = await asyncio.gather(
+        task("DB 조회", 2),
+        task("외부 API 호출", 3),
+        task("파일 읽기", 1),
+    )
+    print(f"\n총 소요 시간: {time.time() - start:.1f}초")
+    print(f"결과: {list(results)}")
 
 asyncio.run(main())
 ```
 
-위 코드는 총 3초가 아니라 약 2초 만에 실행됩니다. `sleep` 하는 동안 다른 작업이 실행되었기 때문입니다.
-
-## 4. 실무 활용 패턴: asyncio.gather
-
-여러 API를 동시에 호출해야 할 때 `asyncio.gather`가 강력합니다. 순차적으로 호출하면 `1초 + 1초 = 2초`가 걸리지만, gather를 쓰면 `max(1초, 1초) = 1초`가 걸립니다.
-
-```python
-async def fetch_url(url):
-    # 비동기 HTTP 클라이언트 사용 (예: httpx)
-    pass
-
-async def main():
-    urls = ['http://google.com', 'http://naver.com', 'http://github.com']
-    
-    # 세 URL을 동시에 요청
-    results = await asyncio.gather(*(fetch_url(url) for url in urls))
-    return results
+```
+# 출력:
+# [시작] DB 조회 (2초 소요 예정)
+# [시작] 외부 API 호출 (3초 소요 예정)
+# [시작] 파일 읽기 (1초 소요 예정)
+# [완료] 파일 읽기
+# [완료] DB 조회
+# [완료] 외부 API 호출
+#
+# 총 소요 시간: 3.0초
 ```
 
-## 5. 주의사항: Blocking 코드 섞어 쓰지 않기
+세 작업이 **동시에 시작**되어, 가장 오래 걸리는 3초만에 모두 완료됩니다. 6초 → 3초, **50% 성능 향상**입니다.
 
-`async` 함수 내에서 `time.sleep()`이나 `requests` 같은 동기 라이브러리를 사용하면 이벤트 루프 전체가 멈춰버립니다(Block). 비동기 세계에서는 반드시 `asyncio.sleep()`이나 `httpx`, `aiohttp` 같은 비동기 지원 라이브러리를 사용해야 합니다.
+## 2. 핵심 개념 정리
+
+asyncio를 제대로 쓰려면 세 가지 개념을 확실히 잡아야 합니다.
+
+| 개념 | 설명 | 비유 |
+|------|------|------|
+| **Coroutine** | `async def`로 정의한 함수. `await`로 실행을 양보할 수 있음 | 요리사가 오븐 타이머 걸고 다른 요리 시작 |
+| **Event Loop** | 코루틴들을 스케줄링하는 런타임 엔진 | 주방 매니저가 요리사에게 일 배분 |
+| **Task** | Event Loop에 등록된 코루틴 실행 단위 | 주문서 한 장 |
+
+### Coroutine은 호출만으로 실행되지 않습니다
+
+```python
+async def greet():
+    return "안녕하세요"
+
+# 이렇게 하면 실행되지 않음! coroutine 객체만 반환됨
+result = greet()
+print(result)  # <coroutine object greet at 0x...>
+print(type(result))  # <class 'coroutine'>
+
+# 올바른 실행 방법
+result = asyncio.run(greet())
+print(result)  # 안녕하세요
+```
+
+이것은 초보자가 가장 많이 하는 실수입니다. `async def` 함수는 반드시 `await` 키워드로 호출하거나, `asyncio.run()`으로 실행해야 합니다.
+
+## 3. create_task로 동시 실행 제어하기
+
+`asyncio.gather`는 편리하지만, 개별 작업의 성공/실패를 세밀하게 제어하려면 `create_task`가 더 적합합니다.
+
+```python
+import asyncio
+
+async def fetch_data(source, delay):
+    await asyncio.sleep(delay)
+    if source == "서버C":
+        raise ConnectionError(f"{source} 연결 실패!")
+    return f"{source}: 데이터 수신 완료"
+
+async def main():
+    # 각 작업을 Task로 생성
+    task_a = asyncio.create_task(fetch_data("서버A", 1))
+    task_b = asyncio.create_task(fetch_data("서버B", 2))
+    task_c = asyncio.create_task(fetch_data("서버C", 1.5))
+
+    # 개별적으로 예외 처리 가능
+    for task in [task_a, task_b, task_c]:
+        try:
+            result = await task
+            print(f"성공: {result}")
+        except ConnectionError as e:
+            print(f"실패: {e}")
+
+asyncio.run(main())
+```
+
+```
+# 출력:
+# 성공: 서버A: 데이터 수신 완료
+# 성공: 서버B: 데이터 수신 완료
+# 실패: 서버C 연결 실패!
+```
+
+## 4. 실전 패턴: 비동기 HTTP 요청
+
+실무에서 가장 흔한 사용 사례인 여러 URL 동시 요청을 구현해봅시다. `httpx` 라이브러리를 사용합니다.
+
+```bash
+pip install httpx
+```
+
+```python
+import asyncio
+import httpx
+import time
+
+async def fetch_url(client, url):
+    response = await client.get(url, timeout=10.0)
+    return {
+        "url": url,
+        "status": response.status_code,
+        "length": len(response.text)
+    }
+
+async def main():
+    urls = [
+        "https://httpbin.org/delay/1",
+        "https://httpbin.org/delay/2",
+        "https://httpbin.org/delay/1",
+        "https://httpbin.org/get",
+        "https://httpbin.org/ip",
+    ]
+
+    start = time.time()
+
+    # async with로 클라이언트 자동 정리
+    async with httpx.AsyncClient() as client:
+        tasks = [fetch_url(client, url) for url in urls]
+        results = await asyncio.gather(*tasks)
+
+    for r in results:
+        print(f"  {r['url']} → {r['status']} ({r['length']} bytes)")
+    print(f"\n총 소요: {time.time() - start:.1f}초 (순차 실행 시 ~5초)")
+
+asyncio.run(main())
+```
+
+5개 URL을 순차로 요청하면 약 5초 걸리지만, `gather`로 동시 요청하면 가장 느린 요청 시간인 약 2초에 모두 끝납니다.
+
+## 5. 타임아웃과 취소 처리
+
+네트워크 작업에서는 응답이 오지 않는 상황에 대비해야 합니다. `asyncio.wait_for`로 타임아웃을 설정할 수 있습니다.
+
+```python
+import asyncio
+
+async def slow_operation():
+    await asyncio.sleep(10)
+    return "완료"
+
+async def main():
+    try:
+        result = await asyncio.wait_for(slow_operation(), timeout=3.0)
+        print(result)
+    except asyncio.TimeoutError:
+        print("3초 초과! 작업이 취소되었습니다.")
+
+asyncio.run(main())
+```
+
+```
+# 출력: 3초 초과! 작업이 취소되었습니다.
+```
+
+### Semaphore로 동시 실행 수 제한하기
+
+API 서버에 동시에 1000개의 요청을 보내면 차단당할 수 있습니다. `Semaphore`로 동시 실행 수를 제한하세요.
+
+```python
+import asyncio
+
+async def fetch_with_limit(sem, task_id):
+    async with sem:  # 최대 3개만 동시 실행
+        print(f"작업 {task_id} 시작")
+        await asyncio.sleep(1)
+        print(f"작업 {task_id} 완료")
+
+async def main():
+    sem = asyncio.Semaphore(3)
+    tasks = [fetch_with_limit(sem, i) for i in range(10)]
+    await asyncio.gather(*tasks)
+
+asyncio.run(main())
+```
+
+이렇게 하면 10개의 작업이 3개씩 묶여서 순차적으로 실행됩니다.
+
+## 6. 절대 하면 안 되는 실수 3가지
+
+### 실수 1: async 함수 안에서 time.sleep() 사용
+
+```python
+# 이벤트 루프 전체가 멈춤! (다른 코루틴도 실행 불가)
+async def bad_example():
+    time.sleep(5)  # 절대 금지
+
+# 올바른 방법
+async def good_example():
+    await asyncio.sleep(5)  # 대기 중 다른 작업 실행 가능
+```
+
+### 실수 2: 동기 라이브러리를 비동기 코드에서 사용
+
+```python
+# requests는 동기 라이브러리 → 이벤트 루프를 블로킹
+import requests
+async def bad_fetch():
+    response = requests.get("https://api.example.com")  # 블로킹!
+
+# 비동기 라이브러리 사용 (httpx 또는 aiohttp)
+import httpx
+async def good_fetch():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://api.example.com")
+```
+
+### 실수 3: 코루틴을 await 없이 호출
+
+```python
+async def process():
+    greet()  # RuntimeWarning: coroutine was never awaited
+    await greet()  # 올바른 방법
+```
+
+## 동기/비동기 라이브러리 대응표
+
+| 동기 (사용 금지) | 비동기 (사용 권장) | 용도 |
+|------|------|------|
+| `time.sleep()` | `asyncio.sleep()` | 대기 |
+| `requests` | `httpx` / `aiohttp` | HTTP 요청 |
+| `psycopg2` | `asyncpg` | PostgreSQL |
+| `PyMySQL` | `aiomysql` | MySQL |
+| `redis-py` (sync) | `redis.asyncio` | Redis |
+| `open()` (파일) | `aiofiles` | 파일 I/O |
 
 ## 결론
 
-`asyncio`는 I/O 바운드 작업(웹 크롤링, API 서버, DB 쿼리 등)에서 파이썬의 성능을 극한으로 끌어올려 줍니다. FastAPI나 Sanic 같은 모던 웹 프레임워크들도 모두 `asyncio`를 기반으로 하고 있습니다. 파이썬 개발자라면 이제 `async`와 `await`는 선택이 아닌 필수 교양입니다.
+`asyncio`는 I/O 바운드 작업(API 호출, DB 쿼리, 파일 읽기)에서 파이썬의 성능을 극적으로 끌어올리는 도구입니다. 핵심을 정리하면:
+
+- **`async def`로 코루틴 정의**, **`await`로 호출** — 이것이 기본 문법입니다
+- **`asyncio.gather()`로 여러 작업을 동시 실행** — 가장 자주 쓰는 패턴입니다
+- **`create_task()`로 세밀한 에러 처리** — 프로덕션에서 필수입니다
+- **동기 라이브러리를 섞지 마세요** — 한 줄의 `time.sleep()`이 전체 성능을 망칩니다
+- **Semaphore로 동시성 제한** — 외부 서비스를 보호하세요
+
+FastAPI, Sanic 같은 모던 웹 프레임워크는 모두 asyncio 기반입니다. 비동기 프로그래밍은 이제 파이썬 개발자의 필수 역량입니다.

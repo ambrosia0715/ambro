@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://ambro.space/blog/ai-basic/ai-unit-testing.mdx">
   <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/ai_unit_testing.webp">
   <meta property="og:site_name" content="Ambro Tech Blog">
-  <meta property="article:published_time" content="2026-02-04">
+  <meta property="article:published_time" content="2026-02-08">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI와 함께하는 단위 테스트 작성">
   <meta name="twitter:description" content="AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기">
@@ -33,8 +33,8 @@
     "@type": "Person",
     "name": "Ambro"
   },
-  "datePublished": "2026-02-04",
-  "dateModified": "2026-02-04",
+  "datePublished": "2026-02-08",
+  "dateModified": "2026-02-08",
   "image": "https://ambro.space/assets/assets/images/blog/ai_unit_testing.webp",
   "publisher": {
     "@type": "Organization",
@@ -84,38 +84,228 @@
   <div id="seo-content">
     <div class="tags"><span class="tag">AI</span> <span class="tag">Testing</span> <span class="tag">Unit Test</span></div>
     <h1>AI와 함께하는 단위 테스트 작성</h1>
-    <div class="meta">2026-02-04 &middot; 8분 &middot; Ambro</div>
+    <div class="meta">2026-02-08 &middot; 18분 &middot; Ambro</div>
     <img src="/assets/assets/images/blog/ai_unit_testing.webp" alt="AI와 함께하는 단위 테스트 작성" style="width:100%;border-radius:12px;margin-bottom:2em;">
-    <article><h1>AI와 함께하는 단위 테스트(Unit Testing) 작성</h1>
-<p>"테스트 코드를 짜야 한다"는 말은 개발자라면 귀에 못이 박히게 듣는 말입니다. 하지만 실무에서 비즈니스 로직 짜기도 바쁜 와중에 꼼꼼한 테스트 코드까지 작성하기란 쉽지 않습니다. 테스트 케이스를 생각하고, 데이터를 모킹(Mocking)하고, 검증 로직을 짜는 과정은 지루하고 반복적이기 때문입니다.</p>
-<p>다행히도, <strong>단위 테스트 작성은 LLM(AI)이 가장 잘하는 분야 중 하나</strong>입니다. AI를 활용하여 테스트 커버리지를 효율적으로 높이고, 코드의 안정성을 확보하는 방법을 소개합니다.</p>
-<h2>1. 왜 AI가 테스트 작성에 강할까?</h2>
+    <article><h1>AI와 함께하는 단위 테스트 작성: 실전 가이드</h1>
+<p>"테스트 코드를 짜야 한다"는 말은 개발자라면 귀에 못이 박히게 듣습니다. 하지만 비즈니스 로직 짜기도 바쁜 와중에 테스트까지 작성하기란 쉽지 않습니다. 테스트 케이스 설계, 데이터 모킹, 검증 로직 작성은 지루하고 반복적이기 때문입니다. 결국 테스트 커버리지가 0%에 머무르는 프로젝트가 수두룩합니다.</p>
+<p>다행히도 <strong>단위 테스트 작성은 LLM이 가장 잘하는 분야 중 하나</strong>입니다. 테스트 대상 함수라는 명확한 입력이 있고, Given-When-Then 같은 정형화된 패턴이 존재하며, 엣지 케이스를 빠짐없이 나열하는 작업은 AI의 강점이기 때문입니다. 이 글에서는 AI를 활용하여 Python(pytest)과 JavaScript(Jest) 환경에서 실전 수준의 테스트 코드를 작성하는 워크플로우를 소개합니다.</p>
+<h2>1. AI가 테스트 작성에 강한 이유</h2>
 <ul>
-<li><strong>명확한 문맥:</strong> 테스트할 함수(코드)라는 명확한 입력이 주어집니다.</li>
-<li><strong>정형화된 패턴:</strong> 테스트 코드는 <code>Given-When-Then</code> 같은 구조가 뚜렷하여 AI가 패턴을 학습하기 쉽습니다.</li>
-<li><strong>엣지 케이스 발견:</strong> 사람은 '행복한 경로(Happy Path)'만 생각하기 쉽지만, AI는 빈 값, 음수, 특수 문자 등 다양한 예외 상황(Edge Case)을 창의적으로 제안합니다.</li>
+<li><strong>명확한 입출력 구조:</strong> "이 함수에 이 입력을 넣으면 이 결과가 나와야 한다"는 명확한 구조는 LLM이 가장 정확한 코드를 생성하는 조건입니다.</li>
+<li><strong>패턴화된 구조:</strong> 대부분의 테스트는 AAA(Arrange-Act-Assert) 패턴을 따릅니다. AI가 수천만 개의 테스트 코드에서 이 패턴을 학습했기 때문에 일관된 테스트를 빠르게 생성합니다.</li>
+<li><strong>엣지 케이스 발견:</strong> 사람은 Happy Path만 생각하기 쉽지만, AI는 빈 문자열, None/null, 음수, 경계값, 특수문자 등 다양한 예외 상황을 제안합니다.</li>
 </ul>
-<h2>2. 실전 워크플로우: Cursor/Copilot 활용</h2>
-<p>IDE에 내장된 AI 도구(GitHub Copilot, Cursor 등)를 활용하면 생산성이 배가됩니다.</p>
-<h3>2.1 테스트 케이스 생성 요청</h3>
-<p>테스트하고 싶은 함수를 드래그한 후 AI에게 요청합니다.</p>
-<blockquote><p>"이 함수에 대한 단위 테스트를 작성해줘. <code>JUnit 5</code>와 <code>Mockito</code>를 사용하고, 정상 동작하는 경우와 예외가 발생하는 경우를 모두 포함해줘."</p></blockquote>
-<h3>2.2 테스트 데이터 생성 (Mocking)</h3>
-<p>복잡한 객체를 테스트하려면 가짜 데이터(Mock)를 만들어야 하는데, 이게 꽤 귀찮습니다.</p>
-<blockquote><p>"User 객체 테스트를 위한 JSON 더미 데이터를 5개 정도 생성해줘. 다양한 나이대와 이메일 형식을 포함해서."</p></blockquote>
-<h3>2.3 엣지 케이스 보강</h3>
-<p>AI가 작성한 기본 테스트에 더해, 놓친 부분이 없는지 물어봅니다.</p>
-<blockquote><p>"이 로직에서 발생할 수 있는 잠재적인 버그나 엣지 케이스가 더 있을까? 그에 대한 테스트도 추가해줘."</p></blockquote>
-<h2>3. 프롬프트 팁: 테스트 품질 높이기</h2>
-<ul>
-<li><strong>기술 스택 명시:</strong> "Jest와 React Testing Library를 써줘", "Pytest 스타일로 짜줘" 같이 구체적인 라이브러리를 지정하세요.</li>
-<li><strong>테스트 스타일 지정:</strong> "AAA(Arrange-Act-Assert) 패턴으로 주석을 달아줘", "테스트 함수명은 한글로 작성해줘" 등 컨벤션을 지키게 하세요.</li>
-</ul>
-<h2>4. 주의사항: 맹신은 금물</h2>
-<p>AI가 작성한 테스트 코드가 <strong>"실패해야 할 때 성공하는"</strong> 잘못된 테스트일 수도 있습니다. 또는 비즈니스 로직을 잘못 이해하고 엉뚱한 검증을 할 수도 있습니다.</p>
-<p>따라서 AI가 짜준 테스트 코드는 <strong>반드시 개발자가 눈으로 검증하고 실행</strong>해봐야 합니다.</p>
-<h2>결론</h2>
-<p>AI를 활용하면 테스트 코드 작성에 드는 시간을 50% 이상 단축할 수 있습니다. 지루한 '타이핑'은 AI에게 맡기고, 개발자는 <strong>'무엇을 테스트해야 하는가'</strong>라는 본질적인 고민에 집중하세요. 테스트 커버리지가 올라갈수록, 리팩토링과 배포에 대한 자신감이 생길 것입니다.</p></article>
+<h2>2. Python + pytest 실전 예제</h2>
+<p>테스트 대상 함수가 다음과 같다고 가정합니다.</p>
+<pre><code class="language-python">
+# src/utils/calculator.py
+from decimal import Decimal, InvalidOperation
+
+def calculate_discount(price: float, discount_rate: float) -&gt; float:
+    """상품 가격에 할인율을 적용하여 최종 가격을 반환합니다."""
+    if price &lt; 0:
+        raise ValueError("가격은 0 이상이어야 합니다")
+    if not 0 &lt;= discount_rate &lt;= 100:
+        raise ValueError("할인율은 0~100 사이여야 합니다")
+    discount_amount = price * (discount_rate / 100)
+    return round(price - discount_amount, 2)
+</code></pre>
+<h3>2.1 AI에게 요청하는 프롬프트</h3>
+<p>Cursor 또는 IDE에서 함수를 선택한 후 다음과 같이 요청합니다.</p>
+<pre><code class="language-">
+이 함수에 대한 단위 테스트를 작성해줘.
+- pytest 사용
+- AAA(Arrange-Act-Assert) 패턴으로 주석 달기
+- 정상 동작, 경계값, 예외 발생 케이스 모두 포함
+- 테스트 함수명은 test_한글설명 형식으로 작성
+- parametrize로 여러 입력을 한 번에 테스트
+</code></pre>
+<h3>2.2 AI가 생성한 테스트 코드</h3>
+<pre><code class="language-python">
+# tests/test_calculator.py
+import pytest
+from src.utils.calculator import calculate_discount
+
+class TestCalculateDiscount:
+    """calculate_discount 함수 테스트 스위트"""
+
+    @pytest.mark.parametrize("price, rate, expected", [
+        (10000, 10, 9000.0),
+        (50000, 25, 37500.0),
+        (99900, 50, 49950.0),
+        (1000, 0, 1000.0),
+        (1000, 100, 0.0),
+    ])
+    def test_정상적인_할인_계산(self, price, rate, expected):
+        # Act
+        result = calculate_discount(price, rate)
+        # Assert
+        assert result == expected
+
+    def test_할인율_0이면_원래_가격_반환(self):
+        # Arrange
+        price = 25000
+        # Act
+        result = calculate_discount(price, 0)
+        # Assert
+        assert result == price
+
+    def test_할인율_100이면_0원_반환(self):
+        result = calculate_discount(50000, 100)
+        assert result == 0.0
+
+    def test_소수점_가격_정확히_계산(self):
+        result = calculate_discount(33.33, 10)
+        assert result == 30.0  # 반올림 확인
+
+    @pytest.mark.parametrize("invalid_price", [-1, -100, -0.01])
+    def test_음수_가격이면_ValueError(self, invalid_price):
+        with pytest.raises(ValueError, match="가격은 0 이상"):
+            calculate_discount(invalid_price, 10)
+
+    @pytest.mark.parametrize("invalid_rate", [-1, 101, 200, -0.01])
+    def test_할인율_범위_초과시_ValueError(self, invalid_rate):
+        with pytest.raises(ValueError, match="할인율은 0~100"):
+            calculate_discount(10000, invalid_rate)
+
+    def test_가격_0이면_결과도_0(self):
+        result = calculate_discount(0, 50)
+        assert result == 0.0
+</code></pre>
+<h3>2.3 테스트 실행</h3>
+<pre><code class="language-bash">
+# 테스트 실행
+pytest tests/test_calculator.py -v
+
+# 커버리지 포함 실행
+pip install pytest-cov
+pytest --cov=src --cov-report=term-missing
+</code></pre>
+<h2>3. JavaScript + Jest 실전 예제</h2>
+<p>프론트엔드 유틸 함수를 테스트하는 예시입니다.</p>
+<pre><code class="language-javascript">
+// src/utils/validation.js
+export function validateEmail(email) {
+  if (!email || typeof email !== "string") return false;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email.trim());
+}
+
+export function formatPhoneNumber(phone) {
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length !== 11) return null;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+}
+</code></pre>
+<p>AI에게 요청하면 다음과 같은 테스트를 생성합니다.</p>
+<pre><code class="language-javascript">
+// src/utils/__tests__/validation.test.js
+import { validateEmail, formatPhoneNumber } from "../validation";
+
+describe("validateEmail", () =&gt; {
+  test.each([
+    ["user@example.com", true],
+    ["test.name@company.co.kr", true],
+    ["a@b.c", true],
+  ])("유효한 이메일 '%s' → %s", (email, expected) =&gt; {
+    expect(validateEmail(email)).toBe(expected);
+  });
+
+  test.each([
+    ["", false],
+    ["not-an-email", false],
+    ["@missing-local.com", false],
+    ["missing-domain@", false],
+    ["spaces in@email.com", false],
+  ])("유효하지 않은 이메일 '%s' → %s", (email, expected) =&gt; {
+    expect(validateEmail(email)).toBe(expected);
+  });
+
+  test("null/undefined 입력 시 false 반환", () =&gt; {
+    expect(validateEmail(null)).toBe(false);
+    expect(validateEmail(undefined)).toBe(false);
+  });
+
+  test("앞뒤 공백이 있어도 정상 동작", () =&gt; {
+    expect(validateEmail("  user@test.com  ")).toBe(true);
+  });
+});
+
+describe("formatPhoneNumber", () =&gt; {
+  test("11자리 숫자를 올바른 형식으로 변환", () =&gt; {
+    expect(formatPhoneNumber("01012345678")).toBe("010-1234-5678");
+  });
+
+  test("하이픈이 포함된 번호도 처리", () =&gt; {
+    expect(formatPhoneNumber("010-1234-5678")).toBe("010-1234-5678");
+  });
+
+  test("11자리가 아닌 경우 null 반환", () =&gt; {
+    expect(formatPhoneNumber("0101234")).toBeNull();
+    expect(formatPhoneNumber("")).toBeNull();
+  });
+});
+</code></pre>
+<h2>4. 테스트 품질을 높이는 프롬프트 기법</h2>
+<h3>4.1 기술 스택 명시</h3>
+<pre><code class="language-">
+"pytest + pytest-mock을 사용해줘. fixture로 공통 데이터를 분리해줘."
+"Jest + React Testing Library를 써줘. userEvent로 인터랙션 테스트해줘."
+</code></pre>
+<h3>4.2 커버리지 보강 요청</h3>
+<p>기본 테스트를 생성한 후, 추가로 이렇게 요청합니다.</p>
+<pre><code class="language-">
+"이 테스트에서 놓친 엣지 케이스가 있을까? 
+경계값, 동시성, 타입 불일치 케이스를 추가해줘."
+</code></pre>
+<h3>4.3 모킹 데이터 생성</h3>
+<p>복잡한 객체의 테스트 데이터를 만드는 것은 특히 귀찮은 작업입니다. AI에게 "User 객체 테스트를 위한 팩토리 함수를 만들어줘. 기본값이 있되 오버라이드 가능한 구조로"라고 요청하면 됩니다.</p>
+<pre><code class="language-python">
+def create_test_user(**overrides):
+    defaults = {
+        "id": 1, "name": "테스트 사용자",
+        "email": "test@example.com", "age": 25,
+        "role": "user", "is_active": True,
+    }
+    return {**defaults, **overrides}
+
+admin = create_test_user(role="admin", name="관리자")
+inactive = create_test_user(is_active=False)
+</code></pre>
+<h2>5. AI 테스트의 함정과 대응법</h2>
+<h3>5.1 거짓 양성 테스트</h3>
+<p>AI가 "항상 통과하는" 무의미한 테스트를 작성할 수 있습니다.</p>
+<pre><code class="language-python">
+# 이런 테스트는 무의미합니다
+def test_something():
+    result = some_function(1)
+    assert result is not None  # 너무 느슨한 검증
+</code></pre>
+<p><strong>대응:</strong> 생성된 테스트에서 <code>assert</code> 문이 구체적인 값을 검증하는지 반드시 확인하세요. <code>is not None</code>, <code>assertTrue</code> 같은 느슨한 검증은 실제 버그를 잡지 못합니다.</p>
+<h3>5.2 비즈니스 로직 오해</h3>
+<p>AI가 함수의 의도를 잘못 이해하고 엉뚱한 기대값을 넣을 수 있습니다.</p>
+<p><strong>대응:</strong> 테스트의 기대값(expected)이 비즈니스 요구사항과 일치하는지 개발자가 반드시 검증해야 합니다.</p>
+<h3>5.3 과도한 모킹</h3>
+<p>AI가 모든 의존성을 모킹하여 실제로는 아무것도 테스트하지 않는 코드를 만들 수 있습니다.</p>
+<p><strong>대응:</strong> 모킹은 외부 서비스(DB, API)에만 적용하고, 비즈니스 로직 자체는 실제로 실행되도록 유지하세요.</p>
+<h2>6. 실무 워크플로우와 커버리지 관리</h2>
+<p>AI와 함께하는 테스트 작성 워크플로우는 다음과 같습니다.</p>
+<pre><code class="language-">
+1. 기능 함수 작성 (또는 인터페이스만 정의)
+2. AI에게 테스트 생성 요청 → 생성된 코드 검토
+3. pytest/jest 실행 → 실패하는 테스트 확인
+4. 실패 원인 분석 (코드 버그 vs 테스트 오류)
+5. 코드 또는 테스트 수정
+6. 전체 테스트 통과 확인 → 커밋
+</code></pre>
+<p>CI에 커버리지 체크를 추가하면 테스트 문화를 자연스럽게 정착시킬 수 있습니다.</p>
+<pre><code class="language-bash">
+# pytest 커버리지 리포트 (80% 미만이면 실패)
+pytest --cov=src --cov-report=html --cov-fail-under=80
+</code></pre>
+<h2>결론: 지루한 타이핑은 AI에게, 핵심 판단은 사람에게</h2>
+<p>AI를 활용하면 테스트 작성 시간을 50% 이상 단축할 수 있습니다. 반복적인 패턴, 모킹 데이터, 엣지 케이스 나열은 AI의 강점입니다. 하지만 "무엇을 테스트해야 하는가"는 여전히 개발자의 판단 영역입니다.</p>
+<p>지금 프로젝트에서 테스트가 없는 유틸 함수를 하나 골라 AI에게 테스트 생성을 요청해보세요. 생성된 테스트를 실행하고 기대값을 검증하는 과정을 반복하면, 테스트 커버리지와 함께 배포에 대한 자신감이 올라갈 것입니다.</p></article>
     <div class="ad-slot">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>

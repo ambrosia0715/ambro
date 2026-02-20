@@ -15,7 +15,7 @@
   <meta property="og:url" content="https://ambro.space/blog/java/spring-basics.mdx">
   <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/spring_boot_di.webp">
   <meta property="og:site_name" content="Ambro Tech Blog">
-  <meta property="article:published_time" content="2026-02-04">
+  <meta property="article:published_time" content="2026-01-22">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Spring Boot 기초: DI와 IoC 이해하기">
   <meta name="twitter:description" content="스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리">
@@ -33,8 +33,8 @@
     "@type": "Person",
     "name": "Ambro"
   },
-  "datePublished": "2026-02-04",
-  "dateModified": "2026-02-04",
+  "datePublished": "2026-01-22",
+  "dateModified": "2026-01-22",
   "image": "https://ambro.space/assets/assets/images/blog/spring_boot_di.webp",
   "publisher": {
     "@type": "Organization",
@@ -84,84 +84,246 @@
   <div id="seo-content">
     <div class="tags"><span class="tag">Spring Boot</span> <span class="tag">DI</span> <span class="tag">IoC</span></div>
     <h1>Spring Boot 기초: DI와 IoC 이해하기</h1>
-    <div class="meta">2026-02-04 &middot; 10분 &middot; Ambro</div>
+    <div class="meta">2026-01-22 &middot; 15분 &middot; Ambro</div>
     <img src="/assets/assets/images/blog/spring_boot_di.webp" alt="Spring Boot 기초: DI와 IoC 이해하기" style="width:100%;border-radius:12px;margin-bottom:2em;">
     <article><h1>Spring Boot 기초: DI와 IoC 이해하기</h1>
-<p>스프링 프레임워크(Spring Framework)를 처음 접할 때 가장 먼저 마주치지만, 가장 이해하기 어려운 개념이 바로 <strong>IoC(Inversion of Control)</strong>와 <strong>DI(Dependency Injection)</strong>입니다. 이 두 가지 개념은 스프링의 존재 이유이자, 객체지향 설계를 완성하는 핵심 철학입니다.</p>
-<p>이 글에서는 복잡한 용어 대신 실생활의 비유와 간단한 코드로 DI와 IoC의 본질을 파헤쳐 봅니다.</p>
-<h2>1. 강한 결합(Tightly Coupled)의 문제점</h2>
-<p>개발자가 직접 객체를 생성하고 관리하는 전통적인 방식을 살펴봅시다.</p>
+<p>"Spring의 <code>@Autowired</code>가 뭔가요?" 면접에서 이 질문에 "자동으로 의존성을 주입해줍니다"라고만 답하면 합격하기 어렵습니다. 그 뒤에 있는 원리인 <strong>IoC(제어의 역전)</strong>와 <strong>DI(의존성 주입)</strong>를 제대로 이해해야 스프링을 스프링답게 쓸 수 있습니다.</p>
+<p>이 글에서는 "왜 객체를 직접 만들면 안 되는가?"라는 근본적인 질문에서 출발하여, DI와 IoC가 실제로 코드 품질을 어떻게 바꾸는지 단계별로 보여드립니다.</p>
+<h2>1. 문제 상황: 강한 결합(Tight Coupling)</h2>
+<p>커피숍 주문 시스템을 만든다고 가정합니다. 결제 기능이 필요해서 직접 객체를 생성합니다.</p>
 <pre><code class="language-java">
-public class SamsungEngine {
-    public void start() { System.out.println("Samsung Engine Start"); }
+public class KakaoPay {
+    public void pay(int amount) {
+        System.out.println("카카오페이로 " + amount + "원 결제");
+    }
 }
 
-public class Car {
-    private SamsungEngine engine;
+public class OrderService {
+    private KakaoPay payment = new KakaoPay(); // 직접 생성 (강한 결합)
 
-    public Car() {
-        // Car가 Engine의 생성과 선택을 직접 제어함 (강한 결합)
-        this.engine = new SamsungEngine();
+    public void order(String item, int price) {
+        System.out.println(item + " 주문 접수");
+        payment.pay(price);
     }
 }
 </code></pre>
-<p>위 코드에서 <code>Car</code>는 <code>SamsungEngine</code>에 강하게 의존하고 있습니다. 만약 엔진을 <code>HyundaiEngine</code>으로 바꾸고 싶다면 <code>Car</code> 클래스의 코드를 직접 수정해야 합니다. 이는 유연성이 떨어지고 테스트하기도 어려운 코드입니다.</p>
-<h2>2. IoC (Inversion of Control, 제어의 역전)</h2>
-<p>IoC는 <strong>"내가 쓸 객체를 내가 직접 만들지 않고, 남이 만들어 준 것을 쓴다"</strong>는 원칙입니다. 여기서 '제어권'이 역전되었다는 말은 객체의 생명주기(생성, 초기화, 소멸) 관리 책임이 개발자에게서 프레임워크(스프링 컨테이너)로 넘어갔음을 의미합니다.</p>
-<p>스프링에서는 개발자가 <code>@Component</code>, <code>@Service</code>, <code>@Repository</code> 등의 어노테이션을 붙이면, 스프링 컨테이너가 알아서 객체(Bean)를 생성하고 관리합니다.</p>
-<h2>3. DI (Dependency Injection, 의존성 주입)</h2>
-<p>DI는 IoC를 구현하는 구체적인 디자인 패턴 중 하나입니다. 객체가 필요로 하는 의존성(다른 객체)을 외부에서 주입해주는 것입니다. 마치 장난감 로봇에 배터리를 끼워주는 것과 같습니다.</p>
-<h3>3.1 DI의 3가지 방식</h3>
-<p><strong>1. 생성자 주입 (Constructor Injection) - 권장!</strong></p>
+<p>이 코드의 문제점은 무엇일까요?</p>
+<ul>
+<li><strong>결제 수단 변경이 어려움</strong>: 네이버페이를 추가하려면 <code>OrderService</code> 코드를 직접 수정해야 합니다</li>
+<li><strong>테스트가 어려움</strong>: 단위 테스트에서 실제 카카오페이 API를 호출할 수 없습니다</li>
+<li><strong>OCP 위반</strong>: 기능을 확장하려면 기존 코드를 수정해야 합니다 (개방-폐쇄 원칙 위반)</li>
+</ul>
+<h2>2. 해결 1단계: 인터페이스로 추상화</h2>
+<p>결합도를 낮추려면 구체적인 구현이 아닌 <strong>인터페이스</strong>에 의존해야 합니다.</p>
 <pre><code class="language-java">
-@Service
-public class Car {
-    private final Engine engine;
+// 결제 인터페이스 정의
+public interface PaymentService {
+    void pay(int amount);
+}
 
-    // 생성자를 통해 외부에서 Engine을 주입받음
-    @Autowired
-    public Car(Engine engine) {
-        this.engine = engine;
+// 구현체 1: 카카오페이
+public class KakaoPayService implements PaymentService {
+    @Override
+    public void pay(int amount) {
+        System.out.println("카카오페이로 " + amount + "원 결제");
+    }
+}
+
+// 구현체 2: 네이버페이
+public class NaverPayService implements PaymentService {
+    @Override
+    public void pay(int amount) {
+        System.out.println("네이버페이로 " + amount + "원 결제");
     }
 }
 </code></pre>
-<ul>
-<li><strong>장점:</strong> 불변성(final) 보장, 테스트 용이성, 순환 참조 방지. 스프링 팀에서 가장 권장하는 방식입니다.</li>
-</ul>
-<p><strong>2. 세터 주입 (Setter Injection)</strong></p>
+<p>하지만 여전히 <code>OrderService</code>에서 구현체를 직접 선택해야 합니다.</p>
 <pre><code class="language-java">
-@Service
-public class Car {
-    private Engine engine;
-
-    @Autowired
-    public void setEngine(Engine engine) {
-        this.engine = engine;
+public class OrderService {
+    // 인터페이스 타입이지만, 결국 구현체를 직접 생성함
+    private PaymentService payment = new KakaoPayService();
+}
+</code></pre>
+<h2>3. 해결 2단계: IoC — 제어권을 넘기다</h2>
+<p><strong>IoC(Inversion of Control)</strong>는 객체의 생성과 관리 책임을 개발자가 아닌 <strong>프레임워크(스프링 컨테이너)</strong>에게 위임하는 원칙입니다.</p>
+<table><thead><tr>
+<th>구분</th>
+<th>전통적인 방식</th>
+<th>IoC 적용</th>
+</tr></thead><tbody>
+<tr>
+<td>객체 생성</td>
+<td>개발자가 <code>new</code>로 직접</td>
+<td>스프링 컨테이너가 대신</td>
+</tr>
+<tr>
+<td>생명주기 관리</td>
+<td>개발자 책임</td>
+<td>컨테이너가 초기화/소멸 관리</td>
+</tr>
+<tr>
+<td>의존성 연결</td>
+<td>코드에 하드코딩</td>
+<td>컨테이너가 설정에 따라 주입</td>
+</tr>
+</tbody></table>
+<p>스프링에서는 <code>@Component</code>, <code>@Service</code>, <code>@Repository</code>, <code>@Controller</code> 어노테이션을 붙이면 해당 클래스가 <strong>빈(Bean)</strong>으로 등록되어 컨테이너가 관리합니다.</p>
+<pre><code class="language-java">
+@Service // 이 어노테이션으로 스프링 컨테이너에 등록
+public class KakaoPayService implements PaymentService {
+    @Override
+    public void pay(int amount) {
+        System.out.println("카카오페이로 " + amount + "원 결제");
     }
 }
 </code></pre>
-<ul>
-<li><strong>장점:</strong> 선택적인 의존성이나 런타임에 의존성을 변경해야 할 때 유용하지만, 거의 사용되지 않습니다.</li>
-</ul>
-<p><strong>3. 필드 주입 (Field Injection) - 비권장</strong></p>
+<h2>4. 해결 3단계: DI — 외부에서 주입받기</h2>
+<p><strong>DI(Dependency Injection)</strong>는 IoC를 구현하는 구체적인 패턴입니다. 객체가 필요한 의존성을 직접 생성하지 않고 외부에서 <strong>주입</strong> 받습니다.</p>
+<h3>4.1 생성자 주입 (Constructor Injection) — 권장!</h3>
 <pre><code class="language-java">
 @Service
-public class Car {
-    @Autowired
-    private Engine engine;
+public class OrderService {
+    private final PaymentService paymentService;
+
+    // 생성자를 통해 스프링이 PaymentService 구현체를 주입
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+
+    public void order(String item, int price) {
+        System.out.println(item + " 주문 접수");
+        paymentService.pay(price);
+    }
 }
 </code></pre>
-<ul>
-<li><strong>단점:</strong> 코드는 간결하지만, 외부에서 의존성을 주입할 방법이 없어 테스트가 어렵고 프레임워크에 강하게 종속됩니다.</li>
-</ul>
-<h2>4. 왜 DI와 IoC를 사용하는가?</h2>
-<ul>
-<li><strong>결합도 감소 (Decoupling):</strong> 객체 간의 의존성이 느슨해져서, 하나의 모듈을 수정해도 다른 모듈에 미치는 영향이 적습니다.</li>
-<li><strong>유연한 코드:</strong> 인터페이스를 사용하여 구현체를 쉽게 교체할 수 있습니다. (예: <code>Engine</code> 인터페이스만 바라보고 있으면, 실제 주입되는 빈이 <code>Samsung</code>이든 <code>Hyundai</code>든 상관없음)</li>
-<li><strong>테스트 용이성:</strong> 단위 테스트 시 실제 DB 연결 객체 대신 가짜 객체(Mock)를 주입하여 비즈니스 로직만 독립적으로 테스트할 수 있습니다.</li>
-</ul>
+<p>생성자가 하나뿐이면 <code>@Autowired</code>를 생략할 수 있습니다 (Spring 4.3+). <code>final</code> 키워드로 불변성을 보장하고, Lombok의 <code>@RequiredArgsConstructor</code>로 더 간결하게 작성할 수 있습니다.</p>
+<pre><code class="language-java">
+@Service
+@RequiredArgsConstructor // final 필드에 대한 생성자 자동 생성
+public class OrderService {
+    private final PaymentService paymentService;
+
+    public void order(String item, int price) {
+        System.out.println(item + " 주문 접수");
+        paymentService.pay(price);
+    }
+}
+</code></pre>
+<h3>4.2 세터 주입 (Setter Injection) — 선택적 의존성에 사용</h3>
+<pre><code class="language-java">
+@Service
+public class NotificationService {
+    private EmailSender emailSender;
+
+    @Autowired(required = false) // 없어도 동작 가능
+    public void setEmailSender(EmailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+}
+</code></pre>
+<h3>4.3 필드 주입 (Field Injection) — 비권장</h3>
+<pre><code class="language-java">
+@Service
+public class OrderService {
+    @Autowired
+    private PaymentService paymentService; // 간결하지만 위험
+}
+</code></pre>
+<table><thead><tr>
+<th>주입 방식</th>
+<th>불변성</th>
+<th>테스트 용이성</th>
+<th>순환 참조 감지</th>
+<th>권장도</th>
+</tr></thead><tbody>
+<tr>
+<td>생성자 주입</td>
+<td><code>final</code> 가능</td>
+<td>Mock 주입 쉬움</td>
+<td>앱 시작 시 감지</td>
+<td>최우선 권장</td>
+</tr>
+<tr>
+<td>세터 주입</td>
+<td>불가</td>
+<td>가능하나 번거로움</td>
+<td>런타임에 감지</td>
+<td>선택적 의존성만</td>
+</tr>
+<tr>
+<td>필드 주입</td>
+<td>불가</td>
+<td>리플렉션 필요</td>
+<td>런타임에 감지</td>
+<td>사용 자제</td>
+</tr>
+</tbody></table>
+<h2>5. 실전: 구현체가 여러 개일 때</h2>
+<p><code>PaymentService</code> 구현체가 <code>KakaoPayService</code>와 <code>NaverPayService</code> 두 개일 때, 스프링은 어떤 것을 주입해야 할지 모릅니다.</p>
+<pre><code class="language-java">
+// 방법 1: @Primary — 기본 구현체 지정
+@Service
+@Primary
+public class KakaoPayService implements PaymentService { ... }
+
+// 방법 2: @Qualifier — 이름으로 명시적 지정
+@Service
+public class OrderService {
+    private final PaymentService paymentService;
+
+    public OrderService(@Qualifier("naverPayService") PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+
+// 방법 3: 모든 구현체를 리스트로 주입
+@Service
+public class PaymentRouter {
+    private final List&lt;PaymentService&gt; paymentServices;
+
+    public PaymentRouter(List&lt;PaymentService&gt; paymentServices) {
+        this.paymentServices = paymentServices;
+    }
+}
+</code></pre>
+<h2>6. 테스트에서 DI의 위력</h2>
+<p>DI의 가장 큰 장점은 테스트에서 드러납니다. 실제 결제 API를 호출하지 않고 Mock 객체를 주입할 수 있습니다.</p>
+<pre><code class="language-java">
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+
+    @Mock
+    PaymentService paymentService; // 가짜 결제 서비스
+
+    @InjectMocks
+    OrderService orderService; // Mock이 주입된 OrderService
+
+    @Test
+    void 주문_성공_시_결제가_호출된다() {
+        orderService.order("아메리카노", 4500);
+
+        // 실제 결제 없이 호출 여부만 검증
+        verify(paymentService).pay(4500);
+    }
+}
+</code></pre>
+<p>필드 주입(<code>@Autowired private</code>)을 사용했다면 이런 깔끔한 테스트가 불가능합니다. 생성자 주입을 사용하기에 Mockito가 자연스럽게 Mock을 주입할 수 있는 것입니다.</p>
+<h2>7. 흔한 실수와 해결법</h2>
+<p><strong>순환 참조(Circular Dependency)</strong>: A가 B를 주입받고 B가 A를 주입받으면 앱이 시작되지 않습니다.</p>
+<pre><code class="language-">
+The dependencies of some of the beans in the application context form a cycle:
+  orderService → paymentService → orderService
+</code></pre>
+<p>해결법: 설계를 다시 검토하세요. 보통 하나의 서비스가 너무 많은 책임을 가지고 있다는 신호입니다. 공통 로직을 별도 서비스로 추출하면 대부분 해결됩니다.</p>
 <h2>결론</h2>
-<p>Spring Boot의 마법 같은 자동 설정 뒤에는 항상 DI와 IoC가 작동하고 있습니다. "알아서 해주니까 편하다"를 넘어서, <strong>"객체 간의 관계를 어떻게 느슨하게 설계할 것인가"</strong>에 대한 고민이 선행될 때, 진정한 스프링 개발자로 거듭날 수 있습니다. 생성자 주입을 생활화하고, 인터페이스 기반으로 설계하는 습관을 길러보세요.</p></article>
+<p>DI와 IoC는 스프링의 존재 이유입니다. 핵심을 정리하면:</p>
+<ul>
+<li><strong>인터페이스에 의존</strong>하고 구현체에 의존하지 마세요</li>
+<li><strong>생성자 주입</strong>을 기본으로 사용하세요 (<code>final</code> + <code>@RequiredArgsConstructor</code>)</li>
+<li>구현체가 여러 개면 <code>@Primary</code> 또는 <code>@Qualifier</code>로 명확히 지정하세요</li>
+<li>DI 덕분에 <strong>Mock 객체를 활용한 단위 테스트</strong>가 쉬워집니다</li>
+</ul>
+<p>"알아서 해주니까 편하다"를 넘어서, "객체 간의 관계를 어떻게 느슨하게 설계할 것인가"를 항상 고민하세요. 그것이 진정한 스프링 개발자의 자세입니다.</p></article>
     <div class="ad-slot">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>

@@ -1,49 +1,161 @@
+# RAG 전략 심층 가이드: 검색 증강 생성의 설계부터 최적화까지
 
-# RAG(검색 증강 생성) 전략 가이드: LLM의 한계를 넘어서
-
-LLM(Large Language Model)은 강력하지만 두 가지 치명적인 약점이 있습니다. 첫째는 **환각(Hallucination)** 현상으로, 모르는 사실을 그럴듯하게 지어내는 것입니다. 둘째는 **지식의 최신성** 문제로, 학습 데이터 컷오프(Cut-off) 이후의 정보는 알지 못한다는 점입니다.
-
-이 문제를 해결하기 위해 등장한 기술이 바로 **RAG(Retrieval-Augmented Generation)**입니다. 기업용 AI 서비스를 구축한다면 반드시 알아야 할 RAG의 핵심 전략을 소개합니다.
-
-## 1. RAG의 기본 동작 원리
-
-RAG는 시험 볼 때 '오픈북 테스트'를 하는 것과 같습니다. LLM이 머릿속에 있는 지식(학습 데이터)만으로 답하는 것이 아니라, 외부 도서관(Vector DB)에서 관련 정보를 찾아보고(Retrieval) 그 정보를 바탕으로 답을 생성(Generation)하는 방식입니다.
+기업이 LLM을 도입할 때 가장 먼저 부딪히는 벽은 두 가지입니다. **환각(Hallucination)** — AI가 모르는 것을 그럴듯하게 지어내는 현상, 그리고 **지식의 단절** — 학습 데이터 이후의 정보를 전혀 모른다는 점. 이 두 문제를 동시에 해결하는 기술이 바로 **RAG(Retrieval-Augmented Generation)**입니다. 하지만 "그냥 데이터를 넣으면 되겠지"라는 접근은 실패로 이어집니다. 이 글에서는 RAG 파이프라인의 설계 원리부터 실전 최적화 전략까지 상세히 다룹니다.
 
 ![RAG Architecture Diagram](assets/images/blog/rag_architecture.webp)
 
-1.  **Ingestion:** 문서를 쪼개고(Chunking), 임베딩(Embedding)하여 벡터 DB에 저장합니다.
-2.  **Retrieval:** 사용자의 질문과 가장 유사한 문서를 벡터 DB에서 검색합니다.
-3.  **Generation:** 검색된 문서와 질문을 프롬프트에 넣어 LLM에게 전달하고 답변을 생성합니다.
+## RAG의 아키텍처: 세 단계의 파이프라인
 
-## 2. RAG 성능을 높이는 3가지 전략
+RAG는 시험 볼 때 오픈북 테스트를 하는 것과 같습니다. LLM이 머릿속 지식만으로 답하는 대신, 외부 데이터베이스에서 관련 정보를 검색한 뒤 그 정보를 근거로 답변을 생성합니다. 전체 파이프라인은 세 단계로 구성됩니다.
 
-단순히 문서를 검색해서 던져주는 것만으로는 좋은 품질을 기대하기 어렵습니다. 실무에서는 다음과 같은 전략들이 사용됩니다.
+```
+[Ingestion 단계]
+문서 수집 → 전처리 → Chunking → Embedding → Vector DB 저장
 
-### 2.1 Chunking 전략 (어떻게 쪼갤 것인가?)
-문서를 너무 잘게 쪼개면 문맥이 잘리고, 너무 크게 쪼개면 불필요한 노이즈가 섞입니다.
--   **Fixed-size:** 고정된 토큰 수(예: 512, 1024)로 자릅니다. 가장 단순하지만 문맥이 끊길 수 있습니다.
--   **Recursive:** 문단, 문장 단위로 계층적으로 자릅니다. 의미 단위를 보존하는 데 유리합니다.
--   **Semantic:** 의미적 유사도가 변하는 지점을 찾아 동적으로 자릅니다. 구현은 어렵지만 품질은 가장 좋습니다.
+[Retrieval 단계]
+사용자 질문 → 질문 Embedding → Vector DB 검색 → 상위 K개 문서 추출
 
-### 2.2 Hybrid Search (어떻게 찾을 것인가?)
-벡터 검색(Semantic Search)만으로는 '고유명사'나 '정확한 키워드' 검색에 약할 수 있습니다.
--   **Vector Search:** 의미적 유사성 기반 ("아이폰 배터리 문제" -> "스마트폰 전원 이슈" 문서 검색 가능)
--   **Keyword Search (BM25):** 정확한 단어 매칭 ("에러 코드 503" -> "503"이 포함된 문서 검색)
--   **Hybrid:** 두 검색 결과의 점수를 가중합(Weighted Sum)하거나 RRF(Reciprocal Rank Fusion) 알고리즘으로 재정렬하여 최적의 결과를 도출합니다.
+[Generation 단계]
+시스템 프롬프트 + 검색된 문서(Context) + 사용자 질문 → LLM → 답변 생성
+```
 
-### 2.3 Re-ranking (정확도 높이기)
-벡터 DB에서 상위 50~100개의 문서를 가져온 뒤, 더 정교한(하지만 느린) Cross-Encoder 모델을 사용하여 이 문서들과 질문 간의 관련성을 다시 채점하고 순위를 매깁니다. 이 과정을 거치면 LLM에게 전달되는 문맥(Context)의 품질이 비약적으로 상승합니다.
+각 단계마다 성능을 좌우하는 핵심 변수들이 있으며, 이를 얼마나 정교하게 튜닝하느냐에 따라 RAG 시스템의 품질이 결정됩니다.
 
-## 3. 실무 인사이트: RAG 평가 (Evaluation)
+## Chunking 전략: RAG 성능의 70%를 결정하는 첫 번째 관문
 
-RAG 시스템을 구축했다면 성능을 어떻게 평가해야 할까요? **RAGAS**나 **TruLens** 같은 프레임워크를 사용하면 다음 지표들을 정량적으로 측정할 수 있습니다.
+문서를 어떻게 쪼개느냐(Chunking)가 RAG 품질의 대부분을 결정합니다. 너무 잘게 쪼개면 문맥이 유실되고, 너무 크게 쪼개면 노이즈가 섞입니다.
 
--   **Faithfulness (충실성):** 답변이 검색된 문서(Context)에 기반하고 있는가? (환각 방지)
--   **Answer Relevance (답변 관련성):** 답변이 사용자 질문에 적절한가?
--   **Context Precision (문맥 정확도):** 검색된 문서가 실제로 질문과 관련이 있는가?
+### Fixed-size Chunking (고정 크기)
 
-## 결론
+가장 단순한 방식으로, 일정한 토큰 수(예: 512, 1024)로 문서를 자릅니다.
 
-RAG는 LLM을 기업의 데이터와 연결하는 가장 현실적이고 효과적인 방법입니다. 하지만 "그냥 데이터만 넣으면 되겠지"라고 생각하면 오산입니다. 데이터의 전처리(Chunking), 검색 알고리즘의 최적화(Hybrid Search), 그리고 사후 보정(Re-ranking)까지 섬세한 튜닝이 필요합니다.
+```python
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-성공적인 AI 서비스를 위해 오늘부터 우리 데이터에 맞는 RAG 파이프라인을 설계해보세요.
+splitter = RecursiveCharacterTextSplitter(
+    chunk_size=512,
+    chunk_overlap=50,     # 청크 간 50토큰 겹침으로 문맥 보존
+    separators=["\n\n", "\n", ".", " "]
+)
+chunks = splitter.split_text(document)
+```
+
+`chunk_overlap`이 중요합니다. 청크 경계에서 문맥이 잘리는 것을 방지하기 위해 보통 chunk_size의 10~15%를 겹치게 설정합니다.
+
+### Semantic Chunking (의미 기반)
+
+문장 간 임베딩 유사도를 계산하여, 의미가 급격히 바뀌는 지점을 찾아 동적으로 분할합니다. 구현 난이도는 높지만 품질은 가장 좋습니다.
+
+```python
+from langchain_experimental.text_splitter import SemanticChunker
+from langchain_openai import OpenAIEmbeddings
+
+chunker = SemanticChunker(
+    OpenAIEmbeddings(),
+    breakpoint_threshold_type="percentile",
+    breakpoint_threshold_amount=85
+)
+chunks = chunker.split_text(document)
+```
+
+### Parent-Child Chunking (계층적)
+
+검색은 작은 청크(Child)로 하되, LLM에게는 더 큰 청크(Parent)를 전달하는 전략입니다. 검색 정밀도와 문맥 완전성을 동시에 확보할 수 있습니다.
+
+| 전략 | 장점 | 단점 | 추천 시나리오 |
+|------|------|------|------------|
+| Fixed-size | 구현 간단, 예측 가능 | 문맥 단절 위험 | 정형화된 문서 (매뉴얼, FAQ) |
+| Semantic | 의미 보존 최적 | 구현 복잡, 비용 발생 | 비정형 문서 (보고서, 논문) |
+| Parent-Child | 정밀도 + 문맥 동시 확보 | 저장 공간 2배 | 기술 문서, 법률 문서 |
+
+## Hybrid Search: 키워드와 의미를 동시에 잡는 검색 전략
+
+벡터 검색(Semantic Search)만으로는 고유명사나 정확한 키워드 검색에 취약합니다. 반대로 키워드 검색(BM25)만으로는 동의어나 유사 표현을 찾지 못합니다. **Hybrid Search**는 이 둘을 결합합니다.
+
+```python
+from langchain.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.vectorstores import Chroma
+
+# 벡터 검색기
+vector_retriever = Chroma.from_documents(docs, embeddings).as_retriever(
+    search_kwargs={"k": 20}
+)
+
+# 키워드 검색기 (BM25)
+bm25_retriever = BM25Retriever.from_documents(docs)
+bm25_retriever.k = 20
+
+# 앙상블 (가중치: 벡터 60%, BM25 40%)
+hybrid_retriever = EnsembleRetriever(
+    retrievers=[vector_retriever, bm25_retriever],
+    weights=[0.6, 0.4]
+)
+```
+
+**RRF(Reciprocal Rank Fusion)** 알고리즘을 사용하면 더 정교한 결합이 가능합니다. 각 검색기의 순위를 역수로 변환하여 합산하므로, 한쪽에서 높은 순위를 받은 문서가 자연스럽게 상위에 올라옵니다. 실무에서 Hybrid Search는 순수 벡터 검색 대비 **15~25% 높은 정확도**를 보이는 것으로 보고되고 있습니다.
+
+## Re-ranking: 최종 품질을 결정하는 마지막 필터
+
+초기 검색에서 상위 50~100개 문서를 가져온 후, **Cross-Encoder** 모델로 질문과 문서 쌍의 관련성을 정밀하게 재평가합니다.
+
+```python
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
+
+reranker = CohereRerank(model="rerank-v3.5", top_n=5)
+
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=reranker,
+    base_retriever=hybrid_retriever
+)
+
+results = compression_retriever.invoke("분기별 매출 추이가 어떻게 되나요?")
+```
+
+Bi-Encoder(임베딩 검색)는 속도가 빠르지만 정밀도가 낮고, Cross-Encoder는 느리지만 정밀도가 높습니다. Re-ranking은 이 두 모델의 장점을 순차적으로 활용하는 **2단계 파이프라인**입니다. 실무에서 Re-ranking 추가만으로 답변 정확도가 **20~35% 향상**되는 사례가 보고되고 있습니다.
+
+## Advanced RAG: 한 단계 더 깊이
+
+### Query Transformation
+
+사용자의 질문이 모호하거나 복합적일 때, 검색 전에 질문 자체를 변환합니다.
+
+- **Query Decomposition:** "A와 B의 차이점은?" → "A의 특징은?" + "B의 특징은?" (개별 검색 후 합성)
+- **HyDE (Hypothetical Document Embeddings):** 질문에 대한 가상 답변을 먼저 생성하고, 그 답변의 임베딩으로 검색 (질문보다 답변이 문서와 더 유사한 경우가 많음)
+
+### Metadata Filtering
+
+벡터 검색 전에 메타데이터(날짜, 부서, 문서 유형 등)로 사전 필터링하면 검색 범위가 좁혀져 정확도와 속도가 모두 향상됩니다.
+
+### Contextual Embedding
+
+Anthropic이 제안한 기법으로, 각 청크에 문서 전체 맥락을 요약한 프리픽스를 붙여서 임베딩합니다. "이 청크는 2025년 3분기 재무보고서의 매출 분석 섹션에 속합니다: [원본 청크]" 형태로 변환하면 검색 정확도가 크게 향상됩니다.
+
+## RAG 평가: 성능을 정량적으로 측정하기
+
+RAG 시스템을 구축했다면 어떻게 품질을 측정할까요? **RAGAS** 프레임워크는 다음 4가지 핵심 지표를 제공합니다:
+
+| 지표 | 측정 대상 | 목표치 |
+|------|---------|-------|
+| Faithfulness (충실성) | 답변이 검색된 문서에 근거하는가? | > 0.85 |
+| Answer Relevance | 답변이 질문에 적절한가? | > 0.80 |
+| Context Precision | 검색된 문서가 관련 있는가? | > 0.75 |
+| Context Recall | 필요한 정보가 모두 검색되었는가? | > 0.70 |
+
+Faithfulness이 낮으면 환각 문제, Context Precision이 낮으면 검색 품질 문제입니다. 각 지표가 가리키는 병목을 파악하고 해당 단계를 집중적으로 개선하는 것이 효율적입니다.
+
+## 실무 비용 분석: RAG vs Long Context
+
+Gemini 3.1 Pro처럼 1M 토큰 컨텍스트를 지원하는 모델이 등장하면서 "RAG가 필요 없어지는 것 아니냐"는 질문이 나옵니다. 결론부터 말하면, **아직 RAG가 더 경제적**입니다.
+
+| 방식 | 100건 질문 처리 비용 | 응답 속도 | 정확도 |
+|------|------------------|---------|-------|
+| Long Context (전체 문서 매번 입력) | ~$12.50 | 느림 (매번 전체 처리) | 높음 |
+| RAG (관련 청크만 검색) | ~$0.50 | 빠름 (검색+소량 입력) | 높음 (최적화 시) |
+
+RAG는 질문당 필요한 토큰 수를 극적으로 줄여주므로, 반복 질의가 많은 서비스에서는 비용 차이가 **25배 이상** 날 수 있습니다. 단, 1회성 분석이나 프로토타이핑에서는 Long Context의 편의성이 압도적입니다. 서비스의 사용 패턴에 따라 최적의 전략을 선택하세요.
+
+## 결론: RAG는 설계의 기술이다
+
+RAG는 "LLM + 검색"이라는 단순한 공식이 아닙니다. Chunking 전략, 검색 알고리즘의 하이브리드 구성, Re-ranking을 통한 품질 보정, Query Transformation까지 — 각 단계의 정교한 설계와 튜닝이 최종 품질을 결정합니다. "90%의 정확도"와 "99%의 정확도" 사이의 간극을 메우는 것은 바로 이러한 세부 전략들입니다. 자사 데이터의 특성을 파악하고, 위에서 소개한 기법들을 조합하여 최적의 RAG 파이프라인을 설계해 보세요. AI 서비스의 성패는 모델이 아니라 데이터 파이프라인에 달려 있습니다.

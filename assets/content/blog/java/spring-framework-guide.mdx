@@ -2,88 +2,252 @@
 
 _작성일: 2026-02-09_
 
-스프링 프레임워크(Spring Framework)는 자바 생태계에서 가장 널리 쓰이는 **애플리케이션 프레임워크**입니다. “스프링 = 웹 프레임워크”로 오해하는 경우가 많지만, 스프링의 본질은 웹이 아니라 **객체를 유연하게 조립하고(IOC/DI), 횡단 관심사를 분리하며(AOP), 계층형 애플리케이션 구성을 돕는 기반**에 있습니다. 이 글에서는 스프링의 핵심 개념과 구조를 짚고, 실제로 프로젝트에서 어떻게 쓰는지까지 연결해 보겠습니다.
+"스프링은 웹 프레임워크 아닌가요?" 많은 초보 개발자가 하는 오해입니다. 스프링 프레임워크의 본질은 웹이 아닙니다. 스프링은 **객체를 유연하게 조립하고(IoC/DI), 횡단 관심사를 분리하며(AOP), 다양한 기술을 일관된 방식으로 사용할 수 있게 해주는(PSA) 애플리케이션 아키텍처 기반**입니다.
+
+이 글에서는 스프링의 3대 핵심 개념을 실제 코드로 이해하고, Spring MVC의 동작 흐름, 그리고 실무에서 유지보수하기 좋은 스프링 사용법까지 다룹니다.
 
 ![Spring Framework 개요](assets/images/blog/spring_framework_hero.webp)
 
-## 1) 스프링의 핵심 개념 3가지
+## 1. 스프링의 3대 핵심 개념
 
-### (1) IoC/DI: 객체 생성과 연결을 “컨테이너”가 담당
+### 1.1 IoC/DI: 객체의 생성과 연결을 컨테이너가 담당
 
-스프링은 애플리케이션이 필요로 하는 객체(Bean)를 만들고, 의존 관계를 연결하는 역할을 **스프링 컨테이너**에게 위임합니다. 우리는 “어떤 구현이 필요하다”만 선언하고, 실제 조립은 컨테이너가 수행합니다.
+스프링의 가장 핵심적인 역할은 **빈(Bean) 관리**입니다. 개발자가 `new`로 객체를 생성하는 대신, 스프링 컨테이너가 객체를 만들고 필요한 의존성을 연결해줍니다.
 
 ```java
 @Service
 public class OrderService {
-  private final PaymentClient paymentClient;
+    private final PaymentClient paymentClient;
+    private final InventoryClient inventoryClient;
 
-  public OrderService(PaymentClient paymentClient) {
-    this.paymentClient = paymentClient;
-  }
+    // 스프링이 PaymentClient와 InventoryClient Bean을 자동 주입
+    public OrderService(PaymentClient paymentClient,
+                        InventoryClient inventoryClient) {
+        this.paymentClient = paymentClient;
+        this.inventoryClient = inventoryClient;
+    }
+
+    public OrderResult createOrder(OrderRequest request) {
+        inventoryClient.reserve(request.getItemId());
+        paymentClient.charge(request.getAmount());
+        return OrderResult.success();
+    }
 }
 ```
 
-핵심은 **생성자 주입**처럼 의존성을 외부에서 받도록 설계하는 것입니다. 그러면 테스트에서 Fake/Mock을 주입하기 쉬워지고, 구현 교체도 쉬워집니다.
+핵심은 `OrderService`가 `PaymentClient`의 구체적인 구현체를 모른다는 점입니다. 인터페이스에만 의존하므로, 테스트 시 Mock으로 교체하기 쉽고, 구현체가 변경되어도 `OrderService`는 수정할 필요가 없습니다.
 
-### (2) AOP: 로깅/트랜잭션 같은 “공통 관심사”를 분리
+### 1.2 AOP: 비즈니스 로직에서 공통 관심사 분리
 
-로깅, 권한 검사, 트랜잭션 같은 기능은 많은 곳에 반복됩니다. AOP(Aspect Oriented Programming)는 이런 코드를 비즈니스 로직에서 분리해 “붙였다 떼는” 방식으로 관리하게 해줍니다.
+로깅, 트랜잭션, 인증 검사 같은 기능은 거의 모든 서비스에 반복됩니다. AOP(Aspect Oriented Programming)는 이런 코드를 비즈니스 로직에서 분리합니다.
 
-대표적으로 `@Transactional`은 **트랜잭션 경계를 선언**하고, 실제 구현은 스프링이 프록시를 통해 처리합니다.
+```java
+// 실행 시간 측정 AOP
+@Aspect
+@Component
+public class ExecutionTimeAspect {
 
-### (3) PSA: 구현체가 바뀌어도 같은 방식으로 사용
+    @Around("@annotation(MeasureTime)")
+    public Object measureTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long elapsed = System.currentTimeMillis() - start;
 
-스프링은 특정 기술(서블릿/리액티브/ORM 등)에 강하게 묶이지 않도록, 공통된 추상화(스프링 방식)를 제공합니다. 덕분에 JDBC → JPA로 바꾸거나, 서블릿 기반 → 리액티브로 넘어갈 때도 “스프링의 사용 방식”은 크게 유지됩니다.
+        log.info("[{}] 실행 시간: {}ms",
+            joinPoint.getSignature().getName(), elapsed);
+        return result;
+    }
+}
 
-## 2) 스프링의 구조: 어떤 모듈들이 있는가
+// 사용: 어노테이션만 붙이면 실행 시간이 자동 로깅됨
+@Service
+public class OrderService {
+    @MeasureTime
+    public OrderResult createOrder(OrderRequest request) {
+        // 비즈니스 로직만 집중
+    }
+}
+```
 
-스프링은 모듈형 구조로, 필요한 부분만 골라 쓸 수 있습니다.
+가장 많이 사용되는 AOP는 **`@Transactional`**입니다. 메서드에 이 어노테이션을 붙이면 스프링이 프록시를 생성해서 메서드 시작 시 트랜잭션을 열고, 정상 완료 시 커밋, 예외 발생 시 롤백합니다.
 
-- **Core Container**: IoC/DI의 중심(Bean, ApplicationContext)
-- **AOP**: 프록시 기반 AOP 기능
-- **Spring MVC**: 서블릿 기반 웹 프레임워크(Controller, DispatcherServlet)
-- **Data Access**: JDBC 템플릿, 트랜잭션 추상화, ORM 연동 기반
+```java
+@Service
+public class TransferService {
+    @Transactional // 스프링이 트랜잭션 경계를 자동 관리
+    public void transfer(Long fromId, Long toId, int amount) {
+        Account from = accountRepository.findById(fromId).orElseThrow();
+        Account to = accountRepository.findById(toId).orElseThrow();
 
-이 중에서도 “스프링을 스프링답게 만드는” 핵심은 **Core Container**입니다.
+        from.withdraw(amount);
+        to.deposit(amount);
+        // 여기서 예외 발생 시 → 자동 롤백 (from의 출금도 취소됨)
+    }
+}
+```
 
-## 3) 스프링 사용방법: 가장 기본적인 흐름
+**주의**: `@Transactional`은 프록시 기반이므로, 같은 클래스 내부에서 호출하면 AOP가 적용되지 않습니다 (self-invocation 문제).
 
-실무에서는 보통 스프링 부트를 쓰지만, 스프링 프레임워크의 구성 요소를 이해하려면 스프링 MVC의 동작 흐름을 한 번 정리해두면 도움이 됩니다.
+### 1.3 PSA: 기술이 바뀌어도 사용 방식은 유지
 
-### (1) 요청 처리 흐름(Spring MVC)
+PSA(Portable Service Abstraction)는 특정 기술에 종속되지 않는 추상화 계층입니다.
 
-1. 클라이언트 요청이 들어오면 `DispatcherServlet`이 받습니다.
-2. 요청 URL/메서드에 맞는 `@Controller` 메서드를 찾습니다.
-3. 컨트롤러는 서비스/리포지토리를 호출해 결과를 만들고,
-4. 스프링은 View 또는 JSON 응답으로 변환해 반환합니다.
+| 추상화 | 구현체 A | 구현체 B |
+|---|---|---|
+| `@Transactional` | JDBC Transaction | JPA Transaction |
+| `@Cacheable` | EhCache | Redis |
+| `@Controller` | Servlet 기반 (Spring MVC) | Reactive (Spring WebFlux) |
+
+개발자는 `@Transactional`이라는 동일한 어노테이션을 사용하지만, 내부적으로 JDBC를 쓰는지 JPA를 쓰는지는 설정에 따라 달라집니다. 기술을 교체해도 비즈니스 로직 코드는 변경되지 않습니다.
+
+## 2. 스프링의 모듈 구조
+
+스프링은 모놀리식 프레임워크가 아니라, 필요한 모듈만 골라 쓸 수 있는 **모듈형 구조**입니다.
+
+| 모듈 | 역할 | 핵심 클래스/어노테이션 |
+|---|---|---|
+| Core Container | IoC/DI의 중심 | `ApplicationContext`, `@Component` |
+| AOP | 프록시 기반 AOP | `@Aspect`, `@Around` |
+| Spring MVC | 서블릿 기반 웹 프레임워크 | `@Controller`, `DispatcherServlet` |
+| Data Access | DB 접근 추상화 | `JdbcTemplate`, `@Transactional` |
+| Spring Security | 인증/인가 | `@PreAuthorize`, `SecurityFilterChain` |
+
+이 중 Core Container가 스프링을 스프링답게 만드는 핵심입니다.
+
+## 3. Spring MVC 요청 처리 흐름
+
+웹 요청이 들어왔을 때 스프링 내부에서 일어나는 일을 단계별로 살펴봅니다.
+
+```
+클라이언트 요청
+    ↓
+DispatcherServlet (프론트 컨트롤러)
+    ↓
+HandlerMapping → 어떤 Controller 메서드를 호출할지 결정
+    ↓
+HandlerAdapter → Controller 메서드 실행
+    ↓
+Controller → Service → Repository (비즈니스 로직 처리)
+    ↓
+ViewResolver 또는 HttpMessageConverter (응답 변환)
+    ↓
+JSON/HTML 응답 반환
+```
 
 ```java
 @RestController
-public class HealthController {
-  @GetMapping("/health")
-  public Map<String, String> health() {
-    return Map.of("status", "ok");
-  }
+@RequestMapping("/api/v1/orders")
+public class OrderController {
+    private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @PostMapping
+    public ResponseEntity<OrderResult> create(@Valid @RequestBody OrderRequest request) {
+        OrderResult result = orderService.createOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @GetMapping("/{id}")
+    public OrderResponse get(@PathVariable Long id) {
+        return orderService.getOrder(id);
+    }
 }
 ```
 
-### (2) 설정 방법(개념)
+## 4. 설정 방식의 진화
 
-스프링은 전통적으로 설정이 다양합니다.
+스프링의 설정 방식은 시간에 따라 크게 변해왔습니다.
 
-- XML 설정(레거시)
-- Java Config(`@Configuration`, `@Bean`)
-- 컴포넌트 스캔(`@Component`, `@Service`, `@Repository`)
+### 4.1 XML 설정 (레거시)
 
-최근에는 대부분 **Java Config + 컴포넌트 스캔** 조합을 사용합니다.
+```xml
+<bean id="orderService" class="com.example.OrderService">
+    <constructor-arg ref="paymentClient"/>
+</bean>
+```
 
-## 4) 실전 팁: 스프링을 “유지보수하기 쉽게” 쓰는 법
+2010년대 초반에는 표준이었지만, 타입 안전성이 없고 리팩토링이 어렵습니다.
 
-- **의존성은 인터페이스로**: 구현 교체/테스트가 쉬워집니다.
-- **생성자 주입을 기본값으로**: 불변성 유지, 순환참조 조기 발견
-- **트랜잭션 경계를 서비스 계층에**: 컨트롤러는 얇게, 서비스는 도메인 규칙 중심
-- **AOP 남용 주의**: “마법”이 늘어나면 디버깅 비용이 커집니다.
+### 4.2 Java Config (현재 표준)
+
+```java
+@Configuration
+public class AppConfig {
+    @Bean
+    public PaymentClient paymentClient() {
+        return new KakaoPayClient("api-key-here");
+    }
+
+    @Bean
+    public OrderService orderService(PaymentClient paymentClient) {
+        return new OrderService(paymentClient);
+    }
+}
+```
+
+타입 안전하고 IDE 자동완성이 되며, 조건부 빈 생성(`@Conditional`)도 가능합니다.
+
+### 4.3 컴포넌트 스캔 (가장 간편)
+
+```java
+@Service    // 자동으로 빈 등록
+public class OrderService { ... }
+
+@Repository // 자동으로 빈 등록 + 예외 변환
+public class OrderRepository { ... }
+```
+
+실무에서는 **컴포넌트 스캔 + 필요 시 Java Config**를 조합하는 것이 표준입니다.
+
+## 5. 실전 팁: 유지보수하기 좋은 스프링 코드
+
+### 5.1 계층별 책임 분리
+
+```
+Controller: HTTP 입출력, 검증 → 얇게 유지
+Service: 비즈니스 규칙, 트랜잭션 → 핵심 로직
+Repository: 데이터 접근 → 쿼리에 집중
+```
+
+Controller에 비즈니스 로직을 넣으면 테스트가 어려워지고, 같은 로직이 여러 컨트롤러에 중복됩니다.
+
+### 5.2 인터페이스 기반 설계
+
+구현체가 하나뿐이더라도 인터페이스를 만들어두면, 나중에 구현 교체나 테스트 시 유연성을 확보할 수 있습니다.
+
+### 5.3 @Transactional 위치
+
+```java
+// GOOD: Service 계층에 트랜잭션 경계
+@Service
+public class OrderService {
+    @Transactional
+    public void createOrder(OrderRequest req) { ... }
+}
+
+// BAD: Controller에 트랜잭션 → 역할 혼재
+@RestController
+public class OrderController {
+    @Transactional // 여기는 HTTP 처리에 집중해야 함
+    @PostMapping("/orders")
+    public OrderResult create(@RequestBody OrderRequest req) { ... }
+}
+```
+
+### 5.4 AOP 남용 주의
+
+AOP는 강력하지만, 과도하게 사용하면 "코드에 보이지 않는 마법"이 늘어나 디버깅이 어려워집니다. 로깅, 트랜잭션, 보안 정도로 제한하는 것을 권장합니다.
 
 ## 결론
 
-스프링 프레임워크는 단순히 웹을 만드는 도구가 아니라, **대규모 애플리케이션을 구조적으로 설계하고 확장 가능한 형태로 운영**하기 위한 기반입니다. IoC/DI, AOP, 모듈 구조를 이해하면 스프링 부트의 자동 설정이 “왜 편한지”도 더 선명하게 보입니다.
+스프링 프레임워크는 단순히 웹을 만드는 도구가 아닙니다. **대규모 애플리케이션을 구조적으로 설계하고 확장 가능한 형태로 운영하기 위한 아키텍처 기반**입니다.
+
+핵심 세 가지를 기억하세요:
+1. **IoC/DI**: 객체 생성을 컨테이너에 위임하고, 인터페이스에 의존하세요
+2. **AOP**: 트랜잭션, 로깅 등 횡단 관심사를 비즈니스 로직에서 분리하세요
+3. **PSA**: 기술이 바뀌어도 코드가 바뀌지 않는 추상화를 활용하세요
+
+이 세 가지를 이해하면 스프링 부트의 자동 설정이 "왜 편한지"도 더 선명하게 보입니다.
