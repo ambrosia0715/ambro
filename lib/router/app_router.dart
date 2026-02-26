@@ -15,6 +15,7 @@ import '../pages/water_buddy_privacy_page.dart';
 import '../pages/pill_ping_privacy_page.dart';
 import '../pages/ongi_privacy_page.dart';
 import '../pages/contact_page.dart';
+import '../pages/utils/camel_case_converter_page.dart';
 import '../widgets/main_layout.dart';
 
 // Helper for NoTransitionPage
@@ -33,6 +34,12 @@ final GoRouter appRouter = GoRouter(
         GoRoute(
           path: '/',
           pageBuilder: (context, state) => _noTransitionPage(const HomePage()),
+        ),
+        // Utils
+        GoRoute(
+          path: '/utils/camel-converter',
+          pageBuilder: (context, state) =>
+              _noTransitionPage(const CamelCaseConverterPage()),
         ),
         // Blog Categories
         GoRoute(

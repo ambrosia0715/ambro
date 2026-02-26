@@ -36,6 +36,8 @@ class MainLayout extends StatelessWidget {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    final isDesktop = MediaQuery.of(context).size.width > 800;
+
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -50,59 +52,52 @@ class MainLayout extends StatelessWidget {
       centerTitle: false,
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () => context.go('/'),
-              child: Row(
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6200EE), // Deep Purple Accent
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'AT',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Text(
-                    'Ambro Tech',
+        child: InkWell(
+          onTap: () => context.go('/'),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF6200EE), // Deep Purple Accent
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(
+                  child: Text(
+                    'AT',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 18,
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            const Spacer(),
-            // Desktop Menu
-            if (MediaQuery.of(context).size.width > 800) ...[
-              _NavButton(label: 'AI Dev', path: '/blog/ai-basic'),
-              _NavButton(label: 'AI Insight', path: '/blog/ai-insight'),
-              _NavButton(label: 'Java', path: '/blog/java'),
-              _NavButton(label: 'Python', path: '/blog/python'),
-              const SizedBox(width: 16),
-              _AboutDropdown(),
+              const SizedBox(width: 12),
+              const Text(
+                'Ambro Tech',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ],
-          ],
+          ),
         ),
       ),
-      // Mobile Menu Button & Icons
       actions: [
-        if (MediaQuery.of(context).size.width > 800) ...[
+        // Desktop Menu (Moved to actions to avoid layout issues in title)
+        if (isDesktop) ...[
+          _NavButton(label: 'AI Dev', path: '/blog/ai-basic'),
+          _NavButton(label: 'AI Insight', path: '/blog/ai-insight'),
+          const SizedBox(width: 8),
+          _ProgrammingDropdown(), // Java, Python 통합 메뉴
           const SizedBox(width: 16),
+          _AboutDropdown(),
+          const SizedBox(width: 24), // Spacing before icons
           IconButton(
             onPressed: () {}, // 검색 기능 (UI Only)
             icon: const Icon(Icons.search, color: Colors.black54),
@@ -115,6 +110,7 @@ class MainLayout extends StatelessWidget {
           ),
           const SizedBox(width: 24),
         ] else ...[
+          // Mobile Menu
           PopupMenuButton<String>(
             icon: const Icon(Icons.menu, color: Colors.black87),
             onSelected: (value) => context.go(value),
@@ -123,8 +119,31 @@ class MainLayout extends StatelessWidget {
                   value: '/blog/ai-basic', child: Text('AI Dev')),
               const PopupMenuItem(
                   value: '/blog/ai-insight', child: Text('AI Insight')),
-              const PopupMenuItem(value: '/blog/java', child: Text('Java')),
-              const PopupMenuItem(value: '/blog/python', child: Text('Python')),
+              const PopupMenuDivider(),
+              // Mobile Menu Grouping
+              const PopupMenuItem(
+                enabled: false,
+                height: 32,
+                child: Text('프로그래밍 언어',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.grey)),
+              ),
+              const PopupMenuItem(
+                  value: '/blog/java',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12), child: Text('Java'))),
+              const PopupMenuItem(
+                  value: '/blog/python',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text('Python'))),
+              const PopupMenuItem(
+                  value: '/utils/camel-converter',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text('CamelCase 변환기'))),
               const PopupMenuDivider(),
               const PopupMenuItem(value: '/about', child: Text('소개 (About)')),
               const PopupMenuItem(value: '/about/apps', child: Text('Apps')),
@@ -205,6 +224,64 @@ class _NavButton extends StatelessWidget {
           ),
         ),
         child: Text(label),
+      ),
+    );
+  }
+}
+
+class _ProgrammingDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Check if current path is either java or python to highlight
+    final currentLocation = GoRouterState.of(context).uri.path;
+    final isActive = currentLocation.startsWith('/blog/java') ||
+        currentLocation.startsWith('/blog/python') ||
+        currentLocation.startsWith('/utils/camel-converter');
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: PopupMenuButton<String>(
+        offset: const Offset(0, 40),
+        tooltip: '프로그래밍 언어 메뉴',
+        onSelected: (value) => context.go(value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          child: Row(
+            children: [
+              Text(
+                '프로그래밍 언어',
+                style: TextStyle(
+                  color: isActive
+                      ? const Color(0xFF6200EE)
+                      : const Color(0xFF555555),
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(Icons.arrow_drop_down,
+                  size: 18,
+                  color: isActive
+                      ? const Color(0xFF6200EE)
+                      : const Color(0xFF555555)),
+            ],
+          ),
+        ),
+        itemBuilder: (context) => [
+          const PopupMenuItem(
+            value: '/blog/java',
+            child: Text('Java'),
+          ),
+          const PopupMenuItem(
+            value: '/blog/python',
+            child: Text('Python'),
+          ),
+          const PopupMenuDivider(),
+          const PopupMenuItem(
+            value: '/utils/camel-converter',
+            child: Text('CamelCase 변환기'),
+          ),
+        ],
       ),
     );
   }
