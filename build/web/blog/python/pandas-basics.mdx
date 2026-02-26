@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pandas 데이터 분석 기초 - Ambro Tech Blog</title>
+  <meta name="description" content="데이터프레임 조작부터 전처리까지 Pandas 핵심 기능 마스터하기">
+  <meta name="keywords" content="Python, Pandas, Data Analysis">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Pandas 데이터 분석 기초">
+  <meta property="og:description" content="데이터프레임 조작부터 전처리까지 Pandas 핵심 기능 마스터하기">
+  <meta property="og:url" content="https://ambro.space/blog/python/pandas-basics.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/pandas_analysis.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-01-31">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pandas 데이터 분석 기초">
+  <meta name="twitter:description" content="데이터프레임 조작부터 전처리까지 Pandas 핵심 기능 마스터하기">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/pandas_analysis.webp">
+  <link rel="canonical" href="https://ambro.space/blog/python/pandas-basics.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Pandas 데이터 분석 기초",
+  "description": "데이터프레임 조작부터 전처리까지 Pandas 핵심 기능 마스터하기",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-01-31",
+  "dateModified": "2026-01-31",
+  "image": "https://ambro.space/assets/assets/images/blog/pandas_analysis.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/python/pandas-basics.mdx"
+  },
+  "keywords": "Python, Pandas, Data Analysis"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/python">Python</a> &gt;
+    <span>Pandas 데이터 분석 기초</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">Python</span> <span class="tag">Pandas</span> <span class="tag">Data Analysis</span></div>
+    <h1>Pandas 데이터 분석 기초</h1>
+    <div class="meta">2026-01-31 &middot; 15분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/pandas_analysis.webp" alt="Pandas 데이터 분석 기초" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>Pandas 데이터 분석 기초: 데이터프레임 완벽 가이드</h1>
+<p>회사에서 "이번 달 매출 데이터 정리해주세요"라는 요청을 받았습니다. 엑셀 파일에 10만 행이 들어있고, 지역별·상품별로 집계해야 합니다. 엑셀로 할 수도 있지만, 데이터가 조금만 커지면 버벅거리고 반복 작업도 힘들어집니다. 이때 <strong>Pandas</strong>를 사용하면 코드 몇 줄로 수십만 건의 데이터를 순식간에 처리할 수 있습니다.</p>
+<p>이 글에서는 Pandas의 핵심인 <code>DataFrame</code>을 실무 수준으로 다루는 방법을 처음부터 단계별로 배워봅니다.</p>
+<h2>1. 설치와 기본 자료구조</h2>
+<pre><code class="language-bash">
+pip install pandas
+</code></pre>
+<p>Pandas에는 두 가지 핵심 자료구조가 있습니다.</p>
+<table><thead><tr>
+<th>자료구조</th>
+<th>차원</th>
+<th>비유</th>
+</tr></thead><tbody>
+<tr>
+<td><strong>Series</strong></td>
+<td>1차원</td>
+<td>엑셀의 열 하나</td>
+</tr>
+<tr>
+<td><strong>DataFrame</strong></td>
+<td>2차원</td>
+<td>엑셀 시트 전체</td>
+</tr>
+</tbody></table>
+<h3>DataFrame 직접 만들어보기</h3>
+<pre><code class="language-python">
+import pandas as pd
+
+data = {
+    "이름": ["김철수", "이영희", "박지민", "최수진", "정민호"],
+    "부서": ["개발", "마케팅", "개발", "인사", "마케팅"],
+    "연봉": [5500, 4800, 6200, 4500, 5100],
+    "경력(년)": [5, 3, 8, 2, 4]
+}
+df = pd.DataFrame(data)
+print(df)
+</code></pre>
+<pre><code class="language-">
+# 출력:
+#     이름    부서    연봉  경력(년)
+# 0  김철수    개발  5500       5
+# 1  이영희  마케팅  4800       3
+# 2  박지민    개발  6200       8
+# 3  최수진    인사  4500       2
+# 4  정민호  마케팅  5100       4
+</code></pre>
+<h2>2. 데이터 불러오기와 첫 탐색</h2>
+<p>실무에서는 직접 데이터를 만드는 경우보다 CSV, Excel 등의 파일을 읽어오는 경우가 훨씬 많습니다.</p>
+<pre><code class="language-python">
+# CSV 파일 읽기
+df = pd.read_csv("sales_data.csv")
+
+# Excel 파일 읽기
+df = pd.read_excel("sales_data.xlsx", sheet_name="Sheet1")
+
+# 인코딩 문제 시 (한글 깨짐 방지)
+df = pd.read_csv("data.csv", encoding="cp949")
+</code></pre>
+<p>파일을 읽었으면 반드시 데이터를 훑어봐야 합니다. 다음 5개 명령어를 습관처럼 실행하세요.</p>
+<pre><code class="language-python">
+df.head()        # 상위 5행 미리보기
+df.tail(3)       # 하위 3행 확인
+df.shape         # (행 수, 열 수) 튜플 반환
+df.info()        # 열별 데이터 타입, 결측치 개수
+df.describe()    # 수치형 열의 통계 요약 (평균, 표준편차, 사분위수)
+</code></pre>
+<pre><code class="language-">
+# df.info() 출력 예시:
+# &lt;class 'pandas.core.frame.DataFrame'&gt;
+# RangeIndex: 5 entries, 0 to 4
+# Data columns (total 4 columns):
+#  #   Column  Non-Null Count  Dtype
+# ---  ------  --------------  -----
+#  0   이름     5 non-null      object
+#  1   부서     5 non-null      object
+#  2   연봉     5 non-null      int64
+#  3   경력(년)  5 non-null      int64
+</code></pre>
+<h2>3. 데이터 선택과 필터링</h2>
+<p>원하는 데이터만 뽑아내는 것이 데이터 분석의 시작입니다.</p>
+<h3>열(Column) 선택</h3>
+<pre><code class="language-python">
+# 단일 열 선택 → Series 반환
+names = df["이름"]
+
+# 복수 열 선택 → DataFrame 반환
+subset = df[["이름", "연봉"]]
+</code></pre>
+<h3>행(Row) 선택: loc과 iloc</h3>
+<pre><code class="language-python">
+# loc: 라벨 기반 선택
+df.loc[0]            # 인덱스 0인 행
+df.loc[0:2, "이름"]  # 인덱스 0~2의 "이름" 열
+
+# iloc: 정수 위치 기반 선택
+df.iloc[0]           # 첫 번째 행
+df.iloc[0:2, 0:2]   # 처음 2행, 처음 2열
+</code></pre>
+<h3>조건 필터링 (Boolean Indexing)</h3>
+<p>가장 자주 쓰이는 기능입니다. 조건식이 <code>True</code>인 행만 걸러냅니다.</p>
+<pre><code class="language-python">
+# 연봉 5000 이상인 직원
+high_salary = df[df["연봉"] &gt;= 5000]
+print(high_salary)
+</code></pre>
+<pre><code class="language-">
+# 출력:
+#     이름    부서    연봉  경력(년)
+# 0  김철수    개발  5500       5
+# 2  박지민    개발  6200       8
+# 4  정민호  마케팅  5100       4
+</code></pre>
+<pre><code class="language-python">
+# 복합 조건: 개발부서이면서 경력 5년 이상
+senior_dev = df[(df["부서"] == "개발") &amp; (df["경력(년)"] &gt;= 5)]
+
+# 마케팅 또는 인사 부서
+non_dev = df[df["부서"].isin(["마케팅", "인사"])]
+
+# 이름에 '김'이 포함된 직원
+kim = df[df["이름"].str.contains("김")]
+</code></pre>
+<h2>4. 데이터 전처리 실전</h2>
+<p>실제 데이터는 결측치, 중복, 잘못된 타입 등으로 지저분합니다. 전처리는 분석 시간의 70~80%를 차지할 만큼 중요합니다.</p>
+<h3>결측치(NaN) 처리</h3>
+<pre><code class="language-python">
+import numpy as np
+
+# 결측치가 포함된 데이터 생성
+df_messy = pd.DataFrame({
+    "상품": ["A", "B", "C", "D"],
+    "가격": [1000, np.nan, 3000, np.nan],
+    "수량": [10, 20, np.nan, 40]
+})
+
+# 결측치 확인
+print(df_messy.isnull().sum())
+</code></pre>
+<pre><code class="language-">
+# 출력:
+# 상품    0
+# 가격    2
+# 수량    1
+</code></pre>
+<pre><code class="language-python">
+# 결측치가 있는 행 제거
+df_clean = df_messy.dropna()
+
+# 결측치를 평균값으로 채우기
+df_messy["가격"] = df_messy["가격"].fillna(df_messy["가격"].mean())
+
+# 결측치를 앞의 값으로 채우기 (시계열 데이터에 유용)
+df_messy["수량"] = df_messy["수량"].ffill()
+</code></pre>
+<h3>데이터 타입 변환</h3>
+<pre><code class="language-python">
+# 문자열 → 숫자 변환
+df["연봉"] = pd.to_numeric(df["연봉"], errors="coerce")
+
+# 문자열 → 날짜 변환
+df["입사일"] = pd.to_datetime(df["입사일"], format="%Y-%m-%d")
+</code></pre>
+<h3>새로운 열 추가 (파생 변수)</h3>
+<pre><code class="language-python">
+# 연봉을 월급으로 환산
+df["월급"] = (df["연봉"] / 12).round(0).astype(int)
+
+# 경력에 따른 등급 부여
+df["등급"] = df["경력(년)"].apply(
+    lambda x: "시니어" if x &gt;= 5 else "주니어"
+)
+print(df[["이름", "등급"]])
+</code></pre>
+<pre><code class="language-">
+# 출력:
+#     이름     등급
+# 0  김철수  시니어
+# 1  이영희  주니어
+# 2  박지민  시니어
+# 3  최수진  주니어
+# 4  정민호  주니어
+</code></pre>
+<h2>5. 그룹화(GroupBy)와 집계</h2>
+<p>SQL의 <code>GROUP BY</code>와 동일한 개념입니다. 특정 기준으로 묶어서 통계를 구합니다.</p>
+<pre><code class="language-python">
+# 부서별 평균 연봉
+print(df.groupby("부서")["연봉"].mean())
+</code></pre>
+<pre><code class="language-">
+# 출력:
+# 부서
+# 개발      5850.0
+# 마케팅    4950.0
+# 인사      4500.0
+</code></pre>
+<pre><code class="language-python">
+# 부서별 여러 통계를 한 번에 구하기
+summary = df.groupby("부서").agg(
+    인원수=("이름", "count"),
+    평균연봉=("연봉", "mean"),
+    최고연봉=("연봉", "max"),
+    평균경력=("경력(년)", "mean")
+)
+print(summary)
+</code></pre>
+<pre><code class="language-">
+# 출력:
+#         인원수  평균연봉  최고연봉  평균경력
+# 부서
+# 개발        2   5850.0    6200     6.5
+# 마케팅      2   4950.0    5100     3.5
+# 인사        1   4500.0    4500     2.0
+</code></pre>
+<h2>6. 정렬과 인덱스 재설정</h2>
+<pre><code class="language-python">
+# 연봉 기준 내림차순 정렬
+df_sorted = df.sort_values("연봉", ascending=False)
+
+# 복수 기준 정렬: 부서 오름차순 → 연봉 내림차순
+df_sorted = df.sort_values(["부서", "연봉"], ascending=[True, False])
+
+# 인덱스 재설정 (정렬 후 인덱스가 뒤섞였을 때)
+df_sorted = df_sorted.reset_index(drop=True)
+</code></pre>
+<h2>7. 성능을 좌우하는 핵심: 벡터화 연산</h2>
+<p>Pandas를 쓰면서 <code>for</code> 루프로 행을 하나씩 순회하는 것은 <strong>Pandas를 안 쓰는 것만 못합니다</strong>. 내부적으로 C/NumPy로 최적화된 벡터 연산을 활용해야 합니다.</p>
+<pre><code class="language-python">
+import time
+
+# 10만 행 데이터 생성
+big_df = pd.DataFrame({"value": range(100_000)})
+
+# Bad: for 루프 (약 3초)
+start = time.time()
+for i in range(len(big_df)):
+    big_df.loc[i, "doubled"] = big_df.loc[i, "value"] * 2
+print(f"for 루프: {time.time() - start:.2f}초")
+
+# Good: 벡터화 연산 (약 0.001초)
+start = time.time()
+big_df["doubled"] = big_df["value"] * 2
+print(f"벡터화: {time.time() - start:.4f}초")
+</code></pre>
+<pre><code class="language-">
+# 출력:
+# for 루프: 3.21초
+# 벡터화: 0.0008초
+</code></pre>
+<p><strong>약 4000배 차이</strong>입니다. 반드시 벡터화를 사용하세요.</p>
+<h2>결론</h2>
+<p>Pandas는 방대한 라이브러리이지만, 핵심 패턴만 익히면 대부분의 데이터 업무를 해결할 수 있습니다.</p>
+<ul>
+<li><strong>데이터 탐색:</strong> <code>head()</code>, <code>info()</code>, <code>describe()</code>로 시작</li>
+<li><strong>필터링:</strong> Boolean Indexing과 <code>isin()</code>으로 원하는 데이터 추출</li>
+<li><strong>전처리:</strong> <code>fillna()</code>, <code>dropna()</code>, <code>apply()</code>로 데이터 정리</li>
+<li><strong>집계:</strong> <code>groupby().agg()</code>로 부서별/지역별/기간별 통계 산출</li>
+<li><strong>성능:</strong> <code>for</code> 루프 대신 벡터화 연산을 항상 사용</li>
+</ul>
+<p>이 5가지를 손에 익히면, 엑셀에서 한 시간 걸리던 작업을 10줄 코드로 끝낼 수 있습니다.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/python">더 많은 Python 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

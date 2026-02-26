@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Java: Java 8부터 21까지의 변화 - Ambro Tech Blog</title>
+  <meta name="description" content="람다, 스트림부터 레코드, 가상 스레드까지. 모던 자바의 핵심 기능 총정리">
+  <meta name="keywords" content="Java, Modern Java, Virtual Threads">
+  <meta name="author" content="Ambro">
+  <meta name="naver-site-verification" content="3950b7e8fb9f37b138fdaee4034c393ed1c24bc8" />
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Modern Java: Java 8부터 21까지의 변화">
+  <meta property="og:description" content="람다, 스트림부터 레코드, 가상 스레드까지. 모던 자바의 핵심 기능 총정리">
+  <meta property="og:url" content="https://ambro.space/blog/java/modern-java-features.mdx">
+  <meta property="og:image" content="https://ambro.space/assets/assets/images/blog/modern_java_evolution.webp">
+  <meta property="og:site_name" content="Ambro Tech Blog">
+  <meta property="article:published_time" content="2026-01-17">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Modern Java: Java 8부터 21까지의 변화">
+  <meta name="twitter:description" content="람다, 스트림부터 레코드, 가상 스레드까지. 모던 자바의 핵심 기능 총정리">
+  <meta name="twitter:image" content="https://ambro.space/assets/assets/images/blog/modern_java_evolution.webp">
+  <link rel="canonical" href="https://ambro.space/blog/java/modern-java-features.mdx">
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Modern Java: Java 8부터 21까지의 변화",
+  "description": "람다, 스트림부터 레코드, 가상 스레드까지. 모던 자바의 핵심 기능 총정리",
+  "author": {
+    "@type": "Person",
+    "name": "Ambro"
+  },
+  "datePublished": "2026-01-17",
+  "dateModified": "2026-01-17",
+  "image": "https://ambro.space/assets/assets/images/blog/modern_java_evolution.webp",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ambro Tech",
+    "url": "https://ambro.space"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://ambro.space/blog/java/modern-java-features.mdx"
+  },
+  "keywords": "Java, Modern Java, Virtual Threads"
+}
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427" crossorigin="anonymous"></script>
+  <style>
+    body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans KR',sans-serif}
+    #seo-content{max-width:800px;margin:0 auto;padding:24px 16px;color:#333;line-height:1.8}
+    #seo-content h1{font-size:2em;line-height:1.3;margin-bottom:.5em;color:#1a1a1a}
+    #seo-content h2{font-size:1.5em;margin-top:2em;color:#212529;border-bottom:1px solid #eee;padding-bottom:.3em}
+    #seo-content h3{font-size:1.25em;margin-top:1.5em;color:#343a40}
+    #seo-content h4{font-size:1.1em;margin-top:1.2em;color:#495057}
+    #seo-content p{margin:1em 0;font-size:16px}
+    #seo-content code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-family:'SFMono-Regular',Consolas,monospace;font-size:.9em;color:#e83e8c}
+    #seo-content pre{background:#f8f9fa;padding:16px;border-radius:8px;overflow-x:auto;border:1px solid #e9ecef}
+    #seo-content pre code{background:none;color:#333;padding:0}
+    #seo-content img{max-width:100%;height:auto;border-radius:8px;margin:1em 0}
+    #seo-content table{width:100%;border-collapse:collapse;margin:1em 0;font-size:14px}
+    #seo-content th,#seo-content td{border:1px solid #dee2e6;padding:8px 12px;text-align:left}
+    #seo-content th{background:#f8f9fa;font-weight:600}
+    #seo-content blockquote{border-left:4px solid #dee2e6;margin:1em 0;padding:.5em 1em;background:#f8f9fa;border-radius:0 8px 8px 0}
+    #seo-content ul{padding-left:1.5em}
+    #seo-content li{margin:.4em 0}
+    .meta{color:#6c757d;font-size:14px;margin-bottom:2em}
+    .tags{margin-bottom:1em}
+    .tag{display:inline-block;background:#e3f2fd;color:#1976d2;padding:4px 12px;border-radius:20px;font-size:13px;margin-right:8px;margin-bottom:4px}
+    .ad-slot{text-align:center;margin:2em 0;min-height:100px}
+    nav.breadcrumb{padding:16px;max-width:800px;margin:0 auto;font-size:14px;color:#6c757d}
+    nav.breadcrumb a{color:#1976d2;text-decoration:none}
+  </style>
+</head>
+<body>
+  <nav class="breadcrumb">
+    <a href="/">Home</a> &gt;
+    <a href="/blog/java">Java</a> &gt;
+    <span>Modern Java: Java 8부터 21까지의 변화</span>
+  </nav>
+  <div id="seo-content">
+    <div class="tags"><span class="tag">Java</span> <span class="tag">Modern Java</span> <span class="tag">Virtual Threads</span></div>
+    <h1>Modern Java: Java 8부터 21까지의 변화</h1>
+    <div class="meta">2026-01-17 &middot; 18분 &middot; Ambro</div>
+    <img src="/assets/assets/images/blog/modern_java_evolution.webp" alt="Modern Java: Java 8부터 21까지의 변화" style="width:100%;border-radius:12px;margin-bottom:2em;">
+    <article><h1>Modern Java: Java 8부터 21까지의 변화</h1>
+<p>"우리 회사는 아직 Java 8인데, 굳이 업그레이드해야 하나요?" 실무에서 자주 듣는 질문입니다. 결론부터 말하면, Java 17의 Record 하나만으로도 DTO 보일러플레이트가 80% 줄어들고, Java 21의 Virtual Threads는 서버 처리량을 10배 이상 끌어올릴 수 있습니다. 이 글에서는 Java 8부터 21까지 실무에서 바로 쓸 수 있는 핵심 기능들을 코드와 함께 비교합니다.</p>
+<h2>1. Java 8: 함수형 프로그래밍의 시작 (2014)</h2>
+<p>Java 8은 자바 역사상 가장 큰 패러다임 전환이었습니다. 이전까지 "모든 것이 객체"였던 자바에 함수형 프로그래밍 개념이 도입되었습니다.</p>
+<h3>Lambda Expressions</h3>
+<p>익명 클래스 대신 람다로 표현하면 코드가 극적으로 간결해집니다.</p>
+<pre><code class="language-java">
+// Before: 익명 클래스 (5줄)
+Collections.sort(names, new Comparator&lt;String&gt;() {
+    @Override
+    public int compare(String a, String b) {
+        return a.compareTo(b);
+    }
+});
+
+// After: 람다 (1줄)
+Collections.sort(names, (a, b) -&gt; a.compareTo(b));
+
+// 메서드 참조로 더 간결하게
+Collections.sort(names, String::compareTo);
+</code></pre>
+<h3>Stream API 실전 활용</h3>
+<p>단순한 필터링을 넘어, 실무에서 자주 쓰는 패턴들을 살펴봅시다.</p>
+<pre><code class="language-java">
+List&lt;Order&gt; orders = getOrders();
+
+// 패턴 1: 그룹핑 — 상태별 주문 분류
+Map&lt;OrderStatus, List&lt;Order&gt;&gt; byStatus = orders.stream()
+    .collect(Collectors.groupingBy(Order::getStatus));
+
+// 패턴 2: 집계 — 총 매출 계산
+long totalRevenue = orders.stream()
+    .filter(o -&gt; o.getStatus() == OrderStatus.COMPLETED)
+    .mapToLong(Order::getAmount)
+    .sum();
+
+// 패턴 3: 변환 — DTO 리스트 생성
+List&lt;OrderDto&gt; dtos = orders.stream()
+    .map(o -&gt; new OrderDto(o.getId(), o.getAmount()))
+    .toList(); // Java 16+에서는 .toList() 사용 가능
+</code></pre>
+<h3>Optional</h3>
+<p><code>null</code> 반환 대신 <code>Optional</code>을 사용해 NPE를 방지합니다.</p>
+<pre><code class="language-java">
+// 기존: null 체크 지옥
+String city = null;
+if (user != null &amp;&amp; user.getAddress() != null) {
+    city = user.getAddress().getCity();
+}
+
+// Optional 체이닝
+String city = Optional.ofNullable(user)
+    .map(User::getAddress)
+    .map(Address::getCity)
+    .orElse("Unknown");
+</code></pre>
+<h2>2. Java 11: 안정성의 LTS (2018)</h2>
+<h3>새로운 String 메서드</h3>
+<p>사소해 보이지만 실무에서 유틸 클래스를 줄여주는 메서드들입니다.</p>
+<pre><code class="language-java">
+" hello ".strip();        // "hello" (유니코드 공백도 처리)
+"".isBlank();              // true (빈 문자열 + 공백만 있는 경우)
+"line1\nline2".lines()     // Stream&lt;String&gt;으로 변환
+    .forEach(System.out::println);
+"ha".repeat(3);            // "hahaha"
+</code></pre>
+<h3>HTTP Client API</h3>
+<p><code>HttpURLConnection</code>을 대체하는 현대적인 HTTP 클라이언트입니다.</p>
+<pre><code class="language-java">
+HttpClient client = HttpClient.newHttpClient();
+
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://api.example.com/users"))
+    .header("Content-Type", "application/json")
+    .GET()
+    .build();
+
+// 동기 호출
+HttpResponse&lt;String&gt; response = client.send(request,
+    HttpResponse.BodyHandlers.ofString());
+System.out.println(response.statusCode()); // 200
+System.out.println(response.body());
+
+// 비동기 호출
+client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+    .thenApply(HttpResponse::body)
+    .thenAccept(System.out::println);
+</code></pre>
+<h2>3. Java 17: 생산성 혁명 (2021 LTS)</h2>
+<h3>Records — DTO의 혁명</h3>
+<p>기존에 DTO 하나 만들려면 필드, 생성자, getter, equals, hashCode, toString을 모두 작성해야 했습니다.</p>
+<pre><code class="language-java">
+// Before: 전통적인 DTO (약 40줄)
+public class UserDto {
+    private final String name;
+    private final int age;
+
+    public UserDto(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    // equals, hashCode, toString 생략...
+}
+
+// After: Record (1줄)
+public record UserDto(String name, int age) {}
+// 생성자, getter(name(), age()), equals, hashCode, toString 자동 생성
+</code></pre>
+<p>Record는 불변(immutable)이므로 스레드 세이프하고, Spring의 <code>@RequestBody</code>와도 완벽히 호환됩니다.</p>
+<h3>Sealed Classes — 타입 계층 제어</h3>
+<pre><code class="language-java">
+// Payment 타입은 이 세 가지만 허용
+public sealed interface Payment
+    permits CreditCard, BankTransfer, DigitalWallet {}
+
+public record CreditCard(String number, String cvv) implements Payment {}
+public record BankTransfer(String accountNo) implements Payment {}
+public record DigitalWallet(String provider) implements Payment {}
+
+// switch에서 모든 케이스를 강제할 수 있음 (Java 21에서 완성)
+</code></pre>
+<h3>Pattern Matching for instanceof</h3>
+<pre><code class="language-java">
+// Before: 캐스팅을 두 번 써야 함
+if (obj instanceof String) {
+    String s = (String) obj;
+    System.out.println(s.length());
+}
+
+// After: 선언과 동시에 바인딩
+if (obj instanceof String s) {
+    System.out.println(s.length());
+}
+</code></pre>
+<h3>Text Blocks — 여러 줄 문자열</h3>
+<p>SQL이나 JSON을 자바 코드에 넣을 때 탈출 문자 지옥에서 벗어납니다.</p>
+<pre><code class="language-java">
+// Before
+String json = "{\n" +
+    "  \"name\": \"Java\",\n" +
+    "  \"version\": 17\n" +
+    "}";
+
+// After: Text Block (Java 15+)
+String json = """
+    {
+      "name": "Java",
+      "version": 17
+    }
+    """;
+</code></pre>
+<h2>4. Java 21: 동시성의 혁명 (2023 LTS)</h2>
+<h3>Virtual Threads — 경량 스레드</h3>
+<p>기존 Platform Thread는 OS 스레드와 1:1 매핑되어 스레드 하나당 약 1MB의 메모리를 소비합니다. Virtual Thread는 JVM이 관리하는 경량 스레드로, 수백만 개를 생성해도 문제없습니다.</p>
+<pre><code class="language-java">
+// 기존: 10,000개 스레드 생성 → OS 자원 고갈 위험
+ExecutorService old = Executors.newFixedThreadPool(200);
+
+// Virtual Threads: 10,000개도 거뜬
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    for (int i = 0; i &lt; 10_000; i++) {
+        executor.submit(() -&gt; {
+            // DB 조회 같은 블로킹 I/O 작업
+            Thread.sleep(Duration.ofSeconds(1));
+            return fetchFromDB();
+        });
+    }
+}
+</code></pre>
+<p>Spring Boot 3.2+에서는 <code>spring.threads.virtual.enabled=true</code> 한 줄이면 모든 요청 처리에 Virtual Threads가 적용됩니다.</p>
+<h3>Switch Pattern Matching</h3>
+<p>Sealed Classes와 결합하면 타입 안전한 분기 처리가 가능합니다.</p>
+<pre><code class="language-java">
+public String describe(Payment payment) {
+    return switch (payment) {
+        case CreditCard c   -&gt; "카드 결제: " + c.number();
+        case BankTransfer b -&gt; "계좌 이체: " + b.accountNo();
+        case DigitalWallet d -&gt; "디지털 지갑: " + d.provider();
+    }; // sealed이므로 default 불필요 — 컴파일러가 완전성 보장
+}
+</code></pre>
+<h3>Sequenced Collections</h3>
+<p>컬렉션의 첫 번째/마지막 요소 접근이 통일되었습니다.</p>
+<pre><code class="language-java">
+List&lt;String&gt; list = List.of("A", "B", "C");
+list.getFirst();    // "A" (기존: list.get(0))
+list.getLast();     // "C" (기존: list.get(list.size() - 1))
+list.reversed();    // ["C", "B", "A"]
+</code></pre>
+<h2>버전별 핵심 기능 요약</h2>
+<table><thead><tr>
+<th>버전</th>
+<th>핵심 기능</th>
+<th>실무 영향도</th>
+</tr></thead><tbody>
+<tr>
+<td>Java 8</td>
+<td>Lambda, Stream, Optional</td>
+<td>코드 스타일 전환</td>
+</tr>
+<tr>
+<td>Java 11</td>
+<td>HTTP Client, String API, var</td>
+<td>유틸 의존성 감소</td>
+</tr>
+<tr>
+<td>Java 17</td>
+<td>Record, Sealed Classes, Pattern Matching</td>
+<td>DTO 보일러플레이트 제거</td>
+</tr>
+<tr>
+<td>Java 21</td>
+<td>Virtual Threads, Switch Pattern Matching</td>
+<td>서버 처리량 극대화</td>
+</tr>
+</tbody></table>
+<h2>결론: 지금 업그레이드를 시작하세요</h2>
+<p>레거시 시스템 유지보수는 중요하지만, 언어의 발전을 무시하면 기술 부채가 쌓입니다. 당장 Java 21로 전환이 어렵다면, 최소한 <strong>Java 17 LTS</strong>로의 마이그레이션을 추천합니다. Record와 Pattern Matching만으로도 코드량이 눈에 띄게 줄어들고, 이후 Java 21로의 전환도 수월해집니다. <code>jdeps</code> 도구로 호환성을 먼저 점검해 보세요.</p></article>
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1444459980078427" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    </div>
+    <footer style="margin-top:3em;padding:2em;background:#f8f9fa;border-radius:12px;">
+      <p><strong>Ambro Tech Blog</strong></p>
+      <p>AI, Java, Python 등 실무 개발 지식을 공유하는 기술 블로그입니다.</p>
+      <p><a href="/">홈으로</a> | <a href="/blog/java">더 많은 Java 글 보기</a></p>
+    </footer>
+  </div>
+  <script src="/flutter_bootstrap.js" async></script>
+  <script>
+var _o=new MutationObserver(function(m){
+  var f=document.querySelector('flt-glass-pane,flutter-view');
+  if(f){
+    var e=document.getElementById('seo-content');
+    var n=document.querySelector('nav.breadcrumb');
+    if(e)e.style.display='none';
+    if(n)n.style.display='none';
+    _o.disconnect();
+  }
+});
+_o.observe(document.body,{childList:true,subtree:true});
+</script>
+</body>
+</html>

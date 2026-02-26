@@ -1,0 +1,250 @@
+# Java 멀티스레딩과 동시성 프로그래밍: 성능의 한계를 넘어서
+
+API 서버에 사용자가 몰리면 응답 시간이 급격히 느려집니다. 원인을 분석해보니 외부 API 호출에 3초가 걸리는데, 싱글 스레드로 순차 처리하고 있었습니다. 3개의 외부 API를 병렬로 호출하면 9초가 아닌 3초만에 끝낼 수 있습니다. 이것이 멀티스레딩의 힘입니다.
+
+이 글에서는 자바의 스레드 생성부터 스레드 풀 관리, 동기화 문제 해결, 그리고 실전 비동기 프로그래밍까지 코드와 함께 단계별로 다룹니다.
+
+## 1. 프로세스 vs 스레드
+
+| 구분 | 프로세스(Process) | 스레드(Thread) |
+|---|---|---|
+| 메모리 | 독립적인 메모리 공간 | 프로세스 내 메모리 공유 (Stack만 독립) |
+| 생성 비용 | 높음 | 상대적으로 낮음 |
+| 통신 비용 | IPC 필요 (비쌈) | 공유 메모리로 직접 통신 |
+| 장애 영향 | 다른 프로세스에 영향 없음 | 같은 프로세스의 다른 스레드에 영향 |
+
+## 2. 스레드 생성: 3가지 방법
+
+### 2.1 Thread 클래스 상속 (비권장)
+
+```java
+class DownloadThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println(getName() + ": 파일 다운로드 중...");
+    }
+}
+
+DownloadThread t = new DownloadThread();
+t.start(); // run()이 아닌 start()를 호출해야 새 스레드에서 실행
+```
+
+`start()` 대신 `run()`을 호출하면 새 스레드가 생성되지 않고 현재 스레드에서 실행됩니다. 초보자가 자주 실수하는 부분입니다.
+
+### 2.2 Runnable 인터페이스 구현 (권장)
+
+자바는 단일 상속만 지원하므로, Thread를 상속하면 다른 클래스를 상속할 수 없습니다.
+
+```java
+Runnable task = () -> {
+    System.out.println(Thread.currentThread().getName() + ": 작업 실행");
+};
+
+Thread t = new Thread(task, "worker-1");
+t.start();
+```
+
+### 2.3 Callable — 반환값이 있는 작업
+
+`Runnable`은 반환값이 없고 예외도 던질 수 없습니다. 결과가 필요하면 `Callable`을 사용합니다.
+
+```java
+Callable<Integer> calculation = () -> {
+    Thread.sleep(1000);
+    return 42;
+};
+
+ExecutorService executor = Executors.newSingleThreadExecutor();
+Future<Integer> future = executor.submit(calculation);
+
+// 결과가 준비될 때까지 블로킹
+Integer result = future.get(); // 42
+executor.shutdown();
+```
+
+## 3. ExecutorService: 스레드 풀이 필수인 이유
+
+스레드를 매번 생성/소멸하는 비용은 비쌉니다. OS 스레드를 할당하고 해제하는 과정이 수반되기 때문입니다. 실무에서는 반드시 **스레드 풀**을 사용합니다.
+
+```java
+// 고정 크기 스레드 풀 (CPU 코어 수 기반)
+int cores = Runtime.getRuntime().availableProcessors();
+ExecutorService executor = Executors.newFixedThreadPool(cores);
+
+List<Future<String>> futures = new ArrayList<>();
+for (int i = 0; i < 100; i++) {
+    final int taskId = i;
+    futures.add(executor.submit(() -> {
+        Thread.sleep(100);
+        return "Task-" + taskId + " 완료 [" + Thread.currentThread().getName() + "]";
+    }));
+}
+
+for (Future<String> f : futures) {
+    System.out.println(f.get());
+}
+
+executor.shutdown();
+```
+
+### 스레드 풀 종류 선택 가이드
+
+| 팩토리 메서드 | 특징 | 적합한 상황 |
+|---|---|---|
+| `newFixedThreadPool(n)` | 고정 n개 스레드 | CPU 바운드 작업 |
+| `newCachedThreadPool()` | 유휴 스레드 재사용, 무제한 생성 | 짧은 I/O 작업 (주의: 폭발 가능) |
+| `newSingleThreadExecutor()` | 단일 스레드, 작업 순서 보장 | 순차 처리 필요 시 |
+| `newScheduledThreadPool(n)` | 주기적/지연 실행 지원 | 배치 스케줄링 |
+| `newVirtualThreadPerTaskExecutor()` | Java 21+ 가상 스레드 | I/O 바운드 대량 작업 |
+
+**주의**: `newCachedThreadPool()`은 스레드 수 제한이 없어서 요청이 폭증하면 OOM이 발생할 수 있습니다. 운영 환경에서는 `ThreadPoolExecutor`를 직접 생성해 최대 스레드 수를 제한하세요.
+
+## 4. 동기화(Synchronization): 공유 자원의 위험
+
+멀티스레드 환경에서 가장 위험한 것은 **경쟁 상태(Race Condition)**입니다.
+
+```java
+// 위험한 코드: 여러 스레드가 동시에 count++를 실행
+public class UnsafeCounter {
+    private int count = 0;
+
+    public void increment() {
+        count++; // read → modify → write (3단계, 원자적이지 않음)
+    }
+
+    public int getCount() { return count; }
+}
+
+// 테스트: 1000개 스레드가 각각 1000번 증가 → 기대값 1,000,000
+UnsafeCounter counter = new UnsafeCounter();
+ExecutorService executor = Executors.newFixedThreadPool(10);
+
+for (int i = 0; i < 1000; i++) {
+    executor.submit(() -> {
+        for (int j = 0; j < 1000; j++) counter.increment();
+    });
+}
+executor.shutdown();
+executor.awaitTermination(10, TimeUnit.SECONDS);
+System.out.println(counter.getCount()); // 1,000,000이 아닌 더 작은 값!
+```
+
+### 4.1 synchronized 키워드
+
+가장 기본적인 동기화 방법입니다. 한 번에 하나의 스레드만 접근할 수 있도록 락을 겁니다.
+
+```java
+public class SyncCounter {
+    private int count = 0;
+
+    public synchronized void increment() {
+        count++; // 한 번에 하나의 스레드만 실행
+    }
+
+    public synchronized int getCount() { return count; }
+}
+```
+
+단점: 모든 스레드가 락을 기다리므로 성능이 저하됩니다.
+
+### 4.2 AtomicInteger — 락 없는 동기화
+
+CAS(Compare-And-Swap) 알고리즘으로 락 없이 원자적 연산을 보장합니다. 단순 카운터에는 `synchronized`보다 훨씬 빠릅니다.
+
+```java
+public class AtomicCounter {
+    private final AtomicInteger count = new AtomicInteger(0);
+
+    public void increment() {
+        count.incrementAndGet(); // 원자적 연산
+    }
+
+    public int getCount() { return count.get(); }
+}
+```
+
+### 4.3 Concurrent Collections
+
+`HashMap`, `ArrayList`는 멀티스레드에서 안전하지 않습니다. 대신 전용 컬렉션을 사용하세요.
+
+```java
+// BAD: 멀티스레드에서 ConcurrentModificationException 또는 데이터 손실
+Map<String, Integer> map = new HashMap<>();
+
+// GOOD: 세그먼트 기반 락으로 높은 동시성 보장
+ConcurrentMap<String, Integer> safeMap = new ConcurrentHashMap<>();
+safeMap.put("count", 1);
+safeMap.computeIfAbsent("visits", key -> 0);
+```
+
+| 비안전 컬렉션 | 스레드 안전 대안 |
+|---|---|
+| `HashMap` | `ConcurrentHashMap` |
+| `ArrayList` | `CopyOnWriteArrayList` |
+| `LinkedList` (Queue) | `ConcurrentLinkedQueue` |
+| `TreeMap` | `ConcurrentSkipListMap` |
+
+## 5. CompletableFuture: 비동기 프로그래밍의 정점
+
+Java 8의 `CompletableFuture`는 비동기 작업을 체이닝하고 조합하는 강력한 API입니다.
+
+### 5.1 기본 사용법
+
+```java
+CompletableFuture<String> future = CompletableFuture
+    .supplyAsync(() -> fetchUserFromDB(userId))    // 비동기 DB 조회
+    .thenApply(user -> user.getName())              // 결과 변환
+    .thenApply(name -> "안녕하세요, " + name)       // 추가 변환
+    .exceptionally(ex -> "사용자 조회 실패");       // 에러 처리
+```
+
+### 5.2 실전: 여러 API를 병렬로 호출
+
+```java
+// 3개의 외부 API를 동시에 호출 → 가장 느린 것 기준으로 완료
+CompletableFuture<UserProfile> profileFuture =
+    CompletableFuture.supplyAsync(() -> fetchProfile(userId));
+CompletableFuture<List<Order>> ordersFuture =
+    CompletableFuture.supplyAsync(() -> fetchOrders(userId));
+CompletableFuture<Integer> pointsFuture =
+    CompletableFuture.supplyAsync(() -> fetchPoints(userId));
+
+// 세 결과를 조합
+CompletableFuture.allOf(profileFuture, ordersFuture, pointsFuture)
+    .thenRun(() -> {
+        UserProfile profile = profileFuture.join();
+        List<Order> orders = ordersFuture.join();
+        int points = pointsFuture.join();
+        return new UserDashboard(profile, orders, points);
+    });
+```
+
+순차 실행 시 각각 1초, 2초, 1초면 총 4초가 걸리지만, 병렬 실행하면 2초(가장 느린 것)만에 끝납니다.
+
+## 6. Deadlock 방지 전략
+
+두 스레드가 서로의 락을 기다리며 영원히 블로킹되는 현상입니다.
+
+```java
+// Deadlock 발생 가능 코드
+Object lockA = new Object();
+Object lockB = new Object();
+
+// Thread 1: lockA → lockB 순서
+// Thread 2: lockB → lockA 순서 (역순!)
+```
+
+**방지 원칙**:
+1. 락 획득 순서를 전체 애플리케이션에서 통일하세요
+2. `tryLock()`으로 타임아웃을 설정하세요
+3. 가능하면 락을 사용하지 말고, `Atomic` 클래스나 불변 객체를 활용하세요
+
+## 결론: 안전한 동시성 프로그래밍 원칙
+
+1. **스레드를 직접 생성하지 마세요** — 항상 `ExecutorService`(스레드 풀)를 사용하세요
+2. **공유 상태를 최소화하세요** — 불변 객체(`record`, `final`)를 우선하세요
+3. **단순 카운터는 `AtomicInteger`**, 복잡한 동기화는 `synchronized` 또는 `ReentrantLock`을 사용하세요
+4. **비동기 조합은 `CompletableFuture`**로 선언적으로 표현하세요
+5. **Java 21 이상이라면 Virtual Threads**를 적극 활용하세요
+
+멀티스레딩은 양날의 검입니다. 잘 쓰면 성능이 비약적으로 향상되지만, 잘못 쓰면 디버깅이 극도로 어려운 버그를 만듭니다. 항상 "이 데이터를 여러 스레드가 동시에 접근할 수 있는가?"를 먼저 질문하는 습관을 기르세요.

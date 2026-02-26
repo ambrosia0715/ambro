@@ -1,0 +1,233 @@
+# Java Optional 완벽 가이드: null을 다루는 올바른 방법
+
+서비스 운영 중 가장 많이 발생하는 예외는 무엇일까요? Sentry나 Bugsnag 같은 에러 추적 도구의 통계를 보면, 거의 항상 `NullPointerException`(NPE)이 1위입니다. Tony Hoare는 null 참조를 발명한 것을 "10억 달러짜리 실수"라고 표현했습니다.
+
+Java 8에서 도입된 `Optional<T>`은 이 문제를 해결하기 위한 도구입니다. 하지만 잘못 사용하면 오히려 코드가 더 복잡해집니다. 이 글에서는 Optional의 올바른 사용법, 실전 패턴, 그리고 반드시 피해야 할 안티 패턴을 코드와 함께 깊이 있게 다룹니다.
+
+## 1. Optional이란?
+
+`Optional<T>`은 값이 있을 수도 있고 없을 수도 있는 컨테이너입니다. null을 직접 반환하는 대신, "결과가 없을 수 있음"을 타입 시스템으로 명시합니다.
+
+```java
+// null을 반환하는 기존 방식 — 호출자가 null 체크를 잊으면 NPE
+public User findByEmail(String email) {
+    return userRepository.findByEmail(email); // null 가능
+}
+
+// Optional을 반환하는 방식 — 호출자에게 "없을 수 있음"을 강제 인지
+public Optional<User> findByEmail(String email) {
+    return Optional.ofNullable(userRepository.findByEmail(email));
+}
+```
+
+## 2. Optional 생성: 3가지 팩토리 메서드
+
+```java
+// 1. Optional.empty() — 비어있는 Optional
+Optional<String> empty = Optional.empty();
+
+// 2. Optional.of(value) — null이면 즉시 NPE 발생
+Optional<String> present = Optional.of("Hello");
+// Optional.of(null); // NPE 발생!
+
+// 3. Optional.ofNullable(value) — null이면 empty, 아니면 값 포함
+Optional<String> maybe = Optional.ofNullable(getUserName()); // 가장 실용적
+```
+
+**실무 팁**: 외부 라이브러리나 레거시 코드에서 넘어온 값은 항상 `ofNullable()`로 감싸세요.
+
+## 3. 값 꺼내기: get()을 쓰지 마세요
+
+`get()`은 값이 없으면 `NoSuchElementException`을 던집니다. 이는 NPE를 다른 예외로 바꾼 것에 불과합니다.
+
+```java
+// BAD: get()을 직접 호출 — NPE와 다를 바 없음
+Optional<User> opt = findByEmail("test@test.com");
+User user = opt.get(); // 값이 없으면 NoSuchElementException
+
+// BAD: isPresent() + get() — Optional의 의미가 없어짐
+if (opt.isPresent()) {
+    User user = opt.get();
+    // ...
+}
+```
+
+대신 아래 메서드들을 상황에 맞게 사용하세요.
+
+### 3.1 orElse vs orElseGet — 차이를 반드시 알아야 합니다
+
+```java
+// orElse: 값이 있든 없든 기본값 표현식을 항상 실행
+User user = findByEmail(email).orElse(createDefaultUser());
+// createDefaultUser()가 매번 호출됨! DB 저장 등 부작용이 있다면 위험
+
+// orElseGet: 값이 없을 때만 Supplier를 실행 (Lazy Evaluation)
+User user = findByEmail(email).orElseGet(() -> createDefaultUser());
+// 값이 있으면 createDefaultUser()는 호출되지 않음
+```
+
+| 메서드 | 기본값 생성 비용이 낮을 때 | 기본값 생성에 부작용이 있을 때 |
+|---|---|---|
+| `orElse(value)` | 사용 가능 | 위험 |
+| `orElseGet(supplier)` | 사용 가능 | 안전 (권장) |
+
+### 3.2 orElseThrow — 비즈니스 예외 던지기
+
+```java
+User user = findByEmail(email)
+    .orElseThrow(() -> new UserNotFoundException("사용자를 찾을 수 없습니다: " + email));
+```
+
+Spring에서 REST API를 만들 때, 엔티티가 없으면 404를 반환해야 하는 경우에 자주 사용됩니다.
+
+### 3.3 ifPresent / ifPresentOrElse
+
+```java
+// 값이 있을 때만 실행
+findByEmail(email).ifPresent(user -> sendWelcomeEmail(user));
+
+// Java 9+: 있을 때와 없을 때를 모두 처리
+findByEmail(email).ifPresentOrElse(
+    user -> log.info("사용자 발견: {}", user.getName()),
+    ()   -> log.warn("사용자 없음: {}", email)
+);
+```
+
+## 4. map과 flatMap: Optional의 진짜 힘
+
+Optional이 단순한 null 체크 대용이 아닌 이유는 바로 **체이닝**에 있습니다.
+
+### 4.1 map — 값 변환
+
+```java
+// 기존의 중첩 null 체크 (Depth of Doom)
+String city = "Unknown";
+if (order != null) {
+    Member member = order.getMember();
+    if (member != null) {
+        Address address = member.getAddress();
+        if (address != null) {
+            city = address.getCity();
+        }
+    }
+}
+
+// Optional의 map 체이닝 — 선언적이고 가독성 좋음
+String city = Optional.ofNullable(order)
+    .map(Order::getMember)
+    .map(Member::getAddress)
+    .map(Address::getCity)
+    .orElse("Unknown");
+```
+
+### 4.2 flatMap — Optional을 반환하는 메서드와 연결
+
+getter가 이미 Optional을 반환하는 경우, `map`을 쓰면 `Optional<Optional<T>>`이 됩니다. `flatMap`으로 평탄화하세요.
+
+```java
+public class Member {
+    private Address address;
+    public Optional<Address> getAddress() {
+        return Optional.ofNullable(address);
+    }
+}
+
+// map을 쓰면: Optional<Optional<Address>> (이중 포장)
+// flatMap을 쓰면: Optional<Address> (깔끔)
+String city = Optional.ofNullable(member)
+    .flatMap(Member::getAddress)
+    .map(Address::getCity)
+    .orElse("Unknown");
+```
+
+### 4.3 filter — 조건 검증
+
+```java
+// 18세 이상인 사용자만 처리
+Optional.ofNullable(user)
+    .filter(u -> u.getAge() >= 18)
+    .ifPresent(u -> grantAccess(u));
+```
+
+## 5. 안티 패턴: 이렇게 쓰면 안 됩니다
+
+### 5.1 필드 변수로 사용 금지
+
+```java
+// BAD: Optional은 Serializable이 아님 → 직렬화 실패
+public class User {
+    private Optional<String> nickname; // 절대 금지!
+}
+
+// GOOD: 필드는 null 허용, getter에서 Optional 반환
+public class User {
+    private String nickname;
+    public Optional<String> getNickname() {
+        return Optional.ofNullable(nickname);
+    }
+}
+```
+
+### 5.2 매개변수로 사용 금지
+
+```java
+// BAD: 호출자에게 불필요한 래핑을 강요
+public void sendEmail(Optional<String> email) { ... }
+
+// GOOD: null 가능성은 @Nullable 어노테이션으로 표현
+public void sendEmail(@Nullable String email) {
+    if (email == null) return;
+    // ...
+}
+```
+
+### 5.3 컬렉션을 Optional로 감싸지 마세요
+
+```java
+// BAD: 이중 래핑 — Optional도 비어있고 List도 비어있을 수 있음
+public Optional<List<Order>> findOrders(Long userId) { ... }
+
+// GOOD: 빈 리스트 반환이 훨씬 깔끔
+public List<Order> findOrders(Long userId) {
+    List<Order> orders = orderRepository.findByUserId(userId);
+    return orders != null ? orders : Collections.emptyList();
+}
+```
+
+### 5.4 기본형은 전용 Optional 사용
+
+```java
+// BAD: 박싱/언박싱 오버헤드
+Optional<Integer> count = Optional.of(42);
+
+// GOOD: 전용 타입 사용
+OptionalInt count = OptionalInt.of(42);
+OptionalLong bigCount = OptionalLong.of(1_000_000L);
+OptionalDouble ratio = OptionalDouble.of(3.14);
+```
+
+## 6. Java 9+ 추가 메서드
+
+```java
+// or() — 대체 Optional 제공 (Java 9)
+Optional<User> user = findByEmail(email)
+    .or(() -> findByPhone(phone));
+
+// stream() — Optional을 Stream으로 변환 (Java 9)
+List<String> names = users.stream()
+    .map(User::getNickname)       // Stream<Optional<String>>
+    .flatMap(Optional::stream)    // Stream<String> (빈 Optional 제거)
+    .toList();
+```
+
+## 결론: Optional 사용 체크리스트
+
+Optional은 만능 도구가 아닙니다. 아래 원칙을 따르면 깔끔하게 사용할 수 있습니다.
+
+1. **반환 타입으로만** 사용하세요 (필드, 매개변수, 컬렉션 래핑 금지)
+2. **`get()` 대신** `orElse`, `orElseGet`, `orElseThrow`를 사용하세요
+3. **`orElse` vs `orElseGet`** 차이를 이해하고, 부작용이 있으면 반드시 `orElseGet` 사용
+4. **`map`/`flatMap` 체이닝**으로 중첩 null 체크를 제거하세요
+5. **기본형은** `OptionalInt`, `OptionalLong`, `OptionalDouble` 사용
+
+이 원칙들을 지키면 NPE의 공포에서 벗어나 더 안전하고 읽기 쉬운 자바 코드를 작성할 수 있습니다.
