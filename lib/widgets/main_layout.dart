@@ -95,6 +95,8 @@ class MainLayout extends StatelessWidget {
           _NavButton(label: 'AI Insight', path: '/blog/ai-insight'),
           const SizedBox(width: 8),
           _ProgrammingDropdown(), // Java, Python 통합 메뉴
+          const SizedBox(width: 8),
+          _UtilDropdown(), // 유틸리티 메뉴
           const SizedBox(width: 16),
           _AboutDropdown(),
           const SizedBox(width: 24), // Spacing before icons
@@ -120,7 +122,7 @@ class MainLayout extends StatelessWidget {
               const PopupMenuItem(
                   value: '/blog/ai-insight', child: Text('AI Insight')),
               const PopupMenuDivider(),
-              // Mobile Menu Grouping
+              // Mobile Menu Grouping - Programming
               const PopupMenuItem(
                 enabled: false,
                 height: 32,
@@ -139,6 +141,17 @@ class MainLayout extends StatelessWidget {
                   child: Padding(
                       padding: EdgeInsets.only(left: 12),
                       child: Text('Python'))),
+              const PopupMenuDivider(),
+              // Mobile Menu Grouping - Util
+              const PopupMenuItem(
+                enabled: false,
+                height: 32,
+                child: Text('UTIL',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.grey)),
+              ),
               const PopupMenuItem(
                   value: '/utils/camel-converter',
                   child: Padding(
@@ -235,8 +248,7 @@ class _ProgrammingDropdown extends StatelessWidget {
     // Check if current path is either java or python to highlight
     final currentLocation = GoRouterState.of(context).uri.path;
     final isActive = currentLocation.startsWith('/blog/java') ||
-        currentLocation.startsWith('/blog/python') ||
-        currentLocation.startsWith('/utils/camel-converter');
+        currentLocation.startsWith('/blog/python');
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -276,7 +288,49 @@ class _ProgrammingDropdown extends StatelessWidget {
             value: '/blog/python',
             child: Text('Python'),
           ),
-          const PopupMenuDivider(),
+        ],
+      ),
+    );
+  }
+}
+
+class _UtilDropdown extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Check if current path is utils to highlight
+    final currentLocation = GoRouterState.of(context).uri.path;
+    final isActive = currentLocation.startsWith('/utils');
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: PopupMenuButton<String>(
+        offset: const Offset(0, 40),
+        tooltip: '유틸리티 메뉴',
+        onSelected: (value) => context.go(value),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          child: Row(
+            children: [
+              Text(
+                'UTIL',
+                style: TextStyle(
+                  color: isActive
+                      ? const Color(0xFF6200EE)
+                      : const Color(0xFF555555),
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(width: 4),
+              Icon(Icons.arrow_drop_down,
+                  size: 18,
+                  color: isActive
+                      ? const Color(0xFF6200EE)
+                      : const Color(0xFF555555)),
+            ],
+          ),
+        ),
+        itemBuilder: (context) => [
           const PopupMenuItem(
             value: '/utils/camel-converter',
             child: Text('CamelCase 변환기'),
