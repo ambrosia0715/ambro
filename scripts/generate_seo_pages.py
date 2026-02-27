@@ -49,9 +49,12 @@ def parse_blog_data():
         post = {}
 
         for field in ['title', 'description', 'category', 'date', 'fileName', 'readTime', 'author']:
-            m = re.search(rf"{field}:\s*'([^']*)'", block)
+            # Single quotes or double quotes
+            m = re.search(rf"{field}:\s*(?:'([^']*)'|\"([^\"]*)\")", block)
             if m:
-                post[field] = m.group(1)
+                # Group 1 is single quoted, Group 2 is double quoted
+                val = m.group(1) if m.group(1) is not None else m.group(2)
+                post[field] = val
 
         tags_match = re.search(r"tags:\s*\[([^\]]*)\]", block)
         if tags_match:
