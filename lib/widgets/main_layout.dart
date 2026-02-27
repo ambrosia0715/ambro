@@ -157,6 +157,21 @@ class MainLayout extends StatelessWidget {
                   child: Padding(
                       padding: EdgeInsets.only(left: 12),
                       child: Text('CamelCase 변환기'))),
+              const PopupMenuItem(
+                  value: '/utils/json-formatter',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text('JSON Formatter'))),
+              const PopupMenuItem(
+                  value: '/utils/sql-formatter',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text('SQL Formatter'))),
+              const PopupMenuItem(
+                  value: '/utils/regex-tester',
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 12),
+                      child: Text('Regex Tester'))),
               const PopupMenuDivider(),
               const PopupMenuItem(value: '/about', child: Text('소개 (About)')),
               const PopupMenuItem(value: '/about/apps', child: Text('Apps')),
@@ -334,6 +349,18 @@ class _UtilDropdown extends StatelessWidget {
           const PopupMenuItem(
             value: '/utils/camel-converter',
             child: Text('CamelCase 변환기'),
+          ),
+          const PopupMenuItem(
+            value: '/utils/json-formatter',
+            child: Text('JSON Formatter'),
+          ),
+          const PopupMenuItem(
+            value: '/utils/sql-formatter',
+            child: Text('SQL Formatter'),
+          ),
+          const PopupMenuItem(
+            value: '/utils/regex-tester',
+            child: Text('Regex Tester'),
           ),
         ],
       ),

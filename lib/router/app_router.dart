@@ -16,6 +16,9 @@ import '../pages/pill_ping_privacy_page.dart';
 import '../pages/ongi_privacy_page.dart';
 import '../pages/contact_page.dart';
 import '../pages/utils/camel_case_converter_page.dart';
+import '../pages/utils/json_formatter_page.dart';
+import '../pages/utils/sql_formatter_page.dart';
+import '../pages/utils/regex_tester_page.dart';
 import '../widgets/main_layout.dart';
 
 // Helper for NoTransitionPage
@@ -40,6 +43,21 @@ final GoRouter appRouter = GoRouter(
           path: '/utils/camel-converter',
           pageBuilder: (context, state) =>
               _noTransitionPage(const CamelCaseConverterPage()),
+        ),
+        GoRoute(
+          path: '/utils/json-formatter',
+          pageBuilder: (context, state) =>
+              _noTransitionPage(const JsonFormatterPage()),
+        ),
+        GoRoute(
+          path: '/utils/sql-formatter',
+          pageBuilder: (context, state) =>
+              _noTransitionPage(const SqlFormatterPage()),
+        ),
+        GoRoute(
+          path: '/utils/regex-tester',
+          pageBuilder: (context, state) =>
+              _noTransitionPage(const RegexTesterPage()),
         ),
         // Blog Categories
         GoRoute(

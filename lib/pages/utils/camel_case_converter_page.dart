@@ -140,6 +140,25 @@ class _CamelCaseConverterPageState extends State<CamelCaseConverterPage> {
                   '텍스트를 CamelCase로 변환하거나, CamelCase를 snake_case로 분리할 수 있습니다.',
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.blue.shade100),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text('💡 사용법', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF1565C0))),
+                      SizedBox(height: 8),
+                      Text('• To CamelCase: 일반 텍스트를 입력하면 공백, 특수문자를 기준으로 단어를 합쳐 CamelCase로 변환합니다.', style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 4),
+                      Text('• To SnakeCase: CamelCase 텍스트를 입력하면 대문자 앞에서 언더바(_)를 추가하여 snake_case로 변환합니다.', style: TextStyle(fontSize: 14)),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 32),
 
                 // 변환 모드 선택 (탭 스타일)
