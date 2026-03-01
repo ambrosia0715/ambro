@@ -241,12 +241,39 @@ class _RegexTesterPageState extends State<RegexTesterPage> {
                             );
                           }).toList(),
                         ),
-                ),
+                        ),
+                const SizedBox(height: 32),
+                _buildAboutSection(),
                 const SizedBox(height: 40),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAboutSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('이 도구에 대해', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1565C0))),
+          SizedBox(height: 8),
+          Text(
+            '정규표현식(Regular Expression)은 텍스트에서 패턴을 찾거나 검증할 때 쓰는 강력한 문법입니다. '
+            '이메일·전화번호·URL 검증, 로그 파싱, 검색·치환 등에 활용됩니다. '
+            '여기서는 패턴을 입력하고 테스트 문자열과 비교해 매칭 결과와 그룹을 바로 확인할 수 있어, 개발·디버깅 시 유용합니다.',
+            style: TextStyle(fontSize: 14, height: 1.6, color: Colors.black87),
+          ),
+        ],
       ),
     );
   }

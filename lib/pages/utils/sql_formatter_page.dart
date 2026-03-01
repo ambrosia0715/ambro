@@ -145,12 +145,38 @@ class _SqlFormatterPageState extends State<SqlFormatterPage> {
                       _buildOutputSection(),
                     ],
                   ),
-                
+                const SizedBox(height: 32),
+                _buildAboutSection(),
                 const SizedBox(height: 40),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAboutSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('이 도구에 대해', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1565C0))),
+          SizedBox(height: 8),
+          Text(
+            'SQL 쿼리는 한 줄로 작성하면 읽기 어렵고 리뷰 시 실수를 찾기 힘듭니다. '
+            '이 포맷터는 SELECT, FROM, WHERE, JOIN 등 예약어를 대문자로 통일하고, 절마다 줄을 나누어 가독성을 높입니다. '
+            'Oracle, MySQL, PostgreSQL 등 주요 DB에서 사용하는 표준 SQL 문법에 맞춰 정렬합니다.',
+            style: TextStyle(fontSize: 14, height: 1.6, color: Colors.black87),
+          ),
+        ],
       ),
     );
   }

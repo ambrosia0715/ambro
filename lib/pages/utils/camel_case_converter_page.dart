@@ -305,6 +305,13 @@ class _CamelCaseConverterPageState extends State<CamelCaseConverterPage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 32),
+                _buildAboutSection(
+                  '이 도구에 대해',
+                  'CamelCase·PascalCase·snake_case는 프로그래밍에서 변수명, 함수명, DB 컬럼명을 정할 때 널리 쓰는 규칙입니다. '
+                  '팀 내 코딩 컨벤션이나 API 스펙에 맞추기 위해 형식을 바꿔야 할 때 이 변환기를 사용하면 됩니다. '
+                  '여러 줄을 한 번에 입력해 두고 변환하면 대량의 식별자도 빠르게 통일할 수 있습니다.',
+                ),
                 const SizedBox(height: 40),
               ],
             ),
@@ -404,6 +411,26 @@ class _CamelCaseConverterPageState extends State<CamelCaseConverterPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildAboutSection(String title, String body) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1565C0))),
+          const SizedBox(height: 8),
+          Text(body, style: const TextStyle(fontSize: 14, height: 1.6, color: Colors.black87)),
+        ],
+      ),
     );
   }
 }

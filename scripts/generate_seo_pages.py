@@ -35,6 +35,14 @@ CATEGORY_NAMES = {
     'ai-insight': 'AI Insight',
 }
 
+# 카테고리별 소개 문단 (에드센스 가치 있는 콘텐츠 강화)
+CATEGORY_DESCRIPTIONS = {
+    'java': 'Java와 Spring 프레임워크 기반의 백엔드 개발 지식을 다룹니다. JVM, 멀티스레딩, Spring Boot REST API 등 실무에 바로 쓸 수 있는 튜토리얼과 개념 정리를 제공합니다.',
+    'python': 'Python 문법, 비동기 프로그래밍(asyncio), 데이터 분석(Pandas), 웹 프레임워크(FastAPI·Flask) 비교 등 실용적인 개발 가이드를 공유합니다.',
+    'ai-basic': 'AI를 활용한 개발 워크플로우를 소개합니다. Cursor, LLM API 연동, 코드 리뷰 자동화, v0 프로토타이핑 등 개발자가 바로 적용할 수 있는 도구와 방법을 다룹니다.',
+    'ai-insight': 'AI 업계 동향, 신제품·모델 분석, 개발자 관점의 인사이트를 다룹니다. GPT, Claude, Gemini, RAG, 로컬 LLM 보안 등 심층 분석 글이 올라옵니다.',
+}
+
 # ── Dart 파일 파싱 ──
 
 def parse_blog_data():
@@ -215,8 +223,9 @@ _o.observe(document.body,{childList:true,subtree:true});
 </script>'''
 
 
-def generate_post_html(post, md_content):
-    """블로그 포스트에 대한 완전한 HTML 페이지를 생성합니다."""
+def generate_post_html(post, md_content, related_posts=None):
+    """블로그 포스트에 대한 완전한 HTML 페이지를 생성합니다. related_posts는 같은 카테고리 관련 글 목록(최대 3개)."""
+    related_posts = related_posts or []
     title = post.get('title', '')
     desc = post.get('description', '')
     cat = post.get('category', '')
@@ -232,6 +241,17 @@ def generate_post_html(post, md_content):
     canonical = f'{SITE_URL}/blog/{cat}/{fn}'
     content_html = md_to_html(md_content)
     tags_html = ' '.join(f'<span class="tag">{t}</span>' for t in tags)
+
+    related_html = ''
+    if related_posts:
+        related_items = ''.join(
+            f'<li><a href="/blog/{r["category"]}/{r["fileName"]}">{r["title"]}</a></li>\n'
+            for r in related_posts
+        )
+        related_html = f'''<div style="margin-top:2em;padding:1.5em;background:#f8f9fa;border-radius:12px;">
+      <h3 style="margin-top:0;">관련 글</h3>
+      <ul style="padding-left:1.2em;">{related_items}</ul>
+    </div>'''
 
     json_ld = json.dumps({
         "@context": "https://schema.org",
@@ -314,6 +334,7 @@ def generate_post_html(post, md_content):
     <div class="meta">{date} &middot; {read_time} &middot; {author}</div>
     {f'<img src="{thumb_web}" alt="{title}" style="width:100%;border-radius:12px;margin-bottom:2em;">' if thumb_web else ''}
     <article>{content_html}</article>
+    {related_html}
     <div class="ad-slot">
       <ins class="adsbygoogle" style="display:block" data-ad-client="{ADSENSE_CLIENT}" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
       <script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>
@@ -334,6 +355,7 @@ def generate_category_html(cat_id, cat_name, posts):
     """카테고리 목록 페이지 HTML을 생성합니다."""
     canonical = f'{SITE_URL}/blog/{cat_id}'
     desc = f'{cat_name} 관련 기술 블로그 글 목록 - Ambro Tech Blog'
+    intro = CATEGORY_DESCRIPTIONS.get(cat_id, desc)
 
     items = ''
     for p in posts:
@@ -387,6 +409,7 @@ def generate_category_html(cat_id, cat_name, posts):
     </nav>
     <h1>{cat_name}</h1>
     <p>{desc}</p>
+    <p style="margin-top:0.5em;color:#555;">{intro}</p>
     {items}
     <div class="ad-slot">
       <ins class="adsbygoogle" style="display:block" data-ad-client="{ADSENSE_CLIENT}" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
@@ -418,6 +441,20 @@ def generate_homepage_html(all_posts):
         <h2><a href="/blog/{cid}" style="color:#1976d2;text-decoration:none;">{cname}</a></h2>
         <ul style="list-style:none;padding:0;">{items}</ul>
       </section>\n'''
+
+    # 개발자 유틸리티 섹션 (가치 있는 콘텐츠·내부 링크 강화)
+    utils_section = '''<section>
+        <h2>개발자 유틸리티</h2>
+        <p>코딩 시 자주 쓰는 포맷·변환 도구를 무료로 제공합니다. JSON 정렬, SQL 포맷팅, 정규식 테스트, CamelCase 변환을 브라우저에서 바로 사용할 수 있습니다.</p>
+        <ul style="list-style:none;padding:0;">
+          <li><a href="/utils/json-formatter">JSON Formatter</a> &ndash; JSON 들여쓰기·압축(Minify)</li>
+          <li><a href="/utils/sql-formatter">SQL Formatter</a> &ndash; SQL 쿼리 정렬 및 키워드 대문자 변환</li>
+          <li><a href="/utils/regex-tester">Regex Tester</a> &ndash; 정규표현식 실시간 테스트</li>
+          <li><a href="/utils/camel-converter">CamelCase 변환기</a> &ndash; camelCase / PascalCase / snake_case 변환</li>
+        </ul>
+      </section>
+'''
+    cats_html += utils_section
 
     json_ld = json.dumps({
         "@context": "https://schema.org",
@@ -471,6 +508,7 @@ def generate_homepage_html(all_posts):
     <header>
       <h1>Ambro Tech Blog</h1>
       <p>AI 개발, Java, Python 등 실무 개발 지식과 최신 기술 트렌드를 공유하는 기술 블로그입니다.</p>
+      <p style="font-size:15px;color:#555;">무료 개발 도구와 실무 튜토리얼을 제공합니다.</p>
     </header>
     <main>{cats_html}</main>
     <div class="ad-slot">
@@ -478,7 +516,7 @@ def generate_homepage_html(all_posts):
       <script>(adsbygoogle=window.adsbygoogle||[]).push({{}});</script>
     </div>
     <footer style="margin-top:2em;padding-top:1em;border-top:1px solid #eee;font-size:13px;color:#6c757d;">
-      <p>&copy; 2025 Ambro Tech. All rights reserved.</p>
+      <p>&copy; 2026 Ambro Tech. All rights reserved.</p>
       <p><a href="/privacy">개인정보처리방침</a> | <a href="/contact">문의하기</a></p>
     </footer>
   </div>
@@ -646,6 +684,57 @@ def generate_static_pages():
     return count
 
 
+def generate_util_pages():
+    """개발자 유틸리티 페이지(JSON Formatter, SQL Formatter 등)의 SEO용 정적 HTML을 생성합니다."""
+    utils_list = [
+        ('camel-converter', 'CamelCase 변환기', 'CamelCase·snake_case 변환 도구',
+         '/utils/camel-converter',
+         '''<h1>CamelCase 변환기</h1>
+    <p>변수명·함수명을 일관되게 작성할 때 필요한 <strong>camelCase</strong>, <strong>PascalCase</strong>, <strong>snake_case</strong> 형식을 서로 변환하는 무료 도구입니다.</p>
+    <h2>사용 방법</h2>
+    <p>왼쪽 입력창에 변환할 텍스트를 한 줄씩 입력하세요. 공백, 하이픈(-), 언더스코어(_)로 구분된 단어는 자동으로 인식됩니다. To CamelCase 모드에서는 첫 글자를 소문자(camelCase) 또는 대문자(PascalCase)로 선택할 수 있고, To SnakeCase 모드에서는 CamelCase 문자열을 언더스코어로 구분된 형식으로 바꿉니다.</p>
+    <h2>활용 예시</h2>
+    <p>API 응답 필드명을 DB 컬럼명 규칙에 맞추거나, 문서 제목을 코드 식별자로 바꿀 때 유용합니다. 여러 줄을 한 번에 변환할 수 있어 대량의 키·변수명 정리 시 시간을 절약할 수 있습니다.</p>
+    <p><a href="/">홈으로</a> | <a href="/blog/java">Java</a> | <a href="/blog/python">Python</a></p>'''),
+        ('json-formatter', 'JSON Formatter', 'JSON 포맷·압축 도구',
+         '/utils/json-formatter',
+         '''<h1>JSON Formatter</h1>
+    <p>API 응답이나 설정 파일에서 받은 <strong>JSON(JavaScript Object Notation)</strong> 데이터를 읽기 쉽게 들여쓰기하거나, 전송 용량을 줄이기 위해 압축(Minify)할 때 사용하는 무료 포맷터입니다.</p>
+    <h2>사용 방법</h2>
+    <p>입력창에 유효한 JSON 문자열을 붙여넣은 뒤 Format 버튼을 누르면 2칸 들여쓰기가 적용된 형태로 정렬됩니다. Minify 버튼을 누르면 공백과 줄바꿈이 제거된 한 줄 JSON으로 변환됩니다. 문법 오류가 있으면 오류 메시지가 표시되므로 디버깅 시 참고할 수 있습니다.</p>
+    <h2>활용 예시</h2>
+    <p>로그나 외부 API 응답을 빠르게 확인하거나, 번들 크기를 줄이기 위해 JSON 설정을 minify할 때 활용하세요. 클라이언트에 전달하기 전 유효성 검사 용도로도 쓸 수 있습니다.</p>
+    <p><a href="/">홈으로</a> | <a href="/utils/camel-converter">CamelCase 변환기</a> | <a href="/utils/regex-tester">Regex Tester</a></p>'''),
+        ('sql-formatter', 'SQL Formatter', 'SQL 쿼리 정렬 도구',
+         '/utils/sql-formatter',
+         '''<h1>SQL Formatter</h1>
+    <p>한 줄로 된 <strong>SQL</strong> 쿼리를 읽기 쉽게 줄바꿈과 들여쓰기를 적용하고, 예약어(SELECT, FROM, WHERE 등)를 대문자로 통일하는 무료 포맷터입니다.</p>
+    <h2>사용 방법</h2>
+    <p>입력창에 SQL 문을 붙여넣고 Format SQL 버튼을 누르세요. SELECT, FROM, WHERE, JOIN, ORDER BY 등 주요 절마다 줄이 바뀌고, AND·OR 조건도 구분되어 표시됩니다. 대소문자가 섞인 쿼리도 키워드가 자동으로 대문자로 정리됩니다.</p>
+    <h2>활용 예시</h2>
+    <p>코드 리뷰 시 쿼리 가독성을 높이거나, 문서화·교육용으로 SQL을 정리할 때 유용합니다. Oracle, MySQL, PostgreSQL 등 dialect에 관계없이 기본 포맷팅이 적용됩니다.</p>
+    <p><a href="/">홈으로</a> | <a href="/blog/java">Java</a> | <a href="/blog/ai-basic">AI 개발 기초</a></p>'''),
+        ('regex-tester', '정규표현식 테스트기', 'Regex 실시간 테스트 도구',
+         '/utils/regex-tester',
+         '''<h1>정규표현식 테스트기 (Regex Tester)</h1>
+    <p><strong>정규표현식(Regular Expression)</strong>을 브라우저에서 바로 입력하고, 테스트 문자열과 비교하여 매칭 결과를 실시간으로 확인하는 무료 도구입니다.</p>
+    <h2>사용 방법</h2>
+    <p>Pattern 입력란에 정규식(예: ^[a-zA-Z0-9]+@, \\d{3}-\\d{4})을 입력하고, 테스트 문자열 입력란에 검사할 텍스트를 넣으세요. 매칭된 부분과 인덱스(범위)가 하단에 표시됩니다. Case Sensitive(대소문자 구분), Multi Line(^와 $가 줄 단위), Dot All(.이 개행 포함) 옵션을 선택할 수 있습니다.</p>
+    <h2>활용 예시</h2>
+    <p>이메일·전화번호·URL 검증 패턴을 만들 때, 로그에서 특정 패턴을 추출하는 정규식을 검증할 때 유용합니다. 프로그래밍 언어나 툴에서 사용하는 정규식 문법과 호환됩니다.</p>
+    <p><a href="/">홈으로</a> | <a href="/utils/json-formatter">JSON Formatter</a> | <a href="/blog/python">Python</a></p>'''),
+    ]
+    count = 0
+    for path_seg, title, desc, canonical_path, body_html in utils_list:
+        html = _static_page(title, desc, canonical_path, body_html)
+        # Output to utils/{path_seg}/index.html for clean URL
+        out = BUILD_DIR / 'utils' / path_seg / 'index.html'
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(html, encoding='utf-8')
+        count += 1
+    return count
+
+
 # ── 메인 실행 ──
 
 def main():
@@ -656,26 +745,29 @@ def main():
     print('=== SEO 프리렌더링 시작 ===')
 
     posts = parse_blog_data()
-    print(f'[1/3] blog_data.dart 파싱 완료 - {len(posts)}개 포스트')
+    print(f'[1/5] blog_data.dart 파싱 완료 - {len(posts)}개 포스트')
 
-    # 블로그 포스트 HTML 생성
+    # 블로그 포스트 HTML 생성 (같은 카테고리 관련 글 2~3개 계산)
     ok = 0
     for post in posts:
         cat = post.get('category', '')
         fn = post.get('fileName', '')
         if not cat or not fn:
             continue
+        same_cat = [p for p in posts if p.get('category') == cat and p.get('fileName') != fn]
+        same_cat.sort(key=lambda p: p.get('date', ''), reverse=True)
+        related_posts = same_cat[:3]
         mdx = ASSETS_DIR / 'content' / 'blog' / cat / fn
         if not mdx.exists():
             print(f'  SKIP: {mdx} 없음')
             continue
         md_content = mdx.read_text(encoding='utf-8')
-        html = generate_post_html(post, md_content)
+        html = generate_post_html(post, md_content, related_posts)
         out = BUILD_DIR / 'blog' / cat / fn
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding='utf-8')
         ok += 1
-    print(f'[2/4] 포스트 SEO 페이지 생성: {ok}개')
+    print(f'[2/5] 포스트 SEO 페이지 생성: {ok}개')
 
     # 카테고리 목록 HTML 생성
     for cid, cname in CATEGORY_NAMES.items():
@@ -685,18 +777,22 @@ def main():
         out = BUILD_DIR / 'blog' / f'{cid}.html'
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html, encoding='utf-8')
-    print(f'[3/4] 카테고리 SEO 페이지 생성: {len(CATEGORY_NAMES)}개')
+    print(f'[3/5] 카테고리 SEO 페이지 생성: {len(CATEGORY_NAMES)}개')
 
     # 정적 페이지(about, privacy, contact 등) 생성
     static_count = generate_static_pages()
-    print(f'[4/4] 정적 페이지 SEO 생성: {static_count}개 (about, apps, privacy, contact)')
+    print(f'[4/5] 정적 페이지 SEO 생성: {static_count}개 (about, apps, privacy, contact)')
+
+    # 유틸리티 페이지(JSON Formatter, SQL Formatter 등) SEO HTML 생성
+    util_count = generate_util_pages()
+    print(f'[5/5] 유틸 페이지 SEO 생성: {util_count}개')
 
     # 홈페이지 index.html 덮어쓰기
     hp = generate_homepage_html(posts)
     (BUILD_DIR / 'index.html').write_text(hp, encoding='utf-8')
     print('[OK] 홈페이지 index.html SEO 강화 완료')
 
-    print(f'\n=== 완료: 포스트 {ok} + 카테고리 {len(CATEGORY_NAMES)} + 정적 {static_count} + 홈페이지 1 ===')
+    print(f'\n=== 완료: 포스트 {ok} + 카테고리 {len(CATEGORY_NAMES)} + 정적 {static_count} + 유틸 {util_count} + 홈페이지 1 ===')
 
 
 if __name__ == '__main__':

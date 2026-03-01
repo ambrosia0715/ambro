@@ -142,12 +142,38 @@ class _JsonFormatterPageState extends State<JsonFormatterPage> {
                       _buildOutputSection(),
                     ],
                   ),
-                
+                const SizedBox(height: 32),
+                _buildAboutSection(),
                 const SizedBox(height: 40),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAboutSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('이 도구에 대해', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFF1565C0))),
+          SizedBox(height: 8),
+          Text(
+            'JSON(JavaScript Object Notation)은 API 응답, 설정 파일, NoSQL 문서 등에서 널리 쓰이는 데이터 형식입니다. '
+            'Format은 가독성을 위해 들여쓰기와 줄바꿈을 넣고, Minify는 네트워크 전송이나 번들 크기 절감을 위해 공백을 제거합니다. '
+            '유효하지 않은 JSON을 넣으면 오류 위치를 참고해 수정할 수 있습니다.',
+            style: TextStyle(fontSize: 14, height: 1.6, color: Colors.black87),
+          ),
+        ],
       ),
     );
   }
