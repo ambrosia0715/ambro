@@ -238,6 +238,7 @@ def generate_post_html(post, md_content, related_posts=None):
     thumb = post.get('thumbnailUrl', '')
 
     thumb_web = f'/assets/{thumb}' if thumb.startswith('assets/') else thumb
+    meta_image = f'{SITE_URL}{thumb_web}' if thumb_web.startswith('/') else thumb_web
     canonical = f'{SITE_URL}/blog/{cat}/{fn}'
     content_html = md_to_html(md_content)
     tags_html = ' '.join(f'<span class="tag">{t}</span>' for t in tags)
@@ -282,13 +283,13 @@ def generate_post_html(post, md_content, related_posts=None):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{desc}">
   <meta property="og:url" content="{canonical}">
-  <meta property="og:image" content="{SITE_URL}{thumb_web}">
+  <meta property="og:image" content="{meta_image}">
   <meta property="og:site_name" content="Ambro Tech Blog">
   <meta property="article:published_time" content="{date}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{desc}">
-  <meta name="twitter:image" content="{SITE_URL}{thumb_web}">
+  <meta name="twitter:image" content="{meta_image}">
   <link rel="canonical" href="{canonical}">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <link rel="alternate" type="application/rss+xml" title="Ambro Tech Blog RSS" href="/rss.xml">

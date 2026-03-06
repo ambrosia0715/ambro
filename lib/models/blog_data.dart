@@ -275,6 +275,17 @@ class BlogData {
 
     // AI Insight
     BlogPost(
+      title: 'ChatGPT GPT-5.4 업데이트 핵심 정리: Thinking의 선계획과 웹 리서치 강화',
+      description: 'GPT-5.4 Thinking의 선(先)계획, 딥 웹 리서치·맥락 유지 개선, Tool search와 컴퓨터 사용 능력까지 공식 발표 기반으로 정리',
+      category: 'ai-insight',
+      date: '2026-03-06',
+      fileName: 'gpt-5-4-thinking.mdx',
+      readTime: '12분',
+      tags: ['AI', 'ChatGPT', 'GPT-5.4', 'Thinking', 'Agent'],
+      thumbnailUrl: 'assets/images/blog/gpt_5_4_thinking.png',
+      isLocalImage: true,
+    ),
+    BlogPost(
       title: 'OpenAI, GPT-5.5 Agentic 전격 공개: "채팅을 넘어 행동으로"',
       description: '"Universal Action API" 탑재로 웹 브라우저와 터미널을 직접 제어하는 GPT-5.5의 혁신적인 기능과 Zero-UI 시대의 도래',
       category: 'ai-insight',
