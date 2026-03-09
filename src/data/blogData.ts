@@ -1,0 +1,450 @@
+export type BlogCategoryId = 'java' | 'python' | 'ai-basic' | 'ai-insight'
+
+export interface BlogPost {
+  title: string
+  description: string
+  category: BlogCategoryId
+  date: string
+  fileName: string
+  author: string
+  thumbnailUrl: string
+  readTime: string
+  tags: string[]
+  isLocalImage: boolean
+}
+
+export const categories: Record<BlogCategoryId, string> = {
+  java: 'Java',
+  python: 'Python',
+  'ai-basic': 'AI 개발 기초',
+  'ai-insight': 'AI Insight'
+}
+
+export const posts: BlogPost[] = [
+  {
+    title: 'JVM 메모리 구조 완벽 가이드',
+    description:
+      'Java 애플리케이션 성능 최적화를 위한 JVM 메모리 구조(Heap, Stack, Method Area) 심층 분석',
+    category: 'java',
+    date: '2026-01-15',
+    fileName: 'jvm-memory',
+    readTime: '15분',
+    tags: ['Java', 'JVM', 'Performance'],
+    thumbnailUrl: 'assets/images/blog/jvm_memory.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Modern Java: Java 8부터 21까지의 변화',
+    description:
+      '람다, 스트림부터 레코드, 가상 스레드까지. 모던 자바의 핵심 기능 총정리',
+    category: 'java',
+    date: '2026-01-17',
+    fileName: 'modern-java-features',
+    readTime: '18분',
+    tags: ['Java', 'Modern Java', 'Virtual Threads'],
+    thumbnailUrl: 'assets/images/blog/modern_java_evolution.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Java Optional 완벽 가이드',
+    description: 'NullPointerException을 피하고 Optional을 올바르게 사용하는 방법',
+    category: 'java',
+    date: '2026-01-20',
+    fileName: 'optional-guide',
+    readTime: '15분',
+    tags: ['Java', 'Optional', 'Best Practices'],
+    thumbnailUrl: 'assets/images/blog/java_optional.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Spring Boot 기초: DI와 IoC 이해하기',
+    description:
+      '스프링 프레임워크의 핵심 철학인 제어의 역전(IoC)과 의존성 주입(DI) 개념 정리',
+    category: 'java',
+    date: '2026-01-22',
+    fileName: 'spring-basics',
+    readTime: '15분',
+    tags: ['Spring Boot', 'DI', 'IoC'],
+    thumbnailUrl: 'assets/images/blog/spring_boot_di.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Java 멀티스레딩과 동시성 프로그래밍',
+    description:
+      '스레드 생성부터 ExecutorService, 동기화까지 자바 동시성 프로그래밍의 기초',
+    category: 'java',
+    date: '2026-01-25',
+    fileName: 'java-multithreading',
+    readTime: '18분',
+    tags: ['Java', 'Concurrency', 'Thread'],
+    thumbnailUrl: 'assets/images/blog/java_multithreading.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '스프링 프레임워크 완전 정복: 개념, 구조, 사용방법',
+    description:
+      'IoC/DI, AOP, 모듈 구조를 중심으로 스프링 프레임워크의 핵심을 정리하고 실전 사용 흐름까지 이해하기',
+    category: 'java',
+    date: '2026-02-09',
+    fileName: 'spring-framework-guide',
+    readTime: '18분',
+    tags: ['Java', 'Spring', 'IoC', 'DI', 'AOP'],
+    thumbnailUrl: 'assets/images/blog/spring_framework_hero.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '스프링 부트 최신 가이드: 개념, 구조, 설치 및 활용',
+    description:
+      '자동 설정, Starter, 내장 서버, Actuator까지 스프링 부트의 동작 원리와 실무 활용 포인트 정리',
+    category: 'java',
+    date: '2026-02-11',
+    fileName: 'spring-boot-guide',
+    readTime: '18분',
+    tags: ['Java', 'Spring Boot', 'Auto Config', 'Starter', 'Actuator'],
+    thumbnailUrl: 'assets/images/blog/spring_boot_hero.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '스프링 vs 스프링 부트 비교: 언제 무엇을 써야 할까?',
+    description:
+      '목적, 설정 방식, 의존성, 실행/운영 관점에서 스프링과 스프링 부트를 표로 비교하고 선택 기준 정리',
+    category: 'java',
+    date: '2026-02-12',
+    fileName: 'spring-vs-springboot',
+    readTime: '15분',
+    tags: ['Java', 'Spring', 'Spring Boot', 'Comparison'],
+    thumbnailUrl: 'assets/images/blog/spring_vs_boot_hero.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Spring Boot RESTful 사용방법: 설정과 작성 패턴',
+    description:
+      'starter-web 설정부터 Controller/DTO, 상태코드, 전역 예외 처리까지 REST API 작성의 실전 패턴 정리',
+    category: 'java',
+    date: '2026-02-13',
+    fileName: 'spring-boot-restful',
+    readTime: '18분',
+    tags: ['Java', 'Spring Boot', 'REST', 'API'],
+    thumbnailUrl: 'assets/images/blog/spring_boot_rest.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '파이썬 가상환경 관리의 모든 것',
+    description: 'venv, virtualenv, conda, poetry 비교 및 실무 가이드',
+    category: 'python',
+    date: '2026-01-27',
+    fileName: 'venv-management',
+    readTime: '15분',
+    tags: ['Python', 'Virtual Env', 'Poetry'],
+    thumbnailUrl: 'assets/images/blog/python_venv.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '비동기 프로그래밍: asyncio 심층 분석',
+    description:
+      '파이썬의 동시성 프로그래밍을 위한 asyncio, await/async 완벽 이해',
+    category: 'python',
+    date: '2026-01-29',
+    fileName: 'asyncio-tutorial',
+    readTime: '18분',
+    tags: ['Python', 'Asyncio', 'Concurrency'],
+    thumbnailUrl: 'assets/images/blog/python_asyncio.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Pandas 데이터 분석 기초',
+    description: '데이터프레임 조작부터 전처리까지 Pandas 핵심 기능 마스터하기',
+    category: 'python',
+    date: '2026-01-31',
+    fileName: 'pandas-basics',
+    readTime: '15분',
+    tags: ['Python', 'Pandas', 'Data Analysis'],
+    thumbnailUrl: 'assets/images/blog/pandas_analysis.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '파이썬 중급 문법: 데코레이터와 제너레이터',
+    description:
+      '파이썬다운 코드를 작성하기 위한 데코레이터와 제너레이터 활용법',
+    category: 'python',
+    date: '2026-02-02',
+    fileName: 'decorator-generator',
+    readTime: '18분',
+    tags: ['Python', 'Advanced'],
+    thumbnailUrl: 'assets/images/blog/python_decorators.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'FastAPI vs Flask: 모던 웹 프레임워크 비교',
+    description: '내 프로젝트에 맞는 파이썬 웹 프레임워크 선택 가이드',
+    category: 'python',
+    date: '2026-02-03',
+    fileName: 'fastapi-vs-flask',
+    readTime: '18분',
+    tags: ['Python', 'FastAPI', 'Flask'],
+    thumbnailUrl: 'assets/images/blog/fastapi_vs_flask.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Cursor AI 에디터 200% 활용하기',
+    description: 'AI 코딩 어시스턴트 Cursor의 워크플로우와 실무 활용 팁',
+    category: 'ai-basic',
+    date: '2026-02-04',
+    fileName: 'cursor-workflow',
+    readTime: '15분',
+    tags: ['AI', 'Cursor', 'Productivity'],
+    thumbnailUrl: 'assets/images/blog/cursor_ai.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'LLM API 연동 가이드',
+    description:
+      'OpenAI, Anthropic API를 내 애플리케이션에 연동하는 방법',
+    category: 'ai-basic',
+    date: '2026-02-05',
+    fileName: 'llm-api-integration',
+    readTime: '18분',
+    tags: ['AI', 'LLM', 'API'],
+    thumbnailUrl: 'assets/images/blog/llm_api_integration.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'AI를 활용한 코드 리뷰 자동화',
+    description: 'GitHub Actions와 LLM을 결합하여 자동 코드 리뷰 봇 만들기',
+    category: 'ai-basic',
+    date: '2026-02-06',
+    fileName: 'ai-code-review',
+    readTime: '18분',
+    tags: ['AI', 'DevOps', 'GitHub Actions'],
+    thumbnailUrl: 'assets/images/blog/ai_code_review.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'v0.dev로 웹사이트 프로토타이핑 가속화',
+    description:
+      '생성형 UI 도구 v0.dev를 사용하여 빠르게 프로토타입 만들기',
+    category: 'ai-basic',
+    date: '2026-02-07',
+    fileName: 'v0-prototyping',
+    readTime: '15분',
+    tags: ['AI', 'UI/UX', 'v0.dev'],
+    thumbnailUrl: 'assets/images/blog/v0_prototyping.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'AI와 함께하는 단위 테스트 작성',
+    description:
+      'AI의 도움을 받아 효율적으로 테스트 케이스를 생성하고 커버리지 높이기',
+    category: 'ai-basic',
+    date: '2026-02-08',
+    fileName: 'ai-unit-testing',
+    readTime: '18분',
+    tags: ['AI', 'Testing', 'Unit Test'],
+    thumbnailUrl: 'assets/images/blog/ai_unit_testing.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '바이브코딩(Vibe Coding)의 개념과 기초',
+    description:
+      '자연어로 설명하면 AI가 코드를 생성하는 바이브코딩의 핵심 개념과 시작하는 방법',
+    category: 'ai-basic',
+    date: '2026-02-18',
+    fileName: 'vibe-coding',
+    readTime: '15분',
+    tags: ['AI', '바이브코딩', 'Vibe Coding', 'Cursor'],
+    thumbnailUrl: 'assets/images/blog/vibe_coding.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Google Antigravity 최신 가이드',
+    description:
+      '에이전트 중심 IDE Antigravity의 최신 기능, 설치 및 실무 활용 방법',
+    category: 'ai-basic',
+    date: '2026-02-19',
+    fileName: 'google-antigravity',
+    readTime: '15분',
+    tags: ['AI', 'IDE', 'Agent', 'Google', 'Antigravity'],
+    thumbnailUrl: 'assets/images/blog/google_antigravity.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title:
+      'ChatGPT GPT-5.4 업데이트 핵심 정리: Thinking의 선계획과 웹 리서치 강화',
+    description:
+      'GPT-5.4 Thinking의 선(先)계획, 딥 웹 리서치·맥락 유지 개선, Tool search와 컴퓨터 사용 능력까지 공식 발표 기반으로 정리',
+    category: 'ai-insight',
+    date: '2026-03-06',
+    fileName: 'gpt-5-4-thinking',
+    readTime: '12분',
+    tags: ['AI', 'ChatGPT', 'GPT-5.4', 'Thinking', 'Agent'],
+    thumbnailUrl: 'assets/images/blog/gpt_5_4_thinking.png',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title:
+      'OpenAI, GPT-5.5 Agentic 전격 공개: "채팅을 넘어 행동으로"',
+    description:
+      '"Universal Action API" 탑재로 웹 브라우저와 터미널을 직접 제어하는 GPT-5.5의 혁신적인 기능과 Zero-UI 시대의 도래',
+    category: 'ai-insight',
+    date: '2026-02-27',
+    fileName: 'gpt-5-5-agentic',
+    readTime: '12분',
+    tags: ['AI', 'OpenAI', 'GPT-5.5', 'Agent'],
+    thumbnailUrl: 'assets/images/blog/gpt_5_5_agentic.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title:
+      'Anthropic, Claude 4 Opus 공개: "무한에 가까운 기억력"',
+    description:
+      '1,000만 토큰 컨텍스트와 에피소딕 메모리로 세션 간 기억을 유지하는 Claude 4의 등장과 RAG 시스템의 변화',
+    category: 'ai-insight',
+    date: '2026-02-27',
+    fileName: 'claude-4-opus',
+    readTime: '12분',
+    tags: ['AI', 'Anthropic', 'Claude 4', 'Memory'],
+    thumbnailUrl: 'assets/images/blog/claude_4_opus.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'NVIDIA Rubin (R100) 벤치마크 유출: "물리적 한계를 넘다"',
+    description:
+      'Blackwell 대비 5배 성능 향상, 4nm 공정, HBM4e 탑재 등 차세대 GPU Rubin의 압도적인 스펙과 파급 효과',
+    category: 'ai-insight',
+    date: '2026-02-27',
+    fileName: 'nvidia-rubin-r100',
+    readTime: '10분',
+    tags: ['AI', 'NVIDIA', 'GPU', 'Hardware'],
+    thumbnailUrl: 'assets/images/blog/nvidia_rubin_r100.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Gemini 3.1 Pro 발표: Google AI의 새로운 이정표',
+    description:
+      '추론력 2배 향상, Medium Thinking, SVG 생성 등 Gemini 3.1 Pro의 핵심 특징과 벤치마크 성능 분석',
+    category: 'ai-insight',
+    date: '2026-02-20',
+    fileName: 'gemini-31-pro',
+    readTime: '15분',
+    tags: ['AI', 'Gemini', 'Google', 'LLM', 'Benchmark'],
+    thumbnailUrl: 'assets/images/blog/gemini_31_pro.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'OpenClaw 최신 가이드: 개인용 AI 에이전트',
+    description:
+      '메신저에서 실질적인 업무를 수행하는 오픈소스 AI 에이전트 OpenClaw의 최신 정보와 활용법',
+    category: 'ai-insight',
+    date: '2026-02-19',
+    fileName: 'openclaw-guide',
+    readTime: '15분',
+    tags: ['AI', 'OpenClaw', 'Agent', '오픈소스'],
+    thumbnailUrl: 'assets/images/blog/openclaw_ai.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'RAG(검색 증강 생성) 전략 가이드',
+    description:
+      'LLM의 환각 현상을 줄이고 최신 정보를 반영하는 RAG 시스템 구축 전략',
+    category: 'ai-insight',
+    date: '2026-02-14',
+    fileName: 'rag-strategy',
+    readTime: '18분',
+    tags: ['AI', 'RAG', 'LLM'],
+    thumbnailUrl: 'assets/images/blog/rag_architecture.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'Vector DB 비교 및 선택 가이드',
+    description:
+      'Pinecone, Weaviate, Milvus, Chroma 등 주요 벡터 DB 특징 비교',
+    category: 'ai-insight',
+    date: '2026-02-15',
+    fileName: 'vector-db-guide',
+    readTime: '18분',
+    tags: ['AI', 'Vector DB', 'Database'],
+    thumbnailUrl: 'assets/images/blog/vector_db_guide.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'AI Agent 트렌드와 미래',
+    description:
+      '자율적으로 행동하는 AI 에이전트의 현재 기술 수준과 활용 사례',
+    category: 'ai-insight',
+    date: '2026-02-10',
+    fileName: 'ai-agent-trend',
+    readTime: '18분',
+    tags: ['AI', 'Agent', 'Trend'],
+    thumbnailUrl: 'assets/images/blog/ai_agents_trend.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: '로컬 LLM과 보안',
+    description:
+      'Ollama 등을 활용하여 로컬 환경에서 LLM을 구동하고 데이터를 보호하는 방법',
+    category: 'ai-insight',
+    date: '2026-02-16',
+    fileName: 'local-llm-security',
+    readTime: '15분',
+    tags: ['AI', 'Local LLM', 'Security'],
+    thumbnailUrl: 'assets/images/blog/local_llm_security.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  },
+  {
+    title: 'AI 시대, 개발자의 미래',
+    description:
+      'AI가 코딩하는 시대, 개발자는 어떤 역량을 키워야 살아남을 수 있을까?',
+    category: 'ai-insight',
+    date: '2026-02-17',
+    fileName: 'developer-future',
+    readTime: '15분',
+    tags: ['Insight', 'Career', 'Future'],
+    thumbnailUrl: 'assets/images/blog/developer_future.webp',
+    isLocalImage: true,
+    author: 'Ambro'
+  }
+]
+
+export function getPostsByCategory(categoryId: BlogCategoryId): BlogPost[] {
+  const list = posts.filter((post) => post.category === categoryId)
+  return [...list].sort((a, b) => {
+    const dateCmp = b.date.localeCompare(a.date)
+    if (dateCmp !== 0) return dateCmp
+
+    const ai = posts.findIndex((p) => p.fileName === a.fileName)
+    const bi = posts.findIndex((p) => p.fileName === b.fileName)
+    return bi - ai
+  })
+}
+

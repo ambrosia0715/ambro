@@ -21,3 +21,12 @@ build/*
 
 # macOS
 .DS_Store
+
+# Nuxt / Node
+.nuxt/
+.output/
+.data/
+node_modules/
+.env
+.env.*
+!.env.example

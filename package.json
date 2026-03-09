@@ -1,0 +1,19 @@
+{
+  "name": "ambro-web-nuxt",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@nuxt/content": "latest",
+    "better-sqlite3": "^12.6.2",
+    "nuxt": "latest"
+  },
+  "devDependencies": {
+    "typescript": "latest"
+  }
+}
