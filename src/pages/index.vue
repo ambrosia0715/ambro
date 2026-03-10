@@ -4,10 +4,10 @@ import { getPostsByCategory } from '../data/blogData'
 import type { BlogCategoryId } from '../data/blogData'
 
 useSeoMeta({
-  title: 'Ambro Tech Blog - AI, Java, Python 기술 블로그',
+  title: 'Ambro Tech Blog',
   description:
     'AI 개발, Java, Python 등 실무 개발 지식과 최신 기술 트렌드를 공유하는 Ambro Tech Blog입니다.',
-  ogTitle: 'Ambro Tech Blog - AI, Java, Python 기술 블로그',
+  ogTitle: 'Ambro Tech Blog',
   ogDescription:
     'AI 개발, Java, Python 등 실무 개발 지식과 최신 기술 트렌드를 공유합니다.',
   ogType: 'website'
@@ -23,6 +23,19 @@ const sections: { key: BlogCategoryId; title: string; label: string }[] = [
 
 <template>
   <div class="home-root">
+    <section class="hero">
+      <h1 class="hero-title">실무에 바로 쓰는 개발 지식</h1>
+      <p class="hero-desc">
+        Ambro Tech Blog는 <strong>AI 개발 워크플로우</strong>, <strong>Java/Spring</strong>,
+        <strong>Python</strong>을 중심으로 실무에서 바로 적용 가능한 가이드와 사례를 정리합니다.
+      </p>
+      <ul class="hero-points">
+        <li><strong>원리 + 실전</strong>: 개념을 짧게 잡고, 코드/패턴/실수 포인트로 연결</li>
+        <li><strong>업데이트</strong>: 도구/트렌드는 최신 기준으로 지속 반영</li>
+        <li><strong>정책/문의</strong>: <NuxtLink to="/privacy">개인정보처리방침</NuxtLink> · <NuxtLink to="/contact">문의하기</NuxtLink></li>
+      </ul>
+    </section>
+
     <section
       v-for="sec in sections"
       :key="sec.key"
@@ -69,6 +82,46 @@ const sections: { key: BlogCategoryId; title: string; label: string }[] = [
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px 48px;
+}
+
+.hero {
+  padding: 28px 0 16px;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 28px;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #1a1a1a;
+  margin: 0 0 10px;
+}
+
+.hero-desc {
+  margin: 0;
+  font-size: 16px;
+  color: #495057;
+  line-height: 1.7;
+  max-width: 820px;
+}
+
+.hero-points {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  color: #6c757d;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.hero-points a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hero-points a:hover {
+  text-decoration: underline;
 }
 
 .section {
