@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ambro.space/sitemap.xml
+Sitemap: https://www.ambro.space/sitemap.xml
