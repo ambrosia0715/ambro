@@ -23,6 +23,35 @@ const post = posts.find(
   (p) => p.category === category && p.fileName === slug
 ) as BlogPost | undefined
 
+const audienceText = computed(() => {
+  if (!post) return ''
+  const c = post.category
+  if (c === 'java') return 'Java/Spring 실무 설계·성능·패턴이 필요한 개발자'
+  if (c === 'python') return 'Python 실무 문법/데이터/웹 프레임워크를 빠르게 정리하고 싶은 개발자'
+  if (c === 'ai-basic') return 'AI 도구를 개발 워크플로우에 적용해 생산성을 올리고 싶은 개발자'
+  return 'AI 트렌드를 빠르게 이해하고 의사결정에 참고하고 싶은 개발자'
+})
+
+const summaryBullets = computed(() => {
+  if (!post) return []
+  // description을 기반으로 2~3개의 짧은 요약 포인트를 생성 (너무 인위적이지 않게)
+  const d = post.description?.trim() ?? ''
+  if (!d) return []
+  const parts = d
+    // 구분자를 단순화해 안전하게 분리 (· • - / , 주변 공백 포함)
+    .replace(/\s*[-/·•,]\s*/g, '|')
+    .split('|')
+    .map((s) => s.trim())
+    .filter(Boolean)
+  const uniq: string[] = []
+  for (const p of parts) {
+    if (uniq.length >= 3) break
+    if (p.length < 6) continue
+    if (!uniq.includes(p)) uniq.push(p)
+  }
+  return uniq.length ? uniq : [d]
+})
+
 // Nuxt Content 자동 임포트 queryCollection으로 전체 문서 조회 후 ContentRenderer로 본문 전체 렌더
 const contentPath = post ? `/blog/${post.category}/${post.fileName}` : ''
 const { data: doc } = await useAsyncData(
@@ -69,6 +98,26 @@ if (post) {
         <p class="meta">
           {{ post.date }} · {{ post.readTime }} · {{ post.author }}
         </p>
+
+        <section class="info-box">
+          <div class="info-col">
+            <p class="info-label">이 글은 이런 분께</p>
+            <p class="info-text">{{ audienceText }}</p>
+          </div>
+          <div class="info-col">
+            <p class="info-label">핵심 요약</p>
+            <ul class="info-list">
+              <li v-for="s in summaryBullets" :key="s">{{ s }}</li>
+            </ul>
+          </div>
+        </section>
+
+        <p class="trust">
+          작성자/운영: <NuxtLink to="/about">About</NuxtLink> ·
+          <NuxtLink to="/privacy">개인정보처리방침</NuxtLink> ·
+          <NuxtLink to="/contact">문의하기</NuxtLink>
+        </p>
+
         <div v-if="post.thumbnailUrl" class="thumb-wrapper">
           <img
             class="thumb"
@@ -147,10 +196,67 @@ h1 {
   display: block;
 }
 
+.info-box {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.info-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #9e9e9e;
+  letter-spacing: 0.2px;
+}
+
+.info-text {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #212529;
+  line-height: 1.6;
+}
+
+.info-list {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.trust {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.trust a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.trust a:hover {
+  text-decoration: underline;
+}
+
 .content {
   margin-top: 48px;
   font-size: 17px;
   line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .info-box {
+    grid-template-columns: 1fr;
+  }
 }
 
 .content :deep(h2) {
