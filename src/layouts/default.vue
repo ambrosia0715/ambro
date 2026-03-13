@@ -1,15 +1,35 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
+
 const route = useRoute()
 const config = useRuntimeConfig()
 const siteUrl = (config.public.siteUrl as string) || 'https://ambro.space'
-const path = route.path === '/' ? '' : route.path
-const canonicalUrl = `${siteUrl}${path}`
+
+const canonicalUrl = computed(() => {
+  const path = route.path === '/' ? '' : route.path
+  return `${siteUrl}${path}`
+})
+
+const showAds = computed(() => {
+  const p = route.path
+  return !p.startsWith('/utils') && !p.startsWith('/privacy') && !p.startsWith('/contact') && !p.startsWith('/about/apps')
+})
 
 // 페이지별 canonical·ogUrl (개별 페이지에서 override 가능)
-useHead({
-  link: [{ rel: 'canonical', href: canonicalUrl }]
+useHead(() => ({
+  link: [{ rel: 'canonical', href: canonicalUrl.value }],
+  script: showAds.value ? [
+    {
+      src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1444459980078427',
+      async: true,
+      crossorigin: 'anonymous'
+    }
+  ] : []
+}))
+
+useSeoMeta({
+  ogUrl: () => canonicalUrl.value
 })
-useSeoMeta({ ogUrl: canonicalUrl })
 
 const aboutOpen = ref(false)
 let aboutCloseTimer: ReturnType<typeof setTimeout> | null = null
