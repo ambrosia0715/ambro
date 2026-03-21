@@ -50,15 +50,8 @@ useSeoMeta({
       <p>회사는 회원가입을 운영하지 않으며, 다음의 항목만 자동으로 수집될 수 있습니다.</p>
       <ul>
         <li>서비스 이용 기록, 접속 로그, 접속 IP 정보</li>
-        <li>쿠키 및 유사 기술(아래 &quot;광고 및 쿠키&quot; 참고)</li>
+        <li>쿠키 및 유사 기술(아래 제4조의2 &quot;광고 및 쿠키&quot; 참고)</li>
       </ul>
-      <p>
-        <strong>Google AdSense</strong>: 본 사이트에는 Google AdSense를 통해 광고가 게재됩니다.
-        Google 및 제3자 업체는 방문자의 이전 방문 정보 등에 기반하여 맞춤 광고를 제공하기 위해
-        쿠키를 사용할 수 있습니다. 수집·이용에 대한 자세한 내용은
-        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 개인정보처리방침</a>을
-        참고하시기 바랍니다.
-      </p>
     </section>
 
     <section class="section">
@@ -80,21 +73,14 @@ useSeoMeta({
     </section>
 
     <section class="section">
-      <h2>제4조의2 (광고 쿠키 및 맞춤광고 거부)</h2>
-      <p>
-        맞춤 광고를 원하지 않으시면 아래에서 설정을 변경할 수 있습니다.
-      </p>
+      <h2>제4조의2 (Google AdSense 광고 및 쿠키 사용)</h2>
+      <p>본 사이트는 광고 게재를 위해 Google AdSense를 사용하고 있으며, 이와 관련하여 다음과 같은 정책을 따릅니다.</p>
       <ul>
-        <li>
-          <strong>Google 광고 설정</strong>:
-          <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">https://adssettings.google.com</a>
-        </li>
-        <li>
-          <strong>선택 거부(옵트아웃)</strong>:
-          <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer">www.aboutads.info</a>
-        </li>
+        <li>제3자 공급업체(Google 포함)는 쿠키를 사용하여 사용자가 본 사이트나 다른 웹사이트를 이전에 방문한 내역을 기반으로 광고를 게재합니다.</li>
+        <li>Google은 광고 쿠키를 사용함으로써 파트너와 함께 사용자가 본 사이트나 인터넷의 다른 사이트를 방문한 내역을 기반으로 사용자에게 맞춤 광고를 게재할 수 있습니다.</li>
+        <li>사용자는 <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">광고 설정</a>을 방문하여 맞춤광고를 사용 중지할 수 있습니다. (또는 <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer">www.aboutads.info</a>를 방문하여 제3자 공급업체의 맞춤광고 쿠키 사용을 거부할 수 있습니다.)</li>
       </ul>
-      <p>위 설정은 해당 브라우저·기기에서 적용되며, 쿠키 삭제 시 재설정될 수 있습니다.</p>
+      <p>데이터 수집·이용에 대한 보다 자세한 내용은 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 개인정보처리방침</a>을 참고하시기 바랍니다.</p>
     </section>
 
     <section class="section">
